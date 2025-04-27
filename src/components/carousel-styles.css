@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.splide__slide {
+  @apply flex items-end justify-center;
+}
+
+.splide__arrows {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  z-index: 100;
+  pointer-events: none;
+  height: 100%;
+}
+
+.splide__arrows.arrows_modal{
+  height: auto;
+}
+
+.splide__arrow{
+  pointer-events: all;
+}
+
+.splide__arrow svg {
+  filter: invert(1);
+  width: 20px;
+  height: 20px;
+}
+
+.splide__arrow--prev {
+  margin-left: 20px;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.splide__arrow--next {
+  margin-right: 20px;
+}
+
+
+.splide__arrow.modal_arrow {
+  transition: opacity 0.2s ease-in;
+}
+
+.splide__arrow.modal_arrow:disabled {
+  opacity: 0 !important;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.items-overlay {
+  @apply absolute inset-0 flex backdrop-blur-[2px] z-10 ease-in duration-100;
+}
+
+.is-visible .items-overlay {
+  @apply !backdrop-filter-none;
+}
+
+.items-overlay-song {
+  @apply text-beige blur-[2px] ease-in duration-100;
+}
+
+.is-visible .items-overlay-song {
+  @apply !filter-none;
+}
+
+.items-overlay-video {
+  @apply absolute inset-0 flex backdrop-blur-[2px] z-10 ease-in duration-100;
+}
+
+.is-visible .items-overlay-video {
+  @apply !backdrop-filter-none;
+}
+
+.carousel-container {
+  @apply w-full;
+}

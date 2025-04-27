@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+
+/*Animation*/
+
+@keyframes rotate-spring {
+  0% {
+    transform: rotate(0deg);
+  }
+  80% {
+    transform: rotate(368deg);
+  }
+  85% {
+    transform: rotate(370deg); /* Slight overshoot */
+  }
+  90% {
+    transform: rotate(340deg); /* Reverse a bit */
+  }
+  95% {
+    transform: rotate(360deg); /* Approach final position */
+  }
+  100% {
+    transform: rotate(355deg); /* Settle back a bit slowly */
+  }
+}
+
+.spring-rotate {
+  animation: rotate-spring 1s ease-in-out infinite;
+}
+/*Animation End*/
+
+.image-border {
+  border: 10px solid;
+  border-image-source: url("../../../public/assets/landing-frame-mobile.svg");
+  border-image-slice: 10;
+  inset: -0.5rem;
+}
+
+@media (min-width: 600px) {
+  .image-border {
+    inset: 0.25rem;
+  }
+}
+
+@media (min-width: 820px) {
+  .image-border {
+    border-width: 14px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .image-border {
+    inset: 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .image-border {
+    border-image-source: url("../../../public/assets/landing-frame-desktop.svg");
+    border-width: 12px;
+    inset: -0.6rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .image-border {
+    inset: -0.75rem;
+  }
+}
+
+@media (min-width: 1500px) {
+  .image-border {
+    inset: -0.7rem;
+  }
+}
+@media (min-width: 1920px) {
+  .image-border {
+    inset: -0.8rem;
+  }
+}
+
+
+@media (min-width: 2560px) {
+  .image-border {
+    border-width: 16px;
+    border-image-slice: 18;
+    inset: -0.9rem;
+  }
+}
+
+@media (min-width: 3840px) {
+  .image-border {
+    border-width: 20px;
+    border-image-slice: 30;
+    inset: -1rem;
+  }
+}
+
+.octagon {
+  width: 120px;
+  height: 20px;
+  clip-path: polygon(
+    5% 0%,
+    95% 0%,
+    100% 25%,
+    100% 75%,
+    95% 95%,
+    5% 95%,
+    0% 75%,
+    0% 25%
+  );
+}
+
+@media (min-width: 375px) and (max-width: 380px) {
+  .octagon {
+    width: 115px;
+    height: 20px;
+  }
+}
+
+@media (min-width: 390px) and (max-width: 393px) {
+  .octagon {
+    width: 125px;
+    height: 24px;
+  }
+}
+
+@media (min-width: 400px) {
+  .octagon {
+    width: 140px;
+    height: 25px;
+  }
+}
+@media (min-width: 414px) and (max-width: 419px) {
+  .octagon {
+    width: 135px;
+    height: 24px;
+  }
+}
+
+@media (min-width: 420px) {
+  .octagon {
+    width: 160px;
+  }
+}
+
+@media (min-width: 427px) {
+  .octagon {
+    width: 125px;
+    height: 24px;
+  }
+}
+
+@media (min-width: 600px) {
+  .octagon {
+    width: 190px;
+    height: 36px;
+  }
+}
+
+@media (min-width: 810px) {
+  .octagon {
+    width: 210px;
+    height: 38px;
+  }
+}
+
+@media (min-width: 820px) {
+  .octagon {
+    width: 230px;
+    height: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .octagon {
+    width: 310px;
+    height: 50px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .octagon {
+    width: 125%;
+    height: 7%;
+  }
+}
+
+
+
+@media (min-width: 2560px) {
+  .octagon {
+    width: 125%;
+    height: 8%;
+  }
+}
+
+@media (min-width: 3840px) {
+  .octagon {
+    width: 125%;
+    height: 7%;
+  }
+}
+
+.mirror {
+  transform: scaleX(-1);
+}

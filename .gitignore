@@ -1,0 +1,6 @@
+node_modules
+Dockerfile
+compose.yaml
+README.Docker.md 
+.env.local
+.next
