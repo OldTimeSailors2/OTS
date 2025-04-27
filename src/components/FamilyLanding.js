@@ -5,9 +5,7 @@ import { FamilyMobileM } from "./FamilyMobileM";
 import { FamilyMobileL } from "./FamilyMobileL";
 import FamilyLaptopL from "./FamilyLaptopL";
 import FamilyDesktop from "./FamilyDesktop";
-import FamilyDesktopL from "./FamilyDesktopL";
-
-export const FamilyLanding = ({ data }) => {
+import FamilyDesktopL from "./FamilyDesktopL";export const FamilyLanding = ({ data }) => {
   return (
     <div className="">
       {/* Mobile S - 320px ok*/}
@@ -40,7 +38,6 @@ export const FamilyLanding = ({ data }) => {
           <FamilyLaptop data={data} />
         </div>
       </div>
-
       {/* Laptop L - 1440px */}
       <div className="hidden min-[1440px]:block min-[1680px]:hidden overflow-auto">
         <div className="w-[1440px] min-h-screen relative mx-auto">
