@@ -7,6 +7,16 @@ import PowerLanding from "@/components/PowerLanding";
 import Loading from "./loading";
 import MainDiv from "@/components/MainDiv";
 import { useNavbarColor } from "@/context/NavbarColorProvider";
+
+import { useEffect } from 'react';
+import ReactPixel from 'react-facebook-pixel';
+
+const LandingPage = () => {
+  useEffect(() => {
+    ReactPixel.init('1196358348945940'); // Reemplaza por tu ID real
+    ReactPixel.pageView(); // Opcional: registra que visitaron la página
+  }, []);}
+
 const GigLanding = () => {
   const { event } = useParams();
   const [currentEvent, setCurrentEvent] = useState(null);
