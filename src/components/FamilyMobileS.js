@@ -4,6 +4,12 @@ import { FaLocationDot } from "react-icons/fa6";
 import Image from "next/image";
 import { memo } from "react";
 import { useRouter } from "next/navigation";
+
+import ReactPixel from 'react-facebook-pixel';
+const ClickPixel = (typeClick)=>{
+  ReactPixel.trackCustom('ClickPixel',{typeClick: typeClick});
+  console.log('Pixel send');
+}
 const VideoComponent = memo(() => (
   <div className="absolute left-1 -top-2 w-[228px] h-[110px]">
     <Image
@@ -98,8 +104,7 @@ export const FamilyMobileS = ({ data }) => {
                 </h3>
                 <div className="mt-0.5">
                   <p className="text-beige text-[7px] leading-tight font-txt">
-                    {venueInfo}A rural escape built by the community, for the community in the heart of Newquay. A venue for the whole family with
-                    seating options.
+                    {venueInfo}
                   </p>
                   <Link href={eventURL}>
                     <p className="text-beige text-[8px] mt-1  underline font-titles">contact the venue for + info</p>
@@ -123,7 +128,7 @@ export const FamilyMobileS = ({ data }) => {
                 ))}
 
                 <div className="relative w-[100%] p-[4vw]">
-                  <Link className="absolute inset-0 items-center justify-center text-beige w-[50%]" href={`${ticketsURL}`} target="_blank">
+                  <Link className="absolute inset-0 items-center justify-center text-beige w-[50%]" href={`${ticketsURL}`} target="_blank" onClick={() => ClickPixel('BuyTicket')}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 358.62 137.01" preserveAspectRatio="none" className="w-full h-[35px] z-10">
                       <path
                         fill="#db3a57"

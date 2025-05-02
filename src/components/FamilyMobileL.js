@@ -5,6 +5,11 @@ import Image from "next/image";
 import { memo } from "react";
 import { useRouter } from "next/navigation";
 
+import ReactPixel from 'react-facebook-pixel';
+const ClickPixel = (typeClick)=>{
+  ReactPixel.trackCustom('ClickPixel',{typeClick: typeClick});
+  console.log('Pixel send');
+}
 const VideoComponent = memo(() => (
   <div className="absolute -left-0 -top-2.5 w-[298px] h-[140px]">
     <Image src="/assets/videoBox.webp" alt="Video frame" width={250} height={100} quality={50} priority={true} className="transform-gpu" />
@@ -86,8 +91,7 @@ export const FamilyMobileL = ({ data }) => {
               </h3>
               <div className="mt-0.5">
                 <p className="text-beige text-[9px] leading-tight font-txt">
-                  {venueInfo}A rural escape built by the community, for the community in the heart of Newquay. A venue for the whole family with
-                  seating options.
+                  {venueInfo}
                 </p>
                 <Link href={eventURL}>
                   <p className="text-beige text-[9px] mt-1 font-titles underline">contact the venue for + info</p>
@@ -111,7 +115,7 @@ export const FamilyMobileL = ({ data }) => {
               ))}
 
               <div className="relative h-[5vh] mt-2 -left-[2.5vw]">
-                <Link className="absolute inset-0 items-center justify-center text-beige w-[70%] left-4" href={ticketsURL} target="_blank">
+                <Link className="absolute inset-0 items-center justify-center text-beige w-[70%] left-4" href={ticketsURL} target="_blank" onClick={() => ClickPixel('BuyTicket')}>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 358.62 137.01" preserveAspectRatio="none" className="w-[80%] h-[35px] z-10">
                     <path
                       fill="#db3a57"

@@ -1,11 +1,12 @@
-import FamilyLaptop from "./FamilyLaptop";
-import FamilyTablet from "./FamilyTablet";
-import { FamilyMobileS } from "./FamilyMobileS";
-import { FamilyMobileM } from "./FamilyMobileM";
-import { FamilyMobileL } from "./FamilyMobileL";
+import FamilyLaptop from "./FamilyLaptop"; //ok
+import FamilyTablet from "./FamilyTablet"; //ok
+import { FamilyMobileS } from "./FamilyMobileS"; //ok
+import { FamilyMobileM } from "./FamilyMobileM"; //ok
+import { FamilyMobileL } from "./FamilyMobileL"; // ok
 import FamilyLaptopL from "./FamilyLaptopL";
-import FamilyDesktop from "./FamilyDesktop";
-import FamilyDesktopL from "./FamilyDesktopL";export const FamilyLanding = ({ data }) => {
+import FamilyDesktop from "./FamilyDesktop"; // ok
+import FamilyDesktopL from "./FamilyDesktopL"; // ok
+export const FamilyLanding = ({ data }) => {
   return (
     <div className="">
       {/* Mobile S - 320px ok*/}

@@ -3,7 +3,11 @@ import { FaCalendar, FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
+import ReactPixel from 'react-facebook-pixel';
+const ClickPixel = (typeClick)=>{
+  ReactPixel.trackCustom('ClickPixel',{typeClick: typeClick});
+  console.log('Pixel send');
+}
 const formatDate = (inputDate) => {
   // Parse the input date
   const [day, month, year] = inputDate.split("/").map(Number);
@@ -53,8 +57,7 @@ export const FamilyDesktop = ({ data }) => {
                 </h3>
                 <div className="mt-0.5 tracking-wide">
                   <p className="text-beige text-[15px] font-txt leading-tight">
-                    {venueInfo}A rural escape built by the community, for the community in the heart of Newquay. A venue for the whole family with
-                    seating options.
+                    {venueInfo}
                   </p>
                   <Link href={eventURL}>
                     <p className="text-beige text-[15px] mt-1 font-titles underline">contact the venue for + info</p>
@@ -84,7 +87,7 @@ export const FamilyDesktop = ({ data }) => {
                 </div>
 
                 <div className="relative w-[400px] h-[100px]">
-                  <Link className="absolute left-[70px] top-[5px] inset-0 items-center justify-center  text-beige " href={ticketsURL} target="_blank">
+                  <Link className="absolute left-[70px] top-[5px] inset-0 items-center justify-center  text-beige " href={ticketsURL} target="_blank" onClick={() => ClickPixel('BuyTicket')}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 358.62 137.01"

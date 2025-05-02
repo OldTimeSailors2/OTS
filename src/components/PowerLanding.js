@@ -1,14 +1,14 @@
 "use client";
 import { useEffect, useRef } from "react";
-import PowerTablet from "./PowerTablet";
-import PowerLaptop from "./PowerLaptop";
-import { Power1360 } from "./Power1360";
-import { PowerMobileS } from "./PowerMobileS";
-import { PowerMobileM } from "./PowerMobileM";
-import { PowerMobileL } from "./PowerMobileL";
-import { PowerLaptopL } from "./PowerLaptopL";
-import { PowerDesktop } from "./PowerDesktop";
-import PowerDesktopL from "./PowerDesktopL";
+import PowerTablet from "./PowerTablet";//ok
+import PowerLaptop from "./PowerLaptop";//ok
+import { Power1360 } from "./Power1360";//ok
+import { PowerMobileS } from "./PowerMobileS";//ok
+import { PowerMobileM } from "./PowerMobileM";//ok
+import { PowerMobileL } from "./PowerMobileL";//ok
+import { PowerLaptopL } from "./PowerLaptopL";//ok
+import { PowerDesktop } from "./PowerDesktop";//ok
+import PowerDesktopL from "./PowerDesktopL";//ok
 
 export const PowerLanding = ({ data }) => {
   return (

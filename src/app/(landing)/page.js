@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import LandingDynamicBg from "@/components/LandingDynamicBg";
 import MainDiv from "@/components/MainDiv";
 import { formatLandingImages } from "@/helpers/formatApiResponses";
-
 const LandingDisplay = dynamic(() => import("@/components/LandingDisplay"), {
   ssr: false,
   loading: () => (
