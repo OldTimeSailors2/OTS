@@ -29,7 +29,7 @@ export const metadata = {
   },
   metadataBase: "https://www.oldtimesailors.com/",
   other: {
-    'facebook-domain-verification': 'dzp6cstuqp9oi4rbahjjfpn53g7jul',
+    'facebook-domain-verification': "dop6xjpv4sobcilfnwy5r7ba7iqm3z",
   },
 };
 
