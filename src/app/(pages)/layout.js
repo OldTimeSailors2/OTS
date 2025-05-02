@@ -28,6 +28,9 @@ export const metadata = {
     default: "OTS",
   },
   metadataBase: "https://www.oldtimesailors.com/",
+  other: {
+    'facebook-domain-verification': 'dzp6cstuqp9oi4rbahjjfpn53g7jul',
+  },
 };
 
 export default function RootLayout({ children }) {

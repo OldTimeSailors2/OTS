@@ -20,6 +20,9 @@ export const metadata = {
   title: "Old Time Sailors",
   description: "Old Time Sailors Website",
   metadataBase: "https://www.oldtimesailors.com/",
+  other: {
+    'facebook-domain-verification': 'dzp6cstuqp9oi4rbahjjfpn53g7jul',
+  },
   openGraph: {
     title: "Old Time Sailors",
     description: "Our Band",
