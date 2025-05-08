@@ -36,8 +36,8 @@ export const FamilyDesktopL = ({ data }) => {
 
   return (
     <>
-      <div className="relative -bottom-[10%]">
-        <div className="relative w-full h-full my-[5%]">
+      <div className="relative top-[23em]">
+        <div className="relative w-full h-full">
           {/* Contenedor principal con borde */}
           <div className="relative border-[3px] border-darkBeige p-2 w-[1200px] h-[850px] -right-[130px] -top-[310px]">
             <div className="text-left px-10">
@@ -49,23 +49,7 @@ export const FamilyDesktopL = ({ data }) => {
               </h1>
               <p className="text-darkBlue font-txt text-[30px] mt-4 lowercase">{location}</p>
             </div>
-            <div className="absolute w-[450px]  top-[20px] -right-[100px] z-20">
-              <div className="bg-darkBlue h-[300px] p-6 rounded-3xl">
-                <h3 className="text-lightRed text-[60px] font-titles leading-none">
-                  more about
-                  <br />
-                  the venue
-                </h3>
-                <div className="mt-0.5 tracking-wide">
-                  <p className="text-beige text-[15px] font-txt leading-tight">
-                    {venueInfo}
-                  </p>
-                  <Link href={eventURL}>
-                    <p className="text-beige text-[20px] mt-1 font-titles underline">contact the venue for + info</p>
-                  </Link>
-                </div>
-              </div>
-            </div>
+
             <div className="border-more-dashed my-4" />
 
             {/* Event info */}
@@ -105,7 +89,7 @@ export const FamilyDesktopL = ({ data }) => {
                 </div>
               </div>
 
-              <p className="text-[35px] pr-[175px] text-darkBlue font-txt leading-10">
+              <p className="text-[15px] pr-[175px] text-darkBlue font-txt leading-10">
                 You are invited to board the Sailorette and join the plentiful crew, 'The Old Time Sailors', for a night of footstomping, dancing and
                 singing! You will be sailing back to the 19th century for an immersive experience of traditional seafaring music performed in a way
                 you have never seen before. The Motley Crew and their plethora of traditional and eclectic instruments will take you back to the time

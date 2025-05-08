@@ -35,8 +35,8 @@ export const FamilyDesktop = ({ data }) => {
   const router = useRouter();
   return (
     <>
-      <div className="relative -bottom-[175px]">
-        <div className="relative w-full h-full my-[250px]">
+      <div className="relative top-[25em]">
+        <div className="relative w-full h-full ">
           {/* Contenedor principal con borde */}
           <div className="border-[3px] border-darkBeige p-2 relative w-[1100px] -right-[100px] -top-[310px]">
             <div className="text-left px-10">

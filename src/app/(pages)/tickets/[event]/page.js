@@ -54,16 +54,15 @@ const GigLanding = () => {
   if (!currentEvent) return <div>No event found</div>;
 
   return (
-    <MainDiv
-      className={`
-        w-full flex-1 
-    ${currentEvent.typeOfShow === "Family" ? " bg-beigePattern bg-contain" : " bg-darkBlue bg-contain"}`}
+    <MainDiv className="h-full">
+      <div 
+      className={`${currentEvent.typeOfShow === "Family" ? " bg-beigePattern bg-contain" : " bg-darkBlue bg-contain"}`} 
       style={{
+        backgroundRepeat: "repeat",
         overscrollBehavior: "none", // Esto ayuda a que el scroll sea más natural
         scrollBehavior: "smooth", // Para un scroll más fluido
       }}
-    >
-      <div className="flex-1 h-full">
+      >
         {currentEvent.typeOfShow === "Family" ? <FamilyLanding data={currentEvent} /> : <PowerLanding data={currentEvent} />}
       </div>
     </MainDiv>

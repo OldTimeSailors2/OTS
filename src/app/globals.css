@@ -777,6 +777,7 @@
   --tw-bg-opacity: 0.75;
   border-color: rgb(187 166 138 / var(--tw-bg-opacity));
 }
+
 body::-webkit-scrollbar {
   width: 8px;               /* width of the entire scrollbar */
 }

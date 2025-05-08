@@ -1,26 +1,29 @@
-import FamilyLaptop from "./FamilyLaptop"; //ok
-import FamilyTablet from "./FamilyTablet"; //ok
 import { FamilyMobileS } from "./FamilyMobileS"; //ok
 import { FamilyMobileM } from "./FamilyMobileM"; //ok
 import { FamilyMobileL } from "./FamilyMobileL"; // ok
+import FamilyTablet from "./FamilyTablet"; //ok
+import FamilyLaptop from "./FamilyLaptop"; //ok
 import FamilyLaptopL from "./FamilyLaptopL";
 import FamilyDesktop from "./FamilyDesktop"; // ok
 import FamilyDesktopL from "./FamilyDesktopL"; // ok
 export const FamilyLanding = ({ data }) => {
   return (
     <div className="">
+
       {/* Mobile S - 320px ok*/}
       <div className="block min-[375px]:hidden">
-        <div className="w-[320px] min-h-screen relative mx-auto pb-[25px]">
+        <div className="w-full min-h-screen relative mx-auto pb-[25px]">
           <FamilyMobileS data={data} />
         </div>
       </div>
+
       {/* Mobile M - 375px ok*/}
-      <div className="hidden min-[375px]:block min-[425px]:hidden w-full">
-        <div className="w-[375px] h-full relative mx-auto pb-[60px]">
+      <div className="hidden min-[375px]:block min-[425px]:hidden">
+        <div className="w-[375px] relative mx-auto pb-[60px]">
           <FamilyMobileM data={data} />
         </div>
       </div>
+
       {/* Mobile L - 425px ok*/}
       <div className="hidden min-[425px]:block min-[768px]:hidden">
         <div className="w-[425px] min-h-screen relative mx-auto pb-[45px]">
@@ -34,7 +37,7 @@ export const FamilyLanding = ({ data }) => {
         </div>
       </div>
       {/* Laptop - 1024px */}
-      <div className="hidden min-[1024px]:block min-[1360px]:hidden overflow-auto">
+      <div className="hidden min-[1024px]:block min-[1440px]:hidden overflow-auto">
         <div className="w-[1024px] min-h-screen relative mx-auto ">
           <FamilyLaptop data={data} />
         </div>

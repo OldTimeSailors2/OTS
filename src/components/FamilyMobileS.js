@@ -4,14 +4,13 @@ import { FaLocationDot } from "react-icons/fa6";
 import Image from "next/image";
 import { memo } from "react";
 import { useRouter } from "next/navigation";
-
 import ReactPixel from 'react-facebook-pixel';
-const ClickPixel = (typeClick)=>{
-  ReactPixel.trackCustom('ClickPixel',{typeClick: typeClick});
+const ClickPixel = (typeClick) => {
+  ReactPixel.trackCustom('ClickPixel', { typeClick: typeClick });
   console.log('Pixel send');
 }
 const VideoComponent = memo(() => (
-  <div className="absolute left-1 -top-2 w-[228px] h-[110px]">
+  <div className="absolute top-3 right-[4em] w-[280px] h-[110px]">
     <Image
       src="/assets/videoBox.webp"
       alt="Video frame"
@@ -22,7 +21,6 @@ const VideoComponent = memo(() => (
       priority={true}
       sizes="(max-width: 375px) 228px"
     />
-
     <div className="absolute inset-0 flex items-center justify-center">
       <video
         controls
@@ -36,7 +34,6 @@ const VideoComponent = memo(() => (
     </div>
   </div>
 ));
-
 const EventDescription = memo(() => (
   <div className="text-[12px] pb-5 pt-[5vh] text-darkBlue font-txt">
     <p className="leading-relaxed [&:not(:last-child)]:mb-0">
@@ -53,24 +50,18 @@ const EventDescription = memo(() => (
     <p className="leading-relaxed">Fancy dress is encouraged, so pull out your best seafaring garments me hearties and join the festivities.</p>
   </div>
 ));
-
 const formatDate = (inputDate) => {
   // Parse the input date
   const [day, month, year] = inputDate.split("/").map(Number);
-
   // Create a Date object
   // Note: months in JavaScript Date are 0-indexed, so we subtract 1 from the month
   const date = new Date(year, month - 1, day);
-
   // Array of day names
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
   // Array of month names
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
   // Format the date
   const formattedDate = `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-
   return formattedDate;
 };
 export const FamilyMobileS = ({ data }) => {
@@ -80,163 +71,149 @@ export const FamilyMobileS = ({ data }) => {
   const router = useRouter();
   return (
     <>
-      <div className="relative -bottom-[12vh] pb-[10vh]">
-        <div className="relative w-full h-full my-[-3vh]">
-          {/* Contenedor principal con borde */}
-          <div className="border-[3px] border-darkBeige p-2 m-4 relative">
-            <div className="text-left lowercase border-b-[2px] border-dashed border-darkBeige">
-              <h1 className="font-titles leading-none">
-                <span className="text-darkBlue text-xl">old time sailors </span> <span className="text-lightRed text-xl"> at</span>
-                <br />
-                <span className="text-lightRed text-xl">{event}</span>
-              </h1>
-              <p className="text-darkBlue text-md font-txt">{location}</p>
-            </div>
-
-            <div className="border-more-dashed my-4" />
-
-            
-              <div className="absolute -right-[5vw] top-[6vh] w-[146.03px]">
-              <div className="bg-darkBlue p-3 py-4 rounded-2xl">
-                <h3 className="text-lightRed text-[15px] font-bold font-titles leading-none">
-                  <p>more about</p>
-                  <p>the venue</p>
-                </h3>
-                <div className="mt-0.5">
-                  <p className="text-beige text-[7px] leading-tight font-txt">
-                    {venueInfo}
-                  </p>
-                  <Link href={eventURL}>
-                    <p className="text-beige text-[8px] mt-1  underline font-titles">contact the venue for + info</p>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Event info */}
-            <div className="">
-              <div className="">
-                {[
-                  { icon: FaLocationDot, text: `${event}` },
-                  { icon: FaCalendar, text: `${formattedDate}` },
-                  { icon: FaClock, text: `${gigStartTime} to ${gigFinishTime}` },
-                ].map(({ icon: Icon, text }) => (
-                  <div key={text} className="flex items-center gap-2 text-darkBlue font-bold">
-                    <Icon className="text-[10px]" />
-                    <span className="text-[10px] font-txt">{text}</span>
-                  </div>
-                ))}
-
-                <div className="relative w-[100%] p-[4vw]">
-                  <Link className="absolute inset-0 items-center justify-center text-beige w-[50%]" href={`${ticketsURL}`} target="_blank" onClick={() => ClickPixel('BuyTicket')}>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 358.62 137.01" preserveAspectRatio="none" className="w-full h-[35px] z-10">
-                      <path
-                        fill="#db3a57"
-                        d="M25.61,0H333.01c0,14.15,11.47,25.61,25.61,25.61V111.4c-14.15,0-25.61,11.47-25.61,25.61H25.61c0-14.15-11.47-25.61-25.61-25.61V25.61C14.15,25.61,25.61,14.15,25.61,0Z"
-                      />
-                    </svg>
-                    <h3 className="relative font-txt justify-center text-center text-[16px] -top-[29px] z-20 uppercase"> buy tickets</h3>
-                  </Link>
-                </div>
-                <EventDescription />
+      <div className="relative top-[4em]">
+        <div className="relative border-2 border-darkBeige w-full">
+          <div className="text-left lowercase border-b-[2px] border-dashed border-darkBeige pl-5">
+            <h1 className="font-titles leading-none">
+              <span className="text-darkBlue text-xl">old time sailors </span> <span className="text-lightRed text-xl"> at</span>
+              <br />
+              <span className="text-lightRed text-xl">{event}</span>
+            </h1>
+            <p className="text-darkBlue text-md font-txt">{location}</p>
+          </div>
+          <div className="absolute -right-[1em] top-[1.5em] w-[146.03px]">
+            <div className="bg-darkBlue p-3 py-4 rounded-2xl">
+              <h3 className="text-lightRed text-[15px] font-bold font-titles leading-none">
+                <p>more about</p>
+                <p>the venue</p>
+              </h3>
+              <div className="mt-0.5">
+                <p className="text-beige text-[7px] leading-tight font-txt">
+                  {venueInfo}
+                </p>
+                <Link href={eventURL}>
+                  <p className="text-beige text-[8px] mt-1  underline font-titles">contact the venue for + info</p>
+                </Link>
               </div>
             </div>
           </div>
+          <div className="pt-2">
+            {[
+              { icon: FaLocationDot, text: `${event}` },
+              { icon: FaCalendar, text: `${formattedDate}` },
+              { icon: FaClock, text: `${gigStartTime} to ${gigFinishTime}` },
+            ].map(({ icon: Icon, text }) => (
+              <div key={text} className="flex items-center gap-2 text-darkBlue font-bold pr-5 pl-5">
+                <Icon className="text-[10px]" />
+                <span className="text-[10px] font-txt">{text}</span>
+              </div>
+            ))}
 
+            <div className="relative pt-2 pb-2">
+              <Link className="absolute items-center justify-center text-beige pl-5" href={`${ticketsURL}`} target="_blank" onClick={() => ClickPixel('BuyTicket')}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 358.62 137.01" preserveAspectRatio="none" className="w-[10em] h-[35px] z-10">
+                  <path
+                    fill="#db3a57"
+                    d="M25.61,0H333.01c0,14.15,11.47,25.61,25.61,25.61V111.4c-14.15,0-25.61,11.47-25.61,25.61H25.61c0-14.15-11.47-25.61-25.61-25.61V25.61C14.15,25.61,25.61,14.15,25.61,0Z"
+                  />
+                </svg>
+                <h3 className="relative font-txt justify-center text-center text-[16px] -top-[29px] z-20 uppercase"> buy tickets</h3>
+              </Link>
+            </div>
+            <EventDescription />
+          </div>
+        </div>
+        <div className="relative w-full h-[400px] relative -top-5 -left-2">
           {/* Media section */}
-          <div className="w-full h-[400px] relative -top-5 -left-2">
-            <div className="relative h-[200px]">
-              {/* Video */}
-              <VideoComponent />
-
-              {/* Photo 2 */}
-              <div className="absolute -right-1 -top-4 w-[130px] h-[130px] z-10">
-                <Image
-                  src="/assets/familyPhoto2.webp"
-                  alt="Musicians"
-                  width={130}
-                  height={130}
-                  quality={75}
-                  className="w-[130px] h-[130px] shadow-gray-500 shadow-[3px_3px_3px_rgba(0,0,0,0.3)]"
-                  loading="lazy"
-                />
-              </div>
+          <div className="relative h-[200px]">
+            <VideoComponent />
+            <div className="absolute left-[13em] top-0 w-[10em] h-[13em] z-10">
+              <Image
+                src="/assets/familyPhoto2.webp"
+                alt="Musicians"
+                width={130}
+                height={130}
+                quality={75}
+                className="w-[130px] h-[130px] shadow-gray-500 shadow-[3px_3px_3px_rgba(0,0,0,0.3)]"
+                loading="lazy"
+              />
             </div>
-
-            {/* Lower photos */}
-            <div className="relative h-[200px] bottom-8">
-              <div className="absolute left-[22px] -top-16 w-1/2 z-20">
-                <Image
-                  src="/assets/familyPhoto1.webp"
-                  alt="Performance"
-                  width={200}
-                  height={200}
-                  quality={75}
-                  className="w-[153px] h-[155px] z-10 shadow-gray-500 shadow-[0px_3px_3px_rgba(0,0,0,0.3)]"
-                  loading="lazy"
-                />
-                <div className="relative" onClick={() => router.back()} role="button" tabIndex={0}>
-                  <Image
-                    src="/assets/arrow2.webp"
-                    alt="More gigs"
-                    width={145}
-                    height={40}
-                    quality={75}
-                    className="absolute right-8 -bottom-12 w-[145px] h-[40px] cursor-pointer"
-                    loading="lazy"
-                  />
-                  <p className="absolute inset-0 font-times font-titles text-beige left-[25px] top-[13px] text-[20px]">more gigs</p>
-                </div>
-              </div>
-
-              <div className="absolute -right-1 -top-11 w-[156px] h-[156px] z-10">
-                <Image
-                  src="/assets/familyPhoto3.webp"
-                  alt="Crowd"
-                  width={156}
-                  height={154}
-                  quality={75}
-                  className="w-[156px] h-[156px] "
-                  loading="lazy"
-                />
-              </div>
-            </div>
-
-            {/* Title */}
-            <div className="absolute bottom-4 left-4 z-20">
-              <div className="flex flex-row items-center gap-3">
-                <div className="flex flex-col leading-[37px]">
-                  <p className="text-darkBlue text-[46px] font-titles">family</p>
-                  <p className="text-darkBlue text-[46px] font-titles">show</p>
-                </div>
-                <div className="text-lightRed text-[8px] flex flex-col">
-                  <Image
-                    src="/assets/anchor.webp"
-                    alt="Anchor"
-                    width={22}
-                    height={26}
-                    quality={75}
-                    className="w-[22px] h-[26px] -ml-[5px] rotate-12"
-                    loading="lazy"
-                  />
-                  <div className="-ml-[35px] mt-[35px] leading-none tracking-widest font-txt uppercase">
-                    <p>a traditional sailor show,</p>
-                    <p>sing along and dance with us!</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <Image
-              src="/assets/drawing2.webp"
-              alt="draw"
-              width={150}
-              height={110}
-              quality={75}
-              className="w-[150px] h-[110px] absolute bottom-[18px] -right-2 z-10 brightness-[78%] contrast-[91%] opacity-[70%]"
-              loading="lazy"
-            />
           </div>
+
+          {/* Lower photos */}
+          <div className="relative h-[200px] bottom-8">
+            <div className="absolute left-[22px] -top-16 w-1/2 z-10">
+              <Image
+                src="/assets/familyPhoto1.webp"
+                alt="Performance"
+                width={200}
+                height={200}
+                quality={75}
+                className="w-[153px] h-[155px] z-10 shadow-gray-500 shadow-[0px_3px_3px_rgba(0,0,0,0.3)]"
+                loading="lazy"
+              />
+              <div className="relative" onClick={() => router.back()} role="button" tabIndex={0}>
+                <Image
+                  src="/assets/arrow2.webp"
+                  alt="More gigs"
+                  width={145}
+                  height={40}
+                  quality={75}
+                  className="absolute right-8 -bottom-12 w-[145px] h-[40px] cursor-pointer"
+                  loading="lazy"
+                />
+                <p className="absolute inset-0 font-times font-titles text-beige left-[25px] top-[13px] text-[20px]">more gigs</p>
+              </div>
+            </div>
+
+            <div className="absolute -right-1 -top-11 w-[156px] h-[156px] z-10">
+              <Image
+                src="/assets/familyPhoto3.webp"
+                alt="Crowd"
+                width={156}
+                height={154}
+                quality={75}
+                className="w-[156px] h-[156px] "
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          {/* Title */}
+          <div className="absolute bottom-4 left-4 z-20">
+            <div className="flex flex-row items-center gap-3">
+              <div className="flex flex-col leading-[37px]">
+                <p className="text-darkBlue text-[46px] font-titles">family</p>
+                <p className="text-darkBlue text-[46px] font-titles">show</p>
+              </div>
+              <div className="text-lightRed text-[8px] flex flex-col">
+                <Image
+                  src="/assets/anchor.webp"
+                  alt="Anchor"
+                  width={22}
+                  height={26}
+                  quality={75}
+                  className="w-[22px] h-[26px] -ml-[5px] rotate-12"
+                  loading="lazy"
+                />
+                <div className="-ml-[35px] mt-[35px] leading-none tracking-widest font-txt uppercase">
+                  <p>a traditional sailor show,</p>
+                  <p>sing along and dance with us!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Image
+            src="/assets/drawing2.webp"
+            alt="draw"
+            width={150}
+            height={110}
+            quality={75}
+            className="w-[150px] h-[110px] absolute bottom-[18px] -right-2 z-10 brightness-[78%] contrast-[91%] opacity-[70%]"
+            loading="lazy"
+          />
+
         </div>
       </div>
     </>
