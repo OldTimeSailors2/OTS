@@ -133,14 +133,14 @@ export const FamilyMobileM = ({ data }) => {
           {/* Media section */}
           <div className="relative h-[200px]">
             <VideoComponent />
-            <div className="absolute left-[13em] top-0 w-[10em] h-[13em] z-10">
+            <div className="absolute left-[12em] top-0 w-[10em] h-[10em] z-10">
               <Image
                 src="/assets/familyPhoto2.webp"
                 alt="Musicians"
                 width={130}
                 height={130}
                 quality={75}
-                className="w-[130px] h-[130px] shadow-gray-500 shadow-[3px_3px_3px_rgba(0,0,0,0.3)]"
+                className="w-full h-full shadow-gray-500 shadow-[3px_3px_3px_rgba(0,0,0,0.3)]"
                 loading="lazy"
               />
             </div>
@@ -165,21 +165,21 @@ export const FamilyMobileM = ({ data }) => {
                   width={145}
                   height={40}
                   quality={75}
-                  className="absolute right-8 -bottom-12 w-[145px] h-[40px] cursor-pointer"
+                  className="absolute right-[3em] -bottom-12 w-[145px] h-[40px] cursor-pointer"
                   loading="lazy"
                 />
                 <p className="absolute inset-0 font-times font-titles text-beige left-[25px] top-[13px] text-[20px]">more gigs</p>
               </div>
             </div>
 
-            <div className="absolute -right-1 -top-11 w-[156px] h-[156px] z-10">
+            <div className="absolute left-[10em] bottom-[1em] w-[12em] h-[12em] z-10">
               <Image
                 src="/assets/familyPhoto3.webp"
                 alt="Crowd"
                 width={156}
                 height={154}
                 quality={75}
-                className="w-[156px] h-[156px] "
+                className="w-full h-full "
                 loading="lazy"
               />
             </div>
@@ -193,16 +193,8 @@ export const FamilyMobileM = ({ data }) => {
                 <p className="text-darkBlue text-[46px] font-titles">show</p>
               </div>
               <div className="text-lightRed text-[8px] flex flex-col">
-                <Image
-                  src="/assets/anchor.webp"
-                  alt="Anchor"
-                  width={22}
-                  height={26}
-                  quality={75}
-                  className="w-[22px] h-[26px] -ml-[5px] rotate-12"
-                  loading="lazy"
-                />
-                <div className="-ml-[35px] mt-[35px] leading-none tracking-widest font-txt uppercase">
+
+                <div className="-ml-[35px] mt-[6.5em] leading-none tracking-widest font-txt uppercase">
                   <p>a traditional sailor show,</p>
                   <p>sing along and dance with us!</p>
                 </div>
@@ -210,15 +202,7 @@ export const FamilyMobileM = ({ data }) => {
             </div>
           </div>
 
-          <Image
-            src="/assets/drawing2.webp"
-            alt="draw"
-            width={150}
-            height={110}
-            quality={75}
-            className="w-[150px] h-[110px] absolute bottom-[18px] -right-2 z-10 brightness-[78%] contrast-[91%] opacity-[70%]"
-            loading="lazy"
-          />
+
 
         </div>
       </div>

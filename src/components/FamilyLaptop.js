@@ -36,11 +36,11 @@ export const FamilyLaptop = ({ data }) => {
   const router = useRouter();
   return (
     <>
-        <div className="relative top-[28em]">
-        <div className="relative w-screen h-full ">
+        <div className="relative top-[24em]">
+        <div className="relative left-[5em] w-full">
           {/* Contenedor principal con borde */}
-          <div className="border-[3px] border-darkBeige p-2 relative w-[50em] left-[5em] bottom-[22em]">
-            <div className="text-left px-10 border-b-[3px] border-darkBeige border-dashed">
+          <div className="border-[3px] border-darkBeige p-2 relative w-[70%] left-[0px] bottom-[22em]">
+            <div className="text-left px-[5em] border-b-[3px] border-darkBeige border-dashed">
               <h1 className="leading-none font-titles lowercase pt-2">
                 <span className="text-darkBlue text-[55px]">old time sailors </span>
                 <span className="text-lightRed  text-[55px]"> at</span>
@@ -49,7 +49,7 @@ export const FamilyLaptop = ({ data }) => {
               </h1>
               <p className="text-darkBlue font-txt text-[30px] lowercase">{location}</p>
             </div>
-            <div className="absolute w-[350px] top-[20px] -right-[100px] z-20">
+            <div className="absolute w-[25em] top-[20px] left-[50em] z-20">
               <div className="bg-darkBlue h-[220px] p-6 rounded-3xl">
                 <h3 className="text-lightRed text-[30px] font-titles leading-none">
                   more about 
@@ -69,7 +69,7 @@ export const FamilyLaptop = ({ data }) => {
             <div className="border-more-dashed my-4" />
 
             {/* Event info */}
-            <div className="mt-[5em] pl-5 space-y-6">
+            <div className="mt-[5em] px-[5em] space-y-6">
               <div className="flex flex-row gap-5">
                 <div className="">
                   {[
@@ -127,18 +127,18 @@ export const FamilyLaptop = ({ data }) => {
 
 
 
-          <div className="absolute left-[50em] -top-[8em] z-10">
+          <div className="absolute left-[75em] bottom-[45em] z-10">
             <Image src="/assets/familyPhoto1.webp" alt="Performance" width={370} height={370} className="w-[250px] h-[250px] " loading="lazy" />
           </div>
           {/* Photo 2 */}
-          <div className="absolute right-[0px] top-[130px] z-20">
-            <Image src="/assets/familyPhoto2.webp" alt="Musicians" width={600} height={200} className="w-[400px] " loading="lazy" />
+          <div className="absolute left-[60em] top-[2.3em] z-20">
+            <Image src="/assets/familyPhoto2.webp" alt="Musicians" width={600} height={200} className="w-[450px] " loading="lazy" />
           </div>
           {/* Photo 3 */}
-          <div className="absolute right-[15em] top-[460px] z-30">
+          <div className="absolute left-[32em] top-[28em] z-30">
             <Image src="/assets/familyPhoto3.webp" alt="Crowd" width={600} height={600} className="w-[500px]" loading="lazy" />
           </div>
-          <div className="absolute right-[5px] -bottom-[500px]">
+          <div className="absolute right-[5em] top-[40em]">
             <Image
               src="/assets/drawing2.webp"
               alt="Background drawing"
@@ -148,11 +148,11 @@ export const FamilyLaptop = ({ data }) => {
               loading="lazy"
             />
           </div>
-          <div className="absolute top-[26.5em] left-[20px]">
-            <Image src="/assets/videoBox.webp" alt="Video frame" width={540} height={340} priority={true} className="w-[600px] h-[325px]" />
+          <div className="absolute top-[25em] left-[0px]">
+            <Image src="/assets/videoBox.webp" alt="Video frame" width={540} height={340} priority={true} className="w-[600px] h-[310px]" />
           </div>
 
-          <div className="absolute inset-0 top-[29em] left-[55px] z-40">
+          <div className="absolute inset-0 top-[27em] left-[2em] z-40">
             <video
               controls
               preload="none"
@@ -176,7 +176,7 @@ export const FamilyLaptop = ({ data }) => {
             <p className="absolute inset-0 font-titles text-beige left-[150px] top-[35px] text-[65px]">more gigs</p>
           </div>
           {/* Title */}
-          <div className="absolute -bottom-[470px]  left-[15px] z-10 ">
+          <div className="absolute top-[55em]  left-[15px] z-10 ">
             <div className="flex flex-row items-center gap-3 mb-5">
               <div className=" leading-[140px]">
                 <p className="text-darkBlue text-[180px] font-titles ">family</p>

@@ -10,7 +10,7 @@ const ClickPixel = (typeClick) => {
   console.log('Pixel send');
 }
 const VideoComponent = memo(() => (
-  <div className="absolute top-3 right-[4em] w-[280px] h-[110px]">
+  <div className="absolute top-1 right-[3.5em] w-[250px] h-[110px]">
     <Image
       src="/assets/videoBox.webp"
       alt="Video frame"
@@ -71,9 +71,9 @@ export const FamilyMobileS = ({ data }) => {
   const router = useRouter();
   return (
     <>
-      <div className="relative top-[4em]">
+      <div className="relative top-[5em] m-3">
         <div className="relative border-2 border-darkBeige w-full">
-          <div className="text-left lowercase border-b-[2px] border-dashed border-darkBeige pl-5">
+          <div className="text-left lowercase border-b-[2px] border-dashed border-darkBeige pl-2">
             <h1 className="font-titles leading-none">
               <span className="text-darkBlue text-xl">old time sailors </span> <span className="text-lightRed text-xl"> at</span>
               <br />
@@ -81,7 +81,7 @@ export const FamilyMobileS = ({ data }) => {
             </h1>
             <p className="text-darkBlue text-md font-txt">{location}</p>
           </div>
-          <div className="absolute -right-[1em] top-[1.5em] w-[146.03px]">
+          <div className="absolute -right-[1.5em] top-[1.5em] w-[146.03px]">
             <div className="bg-darkBlue p-3 py-4 rounded-2xl">
               <h3 className="text-lightRed text-[15px] font-bold font-titles leading-none">
                 <p>more about</p>
@@ -103,14 +103,14 @@ export const FamilyMobileS = ({ data }) => {
               { icon: FaCalendar, text: `${formattedDate}` },
               { icon: FaClock, text: `${gigStartTime} to ${gigFinishTime}` },
             ].map(({ icon: Icon, text }) => (
-              <div key={text} className="flex items-center gap-2 text-darkBlue font-bold pr-5 pl-5">
+              <div key={text} className="flex items-center gap-2 text-darkBlue font-bold pl-2">
                 <Icon className="text-[10px]" />
                 <span className="text-[10px] font-txt">{text}</span>
               </div>
             ))}
 
             <div className="relative pt-2 pb-2">
-              <Link className="absolute items-center justify-center text-beige pl-5" href={`${ticketsURL}`} target="_blank" onClick={() => ClickPixel('BuyTicket')}>
+              <Link className="absolute items-center justify-center text-beige pl-2" href={`${ticketsURL}`} target="_blank" onClick={() => ClickPixel('BuyTicket')}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 358.62 137.01" preserveAspectRatio="none" className="w-[10em] h-[35px] z-10">
                   <path
                     fill="#db3a57"
@@ -127,7 +127,7 @@ export const FamilyMobileS = ({ data }) => {
           {/* Media section */}
           <div className="relative h-[200px]">
             <VideoComponent />
-            <div className="absolute left-[13em] top-0 w-[10em] h-[13em] z-10">
+            <div className="absolute left-[11.5em] top-0 w-[10em] h-[13em] z-10">
               <Image
                 src="/assets/familyPhoto2.webp"
                 alt="Musicians"
@@ -166,7 +166,7 @@ export const FamilyMobileS = ({ data }) => {
               </div>
             </div>
 
-            <div className="absolute -right-1 -top-11 w-[156px] h-[156px] z-10">
+            <div className="absolute -right-5 -top-11 w-[156px] h-[156px] z-10">
               <Image
                 src="/assets/familyPhoto3.webp"
                 alt="Crowd"

@@ -1,18 +1,18 @@
 import { FamilyMobileS } from "./FamilyMobileS"; //ok
 import { FamilyMobileM } from "./FamilyMobileM"; //ok
 import { FamilyMobileL } from "./FamilyMobileL"; // ok
-import FamilyTablet from "./FamilyTablet"; //ok
-import FamilyLaptop from "./FamilyLaptop"; //ok
-import FamilyLaptopL from "./FamilyLaptopL";
-import FamilyDesktop from "./FamilyDesktop"; // ok
-import FamilyDesktopL from "./FamilyDesktopL"; // ok
+import FamilyTablet from "./FamilyTablet"; // ok
+import FamilyLaptop from "./FamilyLaptop"; //
+import FamilyLaptopL from "./FamilyLaptopL"; //
+import FamilyDesktop from "./FamilyDesktop"; // 
+import FamilyDesktopL from "./FamilyDesktopL"; // 
 export const FamilyLanding = ({ data }) => {
   return (
     <div className="">
 
       {/* Mobile S - 320px ok*/}
       <div className="block min-[375px]:hidden">
-        <div className="w-full min-h-screen relative mx-auto pb-[25px]">
+        <div className="w-full min-h-screen relative mx-auto pb-[25px] overflow-x-auto">
           <FamilyMobileS data={data} />
         </div>
       </div>
@@ -37,27 +37,12 @@ export const FamilyLanding = ({ data }) => {
         </div>
       </div>
       {/* Laptop - 1024px */}
-      <div className="hidden min-[1024px]:block min-[1440px]:hidden overflow-auto">
-        <div className="w-[1024px] min-h-screen relative mx-auto ">
+      <div className="hidden min-[1024px]:block overflow-auto">
+        <div className="w-full min-h-screen relative mx-auto ">
           <FamilyLaptop data={data} />
         </div>
       </div>
-      {/* Laptop L - 1440px */}
-      <div className="hidden min-[1440px]:block min-[1680px]:hidden overflow-auto">
-        <div className="w-[1440px] min-h-screen relative mx-auto">
-          <FamilyLaptopL data={data} />
-        </div>
-      </div>
-      <div className="hidden min-[1680px]:block min-[1920px]:hidden overflow-auto">
-        <div className="w-[1680px] min-h-screen relative mx-auto">
-          <FamilyDesktop data={data} />
-        </div>
-      </div>
-      <div className="hidden min-[1920px]:block overflow-auto">
-        <div className="w-[1920px] min-h-screen relative mx-auto">
-          <FamilyDesktopL data={data} />
-        </div>
-      </div>
+ 
     </div>
   );
 };

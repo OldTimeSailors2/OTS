@@ -112,24 +112,24 @@ export const FamilyTablet = ({ data }) => {
           </div>
       </div>
       {/* Media Section */}
-      <div className="w-full h-[auto] relative pt-5">
+      <div className="w-full h-[auto] relative">
         <div className="relative h-[220px] ">
           {/* Video */}
-          <div className="absolute -top-12 -left-4 w-[460px] h-[280px] ">
+          <div className="absolute -top-[6em] w-[660px] h-[380px] ">
             <Image src="/assets/videoBox.webp" alt="Video Frame" width={460} height={100} className="h-[300px]" />
-            <div className="absolute inset-0 flex items-center justify-center -mb-2">
+            <div className="absolute inset-0 flex items-center justify-center right-[10em] bottom-[5.3em]">
               <video
                 controls
                 preload="none"
                 poster={"/assets/thumbnailvideo.webp"}
-                className="ml-[30px] w-[95%] h-[82%] mt-[2px] object-cover border-darkBlue border-[10px] rounder-sm z-20 shadow-gray-500 shadow-[2px_-2px_5px_rgba(0,0,0,0.3)] hover:opacity-100 [&::-webkit-media-controls]:opacity-0 hover:[&::-webkit-media-controls]:opacity-100 [&::-webkit-media-controls]:transition-opacity"
+                className="w-[28em] h-[15em] object-cover border-darkBlue border-[10px] rounder-sm z-20 shadow-gray-500 shadow-[2px_-2px_5px_rgba(0,0,0,0.3)] hover:opacity-100 [&::-webkit-media-controls]:opacity-0 hover:[&::-webkit-media-controls]:opacity-100 [&::-webkit-media-controls]:transition-opacity"
               >
                 <source src="/assets/familyVideo.mp4" type="video/mp4" />
               </video>
             </div>
           </div>
           {/* Photo 2  */}
-          <div className="absolute right-[8px] -top-12 w-[350px] z-10 ">
+          <div className="absolute left-[26.5em] bottom-[2em] w-[18em] z-10 ">
             <Image
               src="/assets/familyPhoto2.webp"
               alt="Musicians"
@@ -141,7 +141,7 @@ export const FamilyTablet = ({ data }) => {
         </div>
         {/* Lower Photos  */}
         <div className="relative h-[750px] mx-5 mb-4">
-          <div className="absolute left-[0px] -top-[5px] z-20 w-1/2">
+          <div className="absolute left-[2em] -top-[4em] z-10 w-1/2">
             <Image
               src="/assets/familyPhoto1.webp"
               alt="
@@ -156,18 +156,18 @@ export const FamilyTablet = ({ data }) => {
                 alt="More gigs"
                 width={580}
                 height={440}
-                className="absolute -left-[18px] top-[60px] w-[290px] h-[110px] cursor-pointer"
+                className="absolute -left-[18px] top-[20px] w-[290px] h-[110px] cursor-pointer"
               />
 
-              <p className="absolute inset-0 font-titles text-beige w-3/4 text-center ml-4 top-[80px] text-[50px]">more gigs</p>
+              <p className="absolute inset-0 font-titles text-beige w-3/4 text-center mx-auto top-[40px] text-[50px]">more gigs</p>
             </div>
           </div>
-          <div className="absolute -right-[15px] top-[100px] w-[450px] h-[200px] z-10 ">
+          <div className="absolute left-[21.5em] bottom-[30em] w-[350px] h-[300px] ">
             <Image src="/assets/familyPhoto3.webp" alt="crowd" width={800} height={800} className="w-full h-auto " />
           </div>
         </div>
         {/* Title */}
-        <div className="absolute -bottom-[5px] left-[15px] z-10">
+        <div className="absolute bottom-[10em] left-[15px] z-10">
           <div className="flex flex-row items-center gap-3">
             <div className="flex flex-col leading-[75px] mb-10">
               <p className="text-darkBlue font-titles text-[90px]">family</p>
@@ -187,7 +187,7 @@ export const FamilyTablet = ({ data }) => {
           alt="Background Drawing"
           width={300}
           height={300}
-          className="absolute -bottom-[15px] right-[0px] z-20 brightness-[78%] contrast-[91%] opacity-[70%]"
+          className="absolute bottom-[12em] right-[0px] z-20 brightness-[78%] contrast-[91%] opacity-[70%]"
         />
       </div>
     </div>

@@ -78,7 +78,7 @@ export const FamilyMobileL = ({ data }) => {
               <br />
               <span className="text-lightRed text-2xl">{event}</span>
             </h1>
-            <p className="text-darkBlue text-xl font-txt">{location}</p>
+            <p className="text-darkBlue text-xl font-txt upercase">{location}</p>
           </div>
 
           <div className="border-more-dashed pb-2" />
@@ -176,7 +176,7 @@ export const FamilyMobileL = ({ data }) => {
               </div>
             </div>
 
-            <div className="absolute -right-[6px] bottom-[32px] w-[225px] h-[200px] z-10">
+            <div className="absolute -right-[6px] bottom-[3em] w-[225px] h-[200px] z-10">
               <Image src="/assets/familyPhoto3.webp" alt="Crowd" width={400} height={400} quality={75} className="w-full h-auto " loading="lazy" />
             </div>
           </div>

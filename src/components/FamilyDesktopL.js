@@ -47,7 +47,7 @@ export const FamilyDesktopL = ({ data }) => {
                 <br />
                 <span className="text-lightRed text-[55px]">{event}</span>
               </h1>
-              <p className="text-darkBlue font-txt text-[30px] mt-4 lowercase">{location}</p>
+              <p className="text-darkBlue font-txt text-[30px] mt-4 upercase">{location}</p>
             </div>
 
             <div className="border-more-dashed my-4" />
