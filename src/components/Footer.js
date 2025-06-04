@@ -13,15 +13,17 @@ const Footer = () => {
   const { navbarColor } = useNavbarColor();
 
   useEffect(() => {
-    if (pathname === "/" || pathname === "/media" || pathname === "/reviews" || pathname === "/our-clients" || navbarColor === "light") {
+    if (pathname === "/" || pathname === "/media" || pathname === "/reviews" || pathname === "/our-clients" || navbarColor === "light" ) {
       setIsFooterBlack(false);
     } else setIsFooterBlack(true);
   }, [pathname, navbarColor]);
   return (
     <footer
-      className={`bottom-0 w-screen flex justify-center items-center  ${pathname === "/" ? "py-0.5 xl:p-0.5 2k:py-2" : "py-0.5 md1:py-1.5"} ${
-        navbarColor === "dark" || pathname === "/tickets" ? "bg-beigePatternMobile bg-cover z-50" : ""
-      }${navbarColor === "light" ? "bg-darkBlue bg-cover z-50" : ""}
+      className={`bottom-0 w-screen flex justify-center items-center 
+        ${pathname === "/" ? "py-0.5 xl:p-0.5 2k:py-2" : "py-0.5 md1:py-1.5"} 
+        
+        ${navbarColor === "dark" || pathname === "/tickets" ? "bg-beigePatternMobile bg-cover z-50" : ""}
+        ${navbarColor === "light" ? "bg-darkBlue bg-cover z-50" : ""}
       `}
       style={{
         opacity: settings?.loader,

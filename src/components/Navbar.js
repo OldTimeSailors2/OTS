@@ -31,6 +31,7 @@ const Navbar = () => {
     "/media",
     "/our-clients",
     "/services",
+    "/memberships",
   ];
 
   const isDynamicRoute =
@@ -105,6 +106,12 @@ const Navbar = () => {
         setTitleColor("beige");
         setViewSelector(false);
         break;
+      case "/memberships":
+        setTitle('memberships');
+        setTitleBg("beigePattern");
+        setTitleColor("");
+        setViewSelector(false);
+      break;
       default:
         setTitle("tickets");
         setTitleBg("bluePattern");
@@ -143,7 +150,7 @@ const Navbar = () => {
   return (
     <div
       style={getNavbarStyle()}
-      className={`fixed w-screen z-[100] flex flex-col justify-between pt-3 px-1 sm:px-4 3xl:px-9  ${
+      className={`fixed w-screen z-[100] flex flex-col justify-between pt-3 px-1 sm:px-4 3xl:px-9 ${
         pathname === "/tickets/calendar-view" || pathname === "/tickets"
           ? "bg-beigePatternMobile bg-cover"
           : ""
