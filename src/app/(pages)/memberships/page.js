@@ -44,7 +44,7 @@ const MemberShip = async () => {
 
   return (
     <MainDiv className="h-full bg-bluePatternMobile md1:bg-bluePatternTablet xl:bg-bluePattern bg-contain pt-[77px] xs:pt-[92px] sm:pt-[140px] fullHD:pt-[172px] 2k:pt-[204px] 4k:pt-[268px] pb-[17.5px] md1:pb-[44px] xl:pb-[40px] 2k:pb-[52px] 4k:pb-[64px]">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 items-end px-20">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 items-end md:px-20 lg:px-40">
 
         <div class="order-1 sm:order-2 p-4">
           <div className="bg-[#e9dcc6] rounded-[3rem] justify-self-center">
@@ -54,7 +54,7 @@ const MemberShip = async () => {
             </div>
 
 
-            <ul className="list-disc list-outside font-txt mx-auto mb-5 px-8 font-semibold text-left text-[#1d344a]">
+            <ul className="list-disc list-outside font-txt mx-auto px-20 mb-5 px-8 font-semibold text-left text-[#1d344a]">
               <li>Free access to all our ticketed gigs.</li>
               <li>Free access to all our festival gigs (not including Glastonbury).</li>
               <li>Entry to our year private party aboard a UK ship.</li>
@@ -83,7 +83,7 @@ const MemberShip = async () => {
               <p className="font-titles text-beige text-center"><span className="text-7xl">160£</span><span className="text-5xl">/year</span></p>
             </div>
 
-            <ul className="list-disc list-outside font-txt mx-auto mb-5 px-8 font-semibold text-left">
+            <ul className="list-disc list-outside font-txt mx-auto px-20 mb-5 px-8 font-semibold text-left">
               <li>Entry to our year private party aboard a UK ship.</li>
               <li>50% discount on all our merch.</li>
               <li>Entry to members whatsapp group with the Captain. To make road plans, give feedback on how to improve our experience and all related to the OTS world.</li>
