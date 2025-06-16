@@ -154,10 +154,7 @@ const Navbar = () => {
           ? "bg-beigePatternMobile bg-cover"
           : ""
         }
-      ${pathname === "/memberships"
-          ? "bg-darkBlue bg-cover"
-          : ""
-        }
+  
       ${getNavbarBackground()}`}
     >
       <div className="flex justify-between">
