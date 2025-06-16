@@ -284,10 +284,10 @@ const LandingLeftSide = () => {
           </p>
         </Link>
         <Link
-          className="octagon flex items-center justify-center bg-redPattern bg-contain"
+          className="octagon flex items-center justify-center bg-beigePattern bg-contain"
           href="/memberships"
         >
-          <p className="text-center text-xl pb-[1px] min-[375px]:max-xs:text-lg xs:pb-0 xs2:text-[24px] min-[390px]:max-xs2:text-xl min-[414px]:max-[420px]:text-xl min-[428px]:text-xl  md1:text-3xl min-[810px]:text-[32px] min-[820px]:text-4xl lg:text-5xl xl:text-2xl 1xxl:text-3xl fullHD:text-4xl 2k:text-6xl 4k:text-7xl font-titles text-beige">
+          <p className="text-center text-xl pb-[1px] min-[375px]:max-xs:text-lg xs:pb-0 xs2:text-[24px] min-[390px]:max-xs2:text-xl min-[414px]:max-[420px]:text-xl min-[428px]:text-xl  md1:text-3xl min-[810px]:text-[32px] min-[820px]:text-4xl lg:text-5xl xl:text-2xl 1xxl:text-3xl fullHD:text-4xl 2k:text-6xl 4k:text-7xl font-titles text-darkBlue">
             memberships
           </p>
         </Link>
