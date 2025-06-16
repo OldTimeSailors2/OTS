@@ -111,7 +111,7 @@ const Navbar = () => {
         setTitleBg("beigePattern");
         setTitleColor("");
         setViewSelector(false);
-      break;
+        break;
       default:
         setTitle("tickets");
         setTitleBg("bluePattern");
@@ -150,11 +150,15 @@ const Navbar = () => {
   return (
     <div
       style={getNavbarStyle()}
-      className={`fixed w-screen z-[100] flex flex-col justify-between pt-3 px-1 sm:px-4 3xl:px-9 ${
-        pathname === "/tickets/calendar-view" || pathname === "/tickets"
+      className={`fixed w-screen z-[100] flex flex-col justify-between pt-3 px-1 sm:px-4 3xl:px-9 ${pathname === "/tickets/calendar-view" || pathname === "/tickets"
           ? "bg-beigePatternMobile bg-cover"
           : ""
-      } ${getNavbarBackground()}`}
+        }
+      ${pathname === "/memberships"
+          ? "bg-darkBlue bg-cover"
+          : ""
+        }
+      ${getNavbarBackground()}`}
     >
       <div className="flex justify-between">
         <div className="flex gap-1.5 sm:gap-4 items-center">
@@ -187,9 +191,8 @@ const Navbar = () => {
           <h1
             className={`octagon-navbar bg-${titleBg} bg-contain text-${titleColor} font-titles
            text-2xl xs2:text-[26px] sm:text-[40px] fullHD:text-5xl 2k:text-7xl 4k:text-8xl
-            flex items-center justify-center fullHD:pb-0.5 fullHD:pl-2 ${
-              isDynamicRoute ? "hidden" : "visible"
-            }`}
+            flex items-center justify-center fullHD:pb-0.5 fullHD:pl-2 ${isDynamicRoute ? "hidden" : "visible"
+              }`}
             style={{
               opacity: settings?.loader,
               pointerEvents: settings?.photos ? "auto" : "none",
@@ -200,14 +203,13 @@ const Navbar = () => {
         </div>
         <div className="flex gap-1.5 xs:gap-2 sm:gap-4 items-center">
           <Link
-            className={`${
-              pathname != "/media" &&
-              pathname != "/reviews" &&
-              pathname != "/our-clients" &&
-              navbarColor === "dark"
+            className={`${pathname != "/media" &&
+                pathname != "/reviews" &&
+                pathname != "/our-clients" &&
+                navbarColor === "dark"
                 ? "bg-redPattern text-beige"
                 : "bg-beigePattern text-lightRed"
-            }
+              }
                                 bg-contain rounded-full p-1 sm:p-2 2k:p-3 4k:p-3.5 pointer-events-auto`}
             style={{
               opacity: settings?.loader,
@@ -223,15 +225,14 @@ const Navbar = () => {
           </Link>
 
           <Link
-            className={`${
-              navbarColor === "dark" &&
-              pathname != "/media" &&
-              pathname != "/reviews" &&
-              pathname != "/our-clients"
+            className={`${navbarColor === "dark" &&
+                pathname != "/media" &&
+                pathname != "/reviews" &&
+                pathname != "/our-clients"
                 ? "bg-bluePattern text-beige"
                 : "bg-beigePattern text-darkBlue"
-            }
-                                bg-contain rounded-full p-1 sm:p-2 2k:p-3 4k:p-3.5 pointer-events-auto`}
+              }
+              bg-contain rounded-full p-1 sm:p-2 2k:p-3 4k:p-3.5 pointer-events-auto`}
             style={{
               opacity: settings?.loader,
               pointerEvents: settings?.photos ? "auto" : "none",
@@ -246,14 +247,13 @@ const Navbar = () => {
           </Link>
 
           <Link
-            className={`${
-              navbarColor === "dark" &&
-              pathname != "/media" &&
-              pathname != "/reviews" &&
-              pathname != "/our-clients"
+            className={`${navbarColor === "dark" &&
+                pathname != "/media" &&
+                pathname != "/reviews" &&
+                pathname != "/our-clients"
                 ? "bg-redPattern text-beige"
                 : "bg-beigePattern text-lightRed"
-            }
+              }
                                 bg-contain rounded-full p-1 sm:p-2 2k:p-3 4k:p-3.5 pointer-events-auto`}
             style={{
               opacity: settings?.loader,
@@ -269,14 +269,13 @@ const Navbar = () => {
           </Link>
 
           <Link
-            className={`${
-              navbarColor === "dark" &&
-              pathname != "/media" &&
-              pathname != "/reviews" &&
-              pathname != "/our-clients"
+            className={`${navbarColor === "dark" &&
+                pathname != "/media" &&
+                pathname != "/reviews" &&
+                pathname != "/our-clients"
                 ? "bg-bluePattern text-beige"
                 : "bg-beigePattern text-darkBlue"
-            }
+              }
                                 bg-contain rounded-full p-1 sm:p-2 2k:p-3 4k:p-3.5 pointer-events-auto`}
             style={{
               opacity: settings?.loader,

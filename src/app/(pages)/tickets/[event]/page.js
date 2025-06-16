@@ -54,7 +54,7 @@ const GigLanding = () => {
   if (!currentEvent) return <div>No event found</div>;
 
   return (
-    <MainDiv className="h-full">
+    <MainDiv>
       <div 
       className={`${currentEvent.typeOfShow === "Family" ? " bg-beigePattern bg-contain" : " bg-darkBlue bg-contain"}`} 
       style={{

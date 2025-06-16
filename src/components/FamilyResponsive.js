@@ -74,39 +74,47 @@ export const FamilyResponsive = ({ data }) => {
   const router = useRouter();
   return (
     <>
+      <div class="container relative w-full h-full py-[4%] px-[5%]">
+        <div className="absolute w-48 top-[5em] left-[45em]">
+          <div className="bg-darkBlue p-3 py-4 rounded-2xl">
+            <h3 className="text-lightRed text-[15px] font-bold font-titles leading-none">
+              <p>more about</p>
+              <p>the venue</p>
+            </h3>
+            <div className="mt-0.5">
+              <p className="text-beige text-[7px] leading-tight font-txt">
+                {venueInfo}A rural escape built by the community, for the community in the heart of Newquay. A venue for the whole family with
+                seating options.
+              </p>
+              <Link href={eventURL}>
+                <p className="text-beige text-[8px] mt-1  underline font-titles">contact the venue for + info</p>
+              </Link>
+            </div>
+          </div>
+        </div>
+        <div class="px-[7%] py-3 w-3/5">
+          <div className="text-left lowercase border-b-[2px] border-dashed border-darkBeige">
+            <h1 className="font-titles leading-none">
+              <span className="text-darkBlue text-5xl">old time sailors </span> <span className="text-lightRed text-5xl"> at</span>
+              <br />
+              <span className="text-lightRed text-5xl">{event}</span>
+            </h1>
+            <p className="text-darkBlue text-3xl font-txt">{location}</p>
+          </div>
+        </div>
+
+        <div class="">
+
+        </div>
+      </div>
       <div className="relative -bottom-[80px]">
         <div className="relative w-full h-full">
           {/* Contenedor principal con borde */}
-          <div className="border-[3px] border-darkBlue p-2 m-4 sm:w-full md:-right-[100px] md:-top-[50px] md:w-4/5 relative">
-            <div className="text-left lowercase border-b-[2px] border-dashed border-darkBlue px-10">
-              <h1 className="font-titles leading-none">
-                <span className="text-darkBlue text-xl">old time sailors </span> <span className="text-lightRed text-xl"> at</span>
-                <br />
-                <span className="text-lightRed text-xl">{event}</span>
-              </h1>
-              <p className="text-darkBlue text-md font-txt">{location}</p>
-            </div>
+          <div className="border-[3px] border-darkBlue relative">
 
-            <div className="border-more-dashed my-4" />
 
-            
-              <div className="absolute -right-[24.5px] top-[40px] w-[146.03px]">
-              <div className="bg-darkBlue p-3 py-4 rounded-2xl">
-                <h3 className="text-lightRed text-[15px] font-bold font-titles leading-none">
-                  <p>more about</p>
-                  <p>the venue</p>
-                </h3>
-                <div className="mt-0.5">
-                  <p className="text-beige text-[7px] leading-tight font-txt">
-                    {venueInfo}A rural escape built by the community, for the community in the heart of Newquay. A venue for the whole family with
-                    seating options.
-                  </p>
-                  <Link href={eventURL}>
-                    <p className="text-beige text-[8px] mt-1  underline font-titles">contact the venue for + info</p>
-                  </Link>
-                </div>
-              </div>
-            </div>
+
+
 
             {/* Event info */}
             <div className="space-y-6">
