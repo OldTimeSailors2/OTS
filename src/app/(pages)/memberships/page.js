@@ -77,7 +77,7 @@ const MemberShip = async () => {
                 </button>
               </Link>
             </div>
-            <div class="overflow-hidden bg-[#d9395d] text-white rounded-[2.5em] w-full md:w-3/4 lg:w-1/2 flex flex-col mt-2 mx-auto">
+            <div class="overflow-hidden bg-[#d9395d] text-white rounded-[2.5em] w-full md:w-3/4 lg:w-1/2 flex flex-col mt-5 mx-auto">
               <div>
                 <h2 class="text-5xl text-[#1d344a] font-titles text-center px-6 pt-5 leading-none">
                   <span class="block lowercase">sailor</span>
