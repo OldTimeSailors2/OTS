@@ -103,7 +103,7 @@ const Home = async () => {
       </div>
       <footer className="w-full z-[105] flex justify-center items-center py-1 xl:p-1 2k:py-2">
         <p className="text-beige font-txt text-[9px] md1:text-lg md:text-xl xl:text-base 2k:text-3xl 4k:text-5xl uppercase">
-          OLD TIME SAILORS LTD.®
+          OLD TIME SAILORS LLC.®
         </p>
       </footer>
     </MainDiv>
