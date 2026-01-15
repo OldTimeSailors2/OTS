@@ -138,7 +138,8 @@ const LandingLeftSide = () => {
                 ? "text-[20px] p-1.5 iphone-1:text-[22px] iphone-1:p-1.5 iphone-2:text-[24px] iphone-3:text-[25px] min-[430px]:text-[24px] md1:text-[35px]  min-[810px]:text-[27px] min-[820px]:text-[35px] min-[820px]:p-2 lg:text-[42px] lg:p-2.5 "
                 : "text-[25px] p-1.5 md1:text-[30px]  min-[810px]:text-[27px] min-[820px]:text-[35px] min-[820px]:p-2 lg:text-[42px] lg:p-2.5 "
               }`}
-            href="https://wa.me/447539045312"
+            href="https://wa.me/19292372141"
+            
             target="_blank"
           >
             <FaWhatsapp />
