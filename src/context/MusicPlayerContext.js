@@ -1,9 +1,17 @@
 "use client";
 
-import { createContext, useState, useEffect, useRef } from "react";
+import { createContext, useState, useEffect, useRef, useContext } from "react"; // ✅ agrega useContext
 import useMedia from "@/hooks/useMedia";
 
 export const MusicPlayerContext = createContext();
+
+export const useMusicPlayer = () => {
+  const ctx = useContext(MusicPlayerContext);
+  if (!ctx) {
+    throw new Error("useMusicPlayer must be used inside MusicPlayerProvider");
+  }
+  return ctx;
+};
 
 export const MusicPlayerProvider = ({ children }) => {
   const { playlist, closeModal, isModalOpen } = useMedia();
@@ -20,7 +28,7 @@ export const MusicPlayerProvider = ({ children }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
 
-  const HowlRef = useRef(null); // Ref to hold the Howl constructor
+  const HowlRef = useRef(null);
 
   const loadHowl = async () => {
     if (!HowlRef.current) {
@@ -30,38 +38,31 @@ export const MusicPlayerProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (isModalOpen) {
-      loadHowl();
-    }
+    if (isModalOpen) loadHowl();
   }, [isModalOpen]);
 
   const playSong = async (songId) => {
-    if (!HowlRef.current) {
-      await loadHowl();
-    }
+    if (!HowlRef.current) await loadHowl();
 
-    // Find the song in the playlist
     const songToPlay = playlist.find((song) => song.id === songId);
     if (!songToPlay) {
-      console.error("Song not found");
+      console.error("Song not found", songId);
       return;
     }
 
     if (sound && isPlaying) {
       sound.stop();
       sound.unload();
-    } else {
-      console.log("No song to stop/unload");
     }
 
-    // Add the song ID to the playedSongs list
     if (!playedSongs.includes(songId)) {
       setPlayedSongs((prev) => [...prev, songId]);
     }
 
     const newSound = new HowlRef.current({
       src: [songToPlay.url],
-      onload: () => setDuration(newSound.duration()), // Set duration on load
+      html5: true, // ✅ recomendado para streams/Cloudinary (evita problemas de memoria/cors)
+      onload: () => setDuration(newSound.duration()),
     });
 
     setSound(newSound);
@@ -71,176 +72,142 @@ export const MusicPlayerProvider = ({ children }) => {
   };
 
   const handleNext = () => {
+    if (!playlist?.length) return;
+
     if (isShuffled) {
-      let unplayedSongs = playlist.filter(
-        (song) => !playedSongs.includes(song.id),
-      );
+      let unplayedSongs = playlist.filter((song) => !playedSongs.includes(song.id));
 
-      // Check if all songs have been played
       if (unplayedSongs.length === 0) {
-        // Reset the playedSongs list
         setPlayedSongs([]);
-
-        // Re-fetch the unplayedSongs list after resetting
-        unplayedSongs = playlist.filter((song) => song.id !== currentSong.id);
+        unplayedSongs = playlist.filter((song) => song.id !== currentSong?.id);
       }
 
-      // Ensure the next song is not the current one
-      const filteredUnplayedSongs = unplayedSongs.filter(
-        (song) => song.id !== currentSong.id,
-      );
-
-      // Play a random unplayed song
-      const nextSongIndex = Math.floor(
-        Math.random() * filteredUnplayedSongs.length,
-      );
-      const nextSong = filteredUnplayedSongs[nextSongIndex];
-      playSong(nextSong.id);
-    } else {
-      // Non-shuffle mode
-      let nextIndex;
-      if (currentSong) {
-        const currentIndex = playlist.findIndex((s) => s.id === currentSong.id);
-        nextIndex = (currentIndex + 1) % playlist.length;
-      } else {
-        nextIndex = 0; // Start from the beginning if no current song
-      }
-      playSong(playlist[nextIndex].id);
+      const filtered = unplayedSongs.filter((song) => song.id !== currentSong?.id);
+      const nextSong = filtered[Math.floor(Math.random() * filtered.length)];
+      if (nextSong) playSong(nextSong.id);
+      return;
     }
+
+    let nextIndex = 0;
+    if (currentSong) {
+      const currentIndex = playlist.findIndex((s) => s.id === currentSong.id);
+      nextIndex = (currentIndex + 1) % playlist.length;
+    }
+    playSong(playlist[nextIndex].id);
   };
 
-  //Repeat useEffect
   useEffect(() => {
     if (!sound) return;
 
-    sound.on("end", () => {
-      if (repeatMode === "all") {
-        handleNext();
-      } else if (repeatMode === "none") {
+    const onEnd = () => {
+      if (repeatMode === "all") handleNext();
+      else if (repeatMode === "none") {
         setIsPlaying(false);
         closeModal();
       } else if (repeatMode === "one") {
         sound.seek(0);
         sound.play();
       }
-    });
-
-    // Cleanup
-    return () => {
-      sound.off("end");
     };
-  }, [repeatMode, sound, handleNext]);
 
-  //Shuffle useEffect
+    sound.on("end", onEnd);
+    return () => sound.off("end", onEnd);
+  }, [repeatMode, sound, handleNext, closeModal]);
+
   useEffect(() => {
-    if (!isShuffled) {
-      // Reset playedSongs list when shuffle is turned off
-      setPlayedSongs([]);
-    }
+    if (!isShuffled) setPlayedSongs([]);
   }, [isShuffled]);
 
-  //Progress Bar useEffect
-  // This effect updates the progress while the track is playing
   useEffect(() => {
-    let animationFrameId;
+    let raf;
 
     const updateProgress = () => {
-      if (!isSeeking) {
+      if (sound && !isSeeking) {
         const current = sound.seek() || 0;
+        const dur = sound.duration() || 0;
+
         setCurrentTime(current);
-        setProgress(currentTime / sound.duration()); // Update progress here
+        setDuration(dur);
+        setProgress(dur ? current / dur : 0);
       }
-      animationFrameId = requestAnimationFrame(updateProgress);
+      raf = requestAnimationFrame(updateProgress);
     };
 
-    if (sound) {
-      animationFrameId = requestAnimationFrame(updateProgress);
-    }
-
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [sound, isSeeking, currentTime]);
+    if (sound) raf = requestAnimationFrame(updateProgress);
+    return () => cancelAnimationFrame(raf);
+  }, [sound, isSeeking]);
 
   const handleSeek = (value) => {
-    const seekPosition = value * sound.duration();
-    setCurrentTime(seekPosition); // Only update the state
-    setProgress(value); // Update progress
+    if (!sound) return;
+    const dur = sound.duration() || 0;
+    const seekPosition = value * dur;
+    setCurrentTime(seekPosition);
+    setProgress(value);
   };
 
-  const handleSeekStart = () => {
-    setIsSeeking(true); // Indicate that user started seeking
-  };
+  const handleSeekStart = () => setIsSeeking(true);
 
   const handleSeekMove = (e) => {
-    if (isSeeking) {
-      let newValue;
-      if (e.touches) {
-        // For touch events
-        // Calculate the new value based on touch position
-        const touch = e.touches[0];
-        const slider = e.target.getBoundingClientRect();
-        const ratio = (touch.clientX - slider.left) / slider.width;
-        newValue = ratio * sound.duration();
-      } else {
-        // For mouse events
-        newValue = parseFloat(e.target.value) * sound.duration();
-      }
-      setCurrentTime(newValue); // Update currentTime
-      setProgress(newValue / sound.duration()); // Update progress
+    if (!sound || !isSeeking) return;
+
+    const dur = sound.duration() || 0;
+
+    let ratio = 0;
+    if (e.touches) {
+      const touch = e.touches[0];
+      const slider = e.target.getBoundingClientRect();
+      ratio = (touch.clientX - slider.left) / slider.width;
+    } else {
+      ratio = parseFloat(e.target.value);
     }
+
+    const newTime = Math.max(0, Math.min(dur, ratio * dur));
+    setCurrentTime(newTime);
+    setProgress(dur ? newTime / dur : 0);
   };
 
   const handleSeekEnd = (e) => {
+    if (!sound) return;
     setIsSeeking(false);
+
+    const dur = sound.duration() || 0;
+
     if (!e.touches) {
-      const seekPosition = parseFloat(e.target.value) * sound.duration();
-      sound.seek(seekPosition);
-    } else {
-      // For touch events, calculate and apply the final seek position
-      const touch = e.changedTouches[0];
-      const slider = e.target.getBoundingClientRect();
-      const finalPosition =
-        ((touch.clientX - slider.left) / slider.width) * sound.duration();
-      sound.seek(finalPosition);
+      const ratio = parseFloat(e.target.value);
+      sound.seek(ratio * dur);
+      return;
     }
+
+    const touch = e.changedTouches[0];
+    const slider = e.target.getBoundingClientRect();
+    const ratio = (touch.clientX - slider.left) / slider.width;
+    sound.seek(Math.max(0, Math.min(dur, ratio * dur)));
   };
 
   const togglePlayPause = () => {
-    setIsPlaying(!isPlaying);
+    if (!sound) return;
 
-    if (!isPlaying) {
-      sound.play();
-    } else sound.pause();
+    setIsPlaying((prev) => {
+      const next = !prev;
+      if (next) sound.play();
+      else sound.pause();
+      return next;
+    });
   };
 
   const handlePrevious = () => {
-    // Finds the index of the current song
+    if (!playlist?.length || !currentSong) return;
+
     const currentIndex = playlist.findIndex((s) => s.id === currentSong.id);
-    // Calculates the ID of the previous song
-    const previousIndex =
-      (currentIndex - 1 + playlist.length) % playlist.length;
-    const previousSongId = playlist[previousIndex].id;
-    playSong(previousSongId);
+    const previousIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+    playSong(playlist[previousIndex].id);
   };
 
   const handleRepeat = () => {
-    switch (repeatMode) {
-      case "none":
-        setRepeatMode("all");
-        break;
-      case "all":
-        setRepeatMode("one");
-        break;
-      case "one":
-        setRepeatMode("none");
-        break;
-      default:
-        setRepeatMode("none");
-    }
+    setRepeatMode((prev) => (prev === "none" ? "all" : prev === "all" ? "one" : "none"));
   };
 
-  const handleShuffle = () => {
-    setIsShuffled(!isShuffled);
-  };
+  const handleShuffle = () => setIsShuffled((prev) => !prev);
 
   return (
     <MusicPlayerContext.Provider

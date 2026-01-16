@@ -3,6 +3,7 @@ import Image from "next/image";
 import DynamicDecoMedia from "@/components/DynamicDecoMedia";
 import MainDiv from "@/components/MainDiv";
 import dynamic from "next/dynamic";
+import { getCloudinary } from "@/lib/cloudinary";
 import {
   formatPhotos,
   formatVideos,
@@ -46,37 +47,70 @@ const SplideCarousel = dynamic(() => import("@/components/SplideCarousel"), {
   ),
 });
 
-const fetchMediaData = async () => {
+export const fetchMediaData = async () => {
   try {
-    const [photosRes, videosRes, songsRes] = await Promise.all([
-      fetch(`${process.env.BACKEND_API}/media-photo?populate=*`),
-      fetch(`${process.env.BACKEND_API}/media-videos?populate=*`),
-      fetch(`${process.env.BACKEND_API}/media-songs?populate=*`),
-    ]);
+    const cloudinary = require("cloudinary").v2;
 
-    [photosRes, videosRes, songsRes].forEach((res, index) => {
-      if (!res.ok) {
-        throw new Error(
-          `Failed to fetch ${["photos", "videos", "songs"][index]}: ${res.status} ${res.statusText}`,
-        );
-      }
+    cloudinary.config({
+      secure: true,
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
     });
 
-    const photos = await photosRes.json();
-    const videos = await videosRes.json();
-    const songs = await songsRes.json();
+    const getFolder = async (assetFolder, resource_type) => {
+      const res = await cloudinary.api.resources_by_asset_folder(assetFolder, {
+        resource_type,
+        max_results: 500,
+      });
+      return res?.resources ?? [];
+    };
 
-    const formattedVideos = await formatVideos(videos);
-    const formattedPhotos = await formatPhotos(photos);
-    const formattedSongs = formatSongs(songs);
+    const [photos, videos, songs] = await Promise.all([
+      getFolder("Images", "image"),
+      getFolder("Videos", "video"),
+      getFolder("Sounds", "video"), // audio -> video
+    ]);
+
+    const formattedPhotos = photos.map((r) => ({
+      id: r.asset_id,
+      public_id: r.public_id,
+      url: r.secure_url,
+      width: r.width,
+      height: r.height,
+    }));
+
+    const formattedVideos = videos.map((r) => ({
+      id: r.asset_id,
+      public_id: r.public_id,
+      url: r.secure_url,
+      duration: r.duration,
+      thumbnail: cloudinary.url(r.public_id, {
+        resource_type: "video",
+        format: "jpg",
+        transformation: [{ width: 600, crop: "scale" }],
+        secure: true,
+      }),
+    }));
+
+    const formattedSongs = songs.map((r) => ({
+      id: r.asset_id,
+      public_id: r.public_id,
+      url: r.secure_url,
+      duration: r.duration,
+    }));
+
+    console.log("Cloudinary photos:", formattedPhotos.length);
+    console.log("Cloudinary videos:", formattedVideos.length);
+    console.log("Cloudinary songs:", formattedSongs.length);
 
     return { formattedSongs, formattedVideos, formattedPhotos };
   } catch (error) {
-    console.error("Error fetching media data:", error);
-
-    throw new Error(`Data fetching error: ${error.message}`);
+    console.error("Error fetching media data (Cloudinary):", error);
+    return { formattedSongs: [], formattedVideos: [], formattedPhotos: [] };
   }
 };
+
 
 const Media = async () => {
   const { formattedSongs, formattedVideos, formattedPhotos } =

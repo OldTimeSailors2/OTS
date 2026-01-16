@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import useMedia from "@/hooks/useMedia";
 import useMusicPlayer from "@/hooks/useMusicPlayer";
@@ -33,10 +33,12 @@ const MusicPlayer = () => {
     currentTime,
     duration,
   } = useMusicPlayer();
-  const { isModalOpen, closeModal } = useMedia();
-  const [marqueeThreshold, setMarqueeThreshold] = useState(24); // Default to desktop threshold
 
+  const { isModalOpen, closeModal } = useMedia();
+
+  const [marqueeThreshold, setMarqueeThreshold] = useState(24);
   const [loaded, setLoaded] = useState(false);
+
   const Modal = useRef(null);
   const ModalHeader = useRef(null);
   const ModalContent = useRef(null);
@@ -59,10 +61,11 @@ const MusicPlayer = () => {
 
   useEffect(() => {
     const updateThreshold = () => {
-      const thresholdMobile = 17; // For screens smaller than 768px
-      const thresholdTablet = 21; // For screens between 768px and 1050px
-      const thresholdSmallDesktop = 28; // For screens between 1050px and 1360px
-      const thresholdLargeDesktop = 26; // For screens larger than 1360px
+      const thresholdMobile = 17;
+      const thresholdTablet = 21;
+      const thresholdSmallDesktop = 28;
+      const thresholdLargeDesktop = 26;
+
       const viewportWidth = window.innerWidth;
 
       if (viewportWidth < 768) {
@@ -76,15 +79,16 @@ const MusicPlayer = () => {
       }
     };
 
-    // Update threshold on mount and when window resizes
     updateThreshold();
     window.addEventListener("resize", updateThreshold);
-
-    // Cleanup listener
     return () => window.removeEventListener("resize", updateThreshold);
   }, []);
 
-  const isMarqueeNeeded = currentSong?.title.length > marqueeThreshold;
+  // ✅ Title seguro (nunca undefined)
+  const safeTitle = useMemo(() => currentSong?.title ?? "", [currentSong]);
+
+  // ✅ FIX: no uses currentSong?.title.length (puede ser undefined)
+  const isMarqueeNeeded = safeTitle.length > marqueeThreshold;
 
   const getRepeatModeIcon = () => {
     switch (repeatMode) {
@@ -97,9 +101,6 @@ const MusicPlayer = () => {
           <TbRepeat className="text-[25px] sm:text-[35px] lg:text-[40px] xl:text-[35px] text-lightRed" />
         );
       case "none":
-        return (
-          <TbRepeatOff className="text-[25px] sm:text-[35px] lg:text-[40px] xl:text-[35px] text-musicColor" />
-        );
       default:
         return (
           <TbRepeatOff className="text-[25px] sm:text-[35px] lg:text-[40px] xl:text-[35px] text-musicColor" />
@@ -107,12 +108,17 @@ const MusicPlayer = () => {
     }
   };
 
+  // Si aún no cargó componentes dinámicos, no renders (ok)
   if (!loaded) return null;
 
   const DynamicModal = Modal.current;
   const DynamicModalHeader = ModalHeader.current;
   const DynamicModalContent = ModalContent.current;
   const DynamicMarquee = Marquee.current;
+
+  // ✅ Proteger caso: modal abierto pero aún no hay canción seleccionada
+  // (evita renders raros y reduce warnings)
+  const hasSong = Boolean(currentSong);
 
   return (
     <DynamicModal
@@ -130,29 +136,32 @@ const MusicPlayer = () => {
     >
       <DynamicModalContent>
         <DynamicModalHeader className="font-txt text-lightRed text-3xl md:text-4xl 1xl:text-[40px] 2xl:text-5xl 4k:text-6xl font-medium uppercase justify-center mt-4">
-          {isMarqueeNeeded ? (
+          {!hasSong ? (
+            <h1 className="opacity-70">Select a song</h1>
+          ) : isMarqueeNeeded ? (
             <DynamicMarquee
               speed={40}
               pauseOnHover={false}
               className="music-marquee"
             >
-              <h1 className="pr-6">{currentSong?.title}</h1>
+              <h1 className="pr-6">{safeTitle}</h1>
             </DynamicMarquee>
           ) : (
-            <h1>{currentSong?.title}</h1>
+            <h1>{safeTitle}</h1>
           )}
         </DynamicModalHeader>
 
         <div className="w-full flex h-4 gap-2 items-center px-3 sm:px-5">
           <span className="font-numbers text-musicColor font-bold text-base xs2:text-lg md:text-xl xl:text-lg 2xl:text-xl 2k:text-2xl tracking-wide">
-            {formatTime(currentTime)}
+            {formatTime(currentTime || 0)}
           </span>
+
           <input
             type="range"
             min="0"
             max="1"
             step="any"
-            value={progress || 0}
+            value={Number.isFinite(progress) ? progress : 0}
             onChange={(e) => handleSeek(parseFloat(e.target.value))}
             onMouseDown={handleSeekStart}
             onMouseUp={handleSeekEnd}
@@ -161,26 +170,27 @@ const MusicPlayer = () => {
             onTouchEnd={handleSeekEnd}
             className="progress-input"
             style={{
-              background: `linear-gradient(to right, #253142 ${progress * 100}%, #bfa98c ${progress * 100}%)`,
+              background: `linear-gradient(to right, #253142 ${(Number.isFinite(progress) ? progress : 0) * 100}%, #bfa98c ${(Number.isFinite(progress) ? progress : 0) * 100}%)`,
             }}
           />
+
           <span className="font-numbers text-musicColor font-bold text-base xs2:text-lg md:text-xl xl:text-lg 2xl:text-xl 2k:text-2xl tracking-wide">
-            {formatTime(duration)}
+            {formatTime(duration || 0)}
           </span>
         </div>
 
         <div className="flex justify-center items-center my-6 px-4 gap-6 sm:gap-8 lg:gap-10">
-          <button onClick={handleShuffle}>
+          <button onClick={handleShuffle} type="button">
             <TbArrowsShuffle2
               className={`text-[25px] sm:text-[35px] lg:text-[40px] xl:text-[35px] ${isShuffled ? "text-lightRed" : "text-musicColor"}`}
             />
           </button>
 
-          <button onClick={handlePrevious}>
+          <button onClick={handlePrevious} type="button" disabled={!hasSong}>
             <TbPlayerSkipBackFilled className="text-[40px] sm:text-[55px] lg:text-[65px] xl:text-[60px] text-musicColor" />
           </button>
 
-          <button onClick={togglePlayPause}>
+          <button onClick={togglePlayPause} type="button" disabled={!hasSong}>
             <Image
               src={isPlaying ? PauseB : PlayB}
               width={75}
@@ -191,11 +201,13 @@ const MusicPlayer = () => {
             />
           </button>
 
-          <button onClick={handleNext}>
+          <button onClick={handleNext} type="button" disabled={!hasSong}>
             <TbPlayerSkipForwardFilled className="text-[40px] sm:text-[55px] lg:text-[65px] xl:text-[60px] text-musicColor" />
           </button>
 
-          <button onClick={handleRepeat}>{getRepeatModeIcon()}</button>
+          <button onClick={handleRepeat} type="button">
+            {getRepeatModeIcon()}
+          </button>
         </div>
       </DynamicModalContent>
     </DynamicModal>

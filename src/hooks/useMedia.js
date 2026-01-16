@@ -10,7 +10,13 @@ const useMedia = () => {
     throw new Error("useMedia must be used within a MediaProvider");
   }
 
-  return context;
+  // ✅ Blindaje: playlist/videoList/photoList siempre como arrays
+  return {
+    ...context,
+    playlist: Array.isArray(context?.playlist) ? context.playlist : [],
+    videoList: Array.isArray(context?.videoList) ? context.videoList : [],
+    photoList: Array.isArray(context?.photoList) ? context.photoList : [],
+  };
 };
 
 export default useMedia;

@@ -8,6 +8,11 @@ const nextConfig = {
         hostname: "ots-strapi.s3.us-east-1.amazonaws.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
+      },
     ],
   },
 };

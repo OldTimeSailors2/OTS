@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import useMedia from "@/hooks/useMedia";
 
@@ -9,7 +9,7 @@ const PhotosDisplay = () => {
     isPhotoModalOpen,
     closePhotoModal,
     deselectPhoto,
-    photoList,
+    photoList = [],
     clickedPhotoIndex,
   } = useMedia();
 
@@ -19,7 +19,6 @@ const PhotosDisplay = () => {
   const Modal = useRef(null);
   const ModalContent = useRef(null);
 
-  //Dynamically import Carousel and Modal when isPhotoModalOpen is true
   useEffect(() => {
     if (isPhotoModalOpen && !loaded) {
       Promise.all([
@@ -47,30 +46,23 @@ const PhotosDisplay = () => {
     type: "fade",
     mediaQuery: "min",
     perPage: 1,
-    start: clickedPhotoIndex,
+    start: clickedPhotoIndex ?? 0,
     arrows: true,
     pagination: false,
     breakpoints: {
-      1280: {
-        drag: false,
-        keyboard: "global",
-      },
-      0: {
-        drag: true,
-        keyboard: false,
-      },
+      1280: { drag: false, keyboard: "global" },
+      0: { drag: true, keyboard: false },
     },
-
     classes: {
       arrows: "splide__arrows arrows_modal",
       arrow: "splide__arrow modal_arrow",
     },
   };
 
-  //Component will not render if isn't loaded
-  if (!loaded) return null;
+  if (!loaded || !Splide || !SplideSlide || !Modal.current || !ModalContent.current) {
+    return null;
+  }
 
-  //Ref for the dynamically imported components
   const DynamicModal = Modal.current;
   const DynamicModalContent = ModalContent.current;
 
@@ -90,25 +82,31 @@ const PhotosDisplay = () => {
     >
       <DynamicModalContent>
         <Splide options={options}>
-          {photoList.map((photo) => (
-            <SplideSlide key={photo.id}>
-              <Image
-                src={
-                  photo.attributes.formats.xl
-                    ? photo.attributes.formats.xl.url
-                    : photo.attributes.url
-                }
-                alt={`Slide ${photo.id}`}
-                width={500}
-                height={500}
-                className="w-[98vw] h-[98vw] xl:h-[95dvh]"
-                sizes="(max-width: 1280px) 95vw, 95dvh"
-                style={{ objectFit: "contain" }}
-                placeholder="blur"
-                blurDataURL={photo.blurDataURL}
-              />
-            </SplideSlide>
-          ))}
+          {photoList.map((photo) => {
+            const src =
+              photo?.attributes?.formats?.xl?.url ||
+              photo?.attributes?.url ||
+              photo?.url ||
+              "";
+
+            const blurDataURL = photo?.blurDataURL;
+
+            return (
+              <SplideSlide key={photo?.id ?? photo?.public_id ?? src}>
+                <Image
+                  src={src}
+                  alt={`Slide ${photo?.id ?? ""}`}
+                  width={500}
+                  height={500}
+                  className="w-[98vw] h-[98vw] xl:h-[95dvh]"
+                  sizes="(max-width: 1280px) 95vw, 95dvh"
+                  style={{ objectFit: "contain" }}
+                  placeholder={blurDataURL ? "blur" : "empty"}
+                  blurDataURL={blurDataURL}
+                />
+              </SplideSlide>
+            );
+          })}
         </Splide>
       </DynamicModalContent>
     </DynamicModal>

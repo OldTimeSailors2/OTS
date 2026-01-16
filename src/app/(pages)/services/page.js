@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ServicesDeco from "@/components/ServicesDeco";
 import MainDiv from "@/components/MainDiv";
-import { formatServices } from "@/helpers/formatApiResponses";
 
 export const metadata = {
   title: "Services",
@@ -37,21 +36,49 @@ const ServicesDisplay = dynamic(() => import("@/components/ServicesDisplay"), {
   ),
 });
 
+// ✅ Cloudinary-only: lee services.json (raw) desde Cloudinary
 const fetchServices = async () => {
   try {
-    const res = await fetch(`${process.env.BACKEND_API}/services?populate=*`);
-    if (!res.ok) {
-      throw new Error(
-        `Failed to fetch services: ${res.status} ${res.statusText}`,
-      );
-    }
-    const services = await res.json();
-    const formattedServices = await formatServices(services);
+    const cloudinary = require("cloudinary").v2;
 
-    return formattedServices;
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+      secure: true,
+    });
+
+    // 🔁 Cambia este public_id si tu JSON tiene otro nombre/ruta
+    // Ej: "services/services.json" (sin extension a veces, depende cómo lo subiste)
+    const jsonPublicId = "services/services.json";
+
+    const rawResource = await cloudinary.api.resource(jsonPublicId, {
+      resource_type: "raw",
+    });
+
+    const jsonUrl = rawResource?.secure_url;
+    if (!jsonUrl) return [];
+
+    const res = await fetch(jsonUrl, { cache: "no-store" });
+    if (!res.ok) return [];
+
+    const services = await res.json();
+
+    // Normaliza estructura mínima para tu ServicesDisplay
+    // (Si ya viene perfecto, esto no estorba)
+    const normalize = (s, idx) => ({
+      id: s.id ?? s.slug ?? String(idx),
+      title: s.title ?? s.name ?? "",
+      description: s.description ?? s.text ?? "",
+      // icon puede ser URL completa o public_id
+      icon: s.icon ?? s.image ?? s.iconUrl ?? "",
+      ...s,
+    });
+
+    return Array.isArray(services) ? services.map(normalize) : [];
   } catch (error) {
-    console.error("Error fetching services:", error);
-    throw error;
+    console.error("Error fetching services (Cloudinary):", error);
+    return [];
   }
 };
 

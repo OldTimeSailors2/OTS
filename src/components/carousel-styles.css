@@ -80,3 +80,25 @@
 .carousel-container {
   @apply w-full;
 }
+.ots-splide .splide__track {
+  overflow: hidden;
+}
+
+.ots-splide .splide__slide {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.ots-slide-inner {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Solo canciones: cada item se siente “bloque” (nombre + cuadrito) */
+.ots-splide--song .splide__slide {
+  max-width: 140px;
+}
