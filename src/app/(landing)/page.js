@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Social from "@/components/Social";
 
+
 export default function Home() {
   return (
     <div
