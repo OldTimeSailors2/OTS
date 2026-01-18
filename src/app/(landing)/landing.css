@@ -62,6 +62,18 @@
   transform: scale(-1);
 }
 
+/* ===== COLORES EXACTOS (según referencia) ===== */
+
+/* fondos */
+.bg-cream    { background-color: #F1F0E9; }  /* crema muy claro */
+.bg-darkBlue { background-color: #1E3347; }  /* azul marino */
+.bg-red      { background-color: #E83A57; }  /* rosa/rojo coral */
+
+/* textos */
+.txt-darkBlue { color: #1E3347; }           /* azul marino */
+.txt-red      { color: #E83A57; }           /* rosa/rojo coral */
+.txt-cream    { color: #F1F0E9; }           /* crema */
+
 
 /*Animation*/
 
