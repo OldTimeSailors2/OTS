@@ -3,7 +3,64 @@
 @tailwind utilities;
 
 
+.white-frame {
+  --frame-pad: 56px;
+  --corner-size: 25px;
+  --corner-offset: -10px;
+  --corner-url: none;
+  position: absolute;
+  inset: 0;
+}
 
+.white-frame::before {
+  content: "";
+  position: absolute;
+  top: var(--frame-pad);
+  left: var(--frame-pad);
+  right: var(--frame-pad);
+  bottom: var(--frame-pad);
+  border: 1px solid rgba(255,255,255,0.65);
+  box-sizing: border-box;
+}
+
+.white-corner{
+  position: absolute;
+  width: var(--corner-size);
+  height: var(--corner-size);
+  background-image: var(--corner-url);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  opacity: 0.9;
+  transform-origin: center;
+}
+
+.white-corner.tl{
+  top: calc(var(--frame-pad) + var(--corner-offset));
+  left: calc(var(--frame-pad) + var(--corner-offset));
+  transform: none;
+}
+
+/* TR = espejo horizontal */
+.white-corner.tr{
+  top: calc(var(--frame-pad) + var(--corner-offset));
+  right: calc(var(--frame-pad) + var(--corner-offset));
+  transform: scaleX(-1);
+}
+
+/* BL = espejo vertical */
+.white-corner.bl{
+  bottom: calc(var(--frame-pad) + var(--corner-offset));
+  left: calc(var(--frame-pad) + var(--corner-offset));
+  transform: scaleY(-1);
+}
+
+/* BR = espejo horizontal + vertical */
+.white-corner.br{
+  bottom: calc(var(--frame-pad) + var(--corner-offset));
+  right: calc(var(--frame-pad) + var(--corner-offset));
+  transform: scale(-1);
+}
 
 
 /*Animation*/

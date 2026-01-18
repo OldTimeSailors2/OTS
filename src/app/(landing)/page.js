@@ -2,124 +2,174 @@ import Image from "next/image";
 import Link from "next/link";
 import Social from "@/components/Social";
 
+const FOLDER = "Images/ImageLandingDesktop";
 
-export default function Home() {
+const ASSET_KEYS = {
+  landingDesktop: ["landingdesktop", "landing_desktop", "landing-desktop", "desktop", "landing"],
+  border: ["border", "frame", "marco"],
+  logo: ["logo"],
+  memberships: ["memberships", "membership"],
+  description: ["description", "descripcion", "descripción"],
+  corner: ["corner", "corners", "corner-detail", "corner_detail", "esquina", "esquinas"],
+};
+
+const fetchLandingAssets = async () => {
+  try {
+    const cloudinary = require("cloudinary").v2;
+
+    cloudinary.config({
+      secure: true,
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
+    const res = await cloudinary.api.resources_by_asset_folder(FOLDER, {
+      resource_type: "image",
+      max_results: 200,
+    });
+
+    const resources = res?.resources ?? [];
+
+    const findByAnyName = (nameList) => {
+      const lowerNames = nameList.map((n) => n.toLowerCase());
+      return (
+        resources.find((r) => {
+          const filename = (r.public_id.split("/").pop() || "").toLowerCase();
+          return lowerNames.some((n) => filename === n);
+        }) ||
+        resources.find((r) => {
+          const filename = (r.public_id.split("/").pop() || "").toLowerCase();
+          return lowerNames.some((n) => filename.includes(n));
+        }) ||
+        null
+      );
+    };
+
+    return {
+      landingDesktop: findByAnyName(ASSET_KEYS.landingDesktop)?.secure_url ?? null,
+      border: findByAnyName(ASSET_KEYS.border)?.secure_url ?? null,
+      logo: findByAnyName(ASSET_KEYS.logo)?.secure_url ?? null,
+      memberships: findByAnyName(ASSET_KEYS.memberships)?.secure_url ?? null,
+      description: findByAnyName(ASSET_KEYS.description)?.secure_url ?? null,
+      corner: findByAnyName(ASSET_KEYS.corner)?.secure_url ?? null,
+    };
+  } catch (error) {
+    console.error("Error fetching landing assets (Cloudinary):", error);
+    return {
+      landingDesktop: null,
+      border: null,
+      logo: null,
+      memberships: null,
+      description: null,
+      corner: null,
+    };
+  }
+};
+
+export default async function Home() {
+  const assets = await fetchLandingAssets();
+
+  const FRAME_PAD = "56px";
+  const LOGO_TOP = "14px";
+
+  const LOGO_SIZE = 520;
+  const MEMBERSHIPS_SIZE = 170;
+
+  // ✅ Si existe corner, seteamos CSS var
+  const cornerStyle = assets.corner ? { "--corner-url": `url('${assets.corner}')` } : undefined;
+
   return (
-    <div
-      className="relative min-h-screen flex flex-col bg-cover bg-[position:center_65%] bg-no-repeat w-full"
-      style={{
-        backgroundImage: "url('/background.svg')",
-      }}
-    >
-      {/* CONTENIDO */}
-      <main className="flex-1 w-full">
-        <div className="w-full p-5 space-y-4 mx-auto">
-          {/* Fila 1 - 3 columnas separadas y alineadas L / C / R */}
-          <div className="flex justify-between gap-4 w-full">
-            {/* Columna 1 - Izquierda */}
-            <div className="flex-1 flex flex-col items-start gap-3">
-              <Image
-                src="/home/descripcion.svg"
-                alt="Descripción"
-                width={140}
-                height={140}
-                sizes="(min-width: 1024px) 140px, (min-width: 768px) 110px, 64px"
-                className="w-16 md:w-28 lg:w-36 h-auto"
-              />
-              <Link href="/memberships" className="inline-block">
-                <Image
-                  src="/home/memberships.svg"
-                  alt="Memberships"
-                  width={140}
-                  height={140}
-                  sizes="(min-width: 1024px) 140px, (min-width: 768px) 110px, 64px"
-                  className="w-16 md:w-28 lg:w-36 h-auto"
-                />
-              </Link>
-            </div>
-
-            {/* Columna 2 - Centro */}
-            <div className="flex-1 flex justify-center">
-              <Link href="/" className="inline-block">
-                {/*
-                <Image
-                  src="/home/logo.svg"
-                  alt="Logo"
-                  width={320}
-                  height={320}
-                  sizes="(min-width: 1024px) 320px, (min-width: 768px) 260px, 224px"
-                  className="w-56 md:w-64 lg:w-80 h-auto mx-auto"
-                />
-                */}
-              </Link>
-            </div>
-
-            {/* Columna 3 - Derecha */}
-            <div className="flex-1 flex flex-col items-end">
-              {[
-                { href: "/media", label: "media", bg: "bg-cream", text: "txt-darkBlue" },
-                { href: "/tickets", label: "tickets", bg: "bg-darkBlue", text: "txt-red" },
-                { href: "https://oldtimesailors.co.uk", label: "merch", bg: "bg-red", text: "txt-cream" },
-                { href: "/reviews", label: "reviews", bg: "bg-darkBlue", text: "txt-cream" },
-                { href: "/our-clients", label: "our clients", bg: "bg-cream", text: "txt-red" },
-                { href: "/services", label: "services", bg: "bg-red", text: "txt-cream" },
-              ].map(({ href, label, bg, text }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className={`octagon my-1 font-titles md:text-2xl flex items-center justify-center ${bg} ${text} w-28 md:w-36 h-8`}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Fila 2 - barra social (solo mobile) */}
-          <div className="w-full space-y-4 flex flex-col">
-            <div className="flex justify-center md:hidden">
-              <Social />
-            </div>
-
-            {/* ✅ Galería mosaicos: COMENTADA por ahora */}
-            {/*
-            <div className="grid grid-cols-2 gap-2 md:hidden">
-              {[
-                "/home/mosaico-1.png",
-                "/home/mosaico-2.png",
-                "/home/mosaico-3.png",
-                "/home/mosaico-4.png",
-              ].map((src, i) => (
-                <div key={src} className="relative aspect-square overflow-hidden rounded-lg">
-                  <Image
-                    src={src}
-                    alt={`Galería ${i + 1}`}
-                    fill
-                    priority={i < 2}
-                    sizes="(max-width: 768px) 50vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-            */}
-          </div>
+    <div className="relative w-screen h-screen overflow-hidden bg-[#1d344a]">
+      {/* ÁREA INTERNA */}
+      <div className="absolute inset-0" style={{ padding: FRAME_PAD }}>
+        <div className="relative w-full h-full overflow-hidden">
+          {assets.landingDesktop ? (
+            <Image
+              src={assets.landingDesktop}
+              alt="Landing Desktop"
+              fill
+              priority
+              className="object-cover"
+              style={{ objectPosition: "center 55%" }}
+              sizes="100vw"
+            />
+          ) : null}
         </div>
-      </main>
+      </div>
 
-      {/* FOOTER: Social en desktop */}
-      <footer className="hidden md:flex mt-auto w-full py-4">
-        <div className="w-full px-4 flex justify-center">
-          <Social className="mx-auto" />
+      {/* MARCO BLANCO + ESQUINAS */}
+      <div className="white-frame pointer-events-none z-20" style={cornerStyle}>
+        <span className="white-corner tl" />
+        <span className="white-corner tr" />
+        <span className="white-corner br" />
+        <span className="white-corner bl" />
+      </div>
+
+      {/* LOGO */}
+      {assets.logo ? (
+        <div className="absolute left-1/2 -translate-x-1/2 z-30" style={{ top: LOGO_TOP }}>
+          <Image src={assets.logo} alt="Logo" width={LOGO_SIZE} height={LOGO_SIZE} priority />
         </div>
-      </footer>
+      ) : null}
 
-      {/* Borde */}
+      {/* DESCRIPTION */}
+      {assets.description ? (
+        <div
+          className="absolute z-30"
+          style={{ top: `calc(${FRAME_PAD} + 8%)`, left: `calc(${FRAME_PAD} + 2%)` }}
+        >
+          <Image src={assets.description} alt="Description" width={180} height={180} priority />
+        </div>
+      ) : null}
+
+      {/* MEMBERSHIPS */}
+      {assets.memberships ? (
+        <div
+          className="absolute z-30"
+          style={{ top: `calc(${FRAME_PAD} + 22%)`, left: `calc(${FRAME_PAD} + 2%)` }}
+        >
+          <Link href="/memberships" className="inline-block">
+            <Image
+              src={assets.memberships}
+              alt="Memberships"
+              width={MEMBERSHIPS_SIZE}
+              height={MEMBERSHIPS_SIZE}
+              priority
+            />
+          </Link>
+        </div>
+      ) : null}
+
+      {/* MENÚ */}
       <div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 z-40 border-[0.8em] border-solid"
-        style={{ borderColor: "#1d344a" }}
-      />
+        className="absolute z-30 flex flex-col items-end"
+        style={{ top: `calc(${FRAME_PAD} + 6%)`, right: `calc(${FRAME_PAD} + 2%)` }}
+      >
+        {[
+          { href: "/media", label: "media", bg: "bg-cream", text: "txt-darkBlue" },
+          { href: "/tickets", label: "tickets", bg: "bg-darkBlue", text: "txt-red" },
+          { href: "https://oldtimesailors.co.uk", label: "merch", bg: "bg-red", text: "txt-cream" },
+          { href: "/reviews", label: "reviews", bg: "bg-darkBlue", text: "txt-cream" },
+          { href: "/our-clients", label: "our clients", bg: "bg-cream", text: "txt-red" },
+          { href: "/services", label: "services", bg: "bg-red", text: "txt-cream" },
+        ].map(({ href, label, bg, text }) => (
+          <Link
+            key={href}
+            href={href}
+            className={`octagon my-1 font-titles md:text-2xl flex items-center justify-center ${bg} ${text} w-28 md:w-36 h-8`}
+          >
+            {label}
+          </Link>
+        ))}
+      </div>
+
+      {/* SOCIAL */}
+      <div className="absolute left-1/2 -translate-x-1/2 z-30" style={{ bottom: `calc(${FRAME_PAD} - 6px)` }}>
+        <Social className="mx-auto" />
+      </div>
+
+     
     </div>
   );
 }
