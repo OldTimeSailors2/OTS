@@ -11,6 +11,14 @@ const ASSET_KEYS = {
   memberships: ["memberships", "membership"],
   description: ["description", "descripcion", "descripción"],
   corner: ["corner", "corners", "corner-detail", "corner_detail", "esquina", "esquinas"],
+
+  //  Social icons (Cloudinary)
+  instagram: ["instagram", "ig", "insta", "instagram-icon", "instagram_icon"],
+  facebook: ["facebook", "fb", "facebook-icon", "facebook_icon"],
+  youtube: ["youtube", "yt", "youtube-icon", "youtube_icon"],
+  whatsapp: ["whatsapp", "wa", "wsp", "whatsapp-icon", "whatsapp_icon"],
+  mail: ["mail", "email", "correo", "envelope", "mail-icon", "email-icon"],
+  spotify: ["spotify", "sp", "spotify-icon", "spotify_icon"],
 };
 
 const fetchLandingAssets = async () => {
@@ -53,6 +61,14 @@ const fetchLandingAssets = async () => {
       memberships: findByAnyName(ASSET_KEYS.memberships)?.secure_url ?? null,
       description: findByAnyName(ASSET_KEYS.description)?.secure_url ?? null,
       corner: findByAnyName(ASSET_KEYS.corner)?.secure_url ?? null,
+
+      //  social icons
+      instagram: findByAnyName(ASSET_KEYS.instagram)?.secure_url ?? null,
+      facebook: findByAnyName(ASSET_KEYS.facebook)?.secure_url ?? null,
+      youtube: findByAnyName(ASSET_KEYS.youtube)?.secure_url ?? null,
+      whatsapp: findByAnyName(ASSET_KEYS.whatsapp)?.secure_url ?? null,
+      mail: findByAnyName(ASSET_KEYS.mail)?.secure_url ?? null,
+      spotify: findByAnyName(ASSET_KEYS.spotify)?.secure_url ?? null,
     };
   } catch (error) {
     console.error("Error fetching landing assets (Cloudinary):", error);
@@ -63,6 +79,13 @@ const fetchLandingAssets = async () => {
       memberships: null,
       description: null,
       corner: null,
+
+      instagram: null,
+      facebook: null,
+      youtube: null,
+      whatsapp: null,
+      mail: null,
+      spotify: null,
     };
   }
 };
@@ -76,7 +99,6 @@ export default async function Home() {
   const LOGO_SIZE = 520;
   const MEMBERSHIPS_SIZE = 170;
 
-  // ✅ Si existe corner, seteamos CSS var
   const cornerStyle = assets.corner ? { "--corner-url": `url('${assets.corner}')` } : undefined;
 
   return (
@@ -165,11 +187,27 @@ export default async function Home() {
       </div>
 
       {/* SOCIAL */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-30" style={{ bottom: `calc(${FRAME_PAD} - 6px)` }}>
-        <Social className="mx-auto" />
+      <div
+        className="absolute left-1/2 -translate-x-1/2 z-30"
+        style={{ bottom: `calc(${FRAME_PAD} - 6px)` }}
+      >
+        {/* ✅ baja 10px sin romper el centrado */}
+        <div style={{ transform: "translateY(10px)" }}>
+          <Social
+            className="landing-social"
+            icons={{
+              instagram: assets.instagram,
+              facebook: assets.facebook,
+              youtube: assets.youtube,
+              whatsapp: assets.whatsapp,
+              mail: assets.mail,
+              spotify: assets.spotify,
+            }}
+            iconSize={{ w: 53, h: 12 }}
+          />
+        </div>
       </div>
 
-     
     </div>
   );
 }

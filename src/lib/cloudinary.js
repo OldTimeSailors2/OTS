@@ -1,4 +1,4 @@
-// src/lib/cloudinary.js (recomendado crear este archivo)
+// src/lib/cloudinary.js 
 import { v2 as cloudinary } from "cloudinary";
 
 function assertEnv(name) {
@@ -7,7 +7,6 @@ function assertEnv(name) {
   return v;
 }
 
-// Configurar una vez
 let configured = false;
 export function getCloudinary() {
   if (!configured) {
