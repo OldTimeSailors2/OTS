@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint"
   },
-   "dependencies": {
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1",
     "@nextui-org/modal": "^2.0.28",
     "@nextui-org/system": "^2.0.15",
     "@nextui-org/theme": "^2.1.17",
@@ -30,7 +33,6 @@
     "sharp": "0.33.1",
     "swr": "^2.2.5"
   },
- 
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/node": "22.10.5",

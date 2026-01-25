@@ -12,6 +12,9 @@ import ViewSwitch from "./ViewSelectorSwitch";
 import { useNavbarColor } from "@/context/NavbarColorProvider";
 import useScrollTrigger from "@/hooks/useScrollTrigger";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+
 const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -124,8 +127,6 @@ const Navbar = () => {
         break;
     }
   }, [pathname]);
-  const OCT_CLIP = "polygon(6% 0%, 94% 0%, 100% 50%, 94% 100%, 6% 100%, 0% 50%)";
-
 
   const isScrolled = useScrollTrigger({ threshold: 0 });
 
@@ -183,72 +184,35 @@ const Navbar = () => {
     setMenuOpen(false);
   }, [pathname]);
 
-  // ✅ MISMO MENÚ “OCTAGON BUTTONS” (como LandingLeftSide)
+  // ✅ MISMO MENÚ “OCTAGON BUTTONS”
   const octagonMenu = useMemo(
     () => [
-      {
-        label: "media",
-        href: "/media",
-        bg: "bg-beigePattern",
-        text: "text-darkBlue",
-      },
-      {
-        label: "tickets",
-        href: "/tickets",
-        bg: "bg-bluePattern",
-        text: "text-lightRed",
-      },
-      {
-        label: "merch",
-        href: "https://oldtimesailors.co.uk/",
-        target: "_blank",
-        bg: "bg-redPattern",
-        text: "text-beige",
-      },
-      {
-        label: "reviews",
-        href: "/reviews",
-        bg: "bg-bluePattern",
-        text: "text-beige",
-      },
-      {
-        label: "our clients",
-        href: "/our-clients",
-        bg: "bg-beigePattern",
-        text: "text-lightRed",
-      },
-      {
-        label: "services",
-        href: "/services",
-        bg: "bg-redPattern",
-        text: "text-beige",
-      },
-      {
-        label: "memberships",
-        href: "/memberships",
-        bg: "bg-beigePattern",
-        text: "text-darkBlue",
-      },
+      { label: "media", href: "/media", bg: "bg-beigePattern", text: "text-darkBlue" },
+      { label: "tickets", href: "/tickets", bg: "bg-bluePattern", text: "text-lightRed" },
+      { label: "merch", href: "https://oldtimesailors.co.uk/", target: "_blank", bg: "bg-redPattern", text: "text-beige" },
+      { label: "reviews", href: "/reviews", bg: "bg-bluePattern", text: "text-beige" },
+      { label: "our clients", href: "/our-clients", bg: "bg-beigePattern", text: "text-lightRed" },
+      { label: "services", href: "/services", bg: "bg-redPattern", text: "text-beige" },
+      { label: "memberships", href: "/memberships", bg: "bg-beigePattern", text: "text-darkBlue" },
     ],
     []
   );
 
   return (
     <div className="fixed top-0 left-0 w-screen z-[120]">
-      {/* ========================= */}
-      {/* TOP BAR (Back + Hamburguesa) */}
-      {/* ========================= */}
+      {/* TOP BAR */}
       <div className="h-12 w-full px-4 flex items-center justify-between bg-[#0f2536] border-b border-white/10">
         <button
           type="button"
           onClick={onBack}
           className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#e6d8bd] text-[#0f2536]
-                     rounded-md border border-[#c8b38a] font-semibold text-sm shadow-sm
-                     hover:opacity-90 active:scale-[0.99] transition"
+                     rounded-md border border-[#c8b38a] text-sm shadow-sm
+                     hover:opacity-90 active:scale-[0.99] transition font-titles
+                     [font-feature-settings:'liga'_0,'clig'_0,'calt'_0]"
           aria-label="Back"
         >
-          <span className="text-base leading-none">←</span>
-          <span>Back</span>
+          <FontAwesomeIcon icon={faArrowLeft} className="text-sm leading-none" />
+          <span>back</span>
         </button>
 
         <button
@@ -262,9 +226,7 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* ========================= */}
-      {/* TU NAVBAR ORIGINAL (sin eliminar nada) */}
-      {/* ========================= */}
+      {/* TU NAVBAR ORIGINAL */}
       <div
         style={getNavbarStyle()}
         className={`w-screen z-[100] flex flex-col justify-between pt-3 px-1 sm:px-4 3xl:px-9 ${
@@ -317,6 +279,7 @@ const Navbar = () => {
             </h1>
           </div>
 
+          {/* ✅ NO TOCO NADA AQUÍ: tus links de media */}
           <div className="flex gap-1.5 xs:gap-2 sm:gap-4 items-center">
             <Link
               className={`${
@@ -415,21 +378,25 @@ const Navbar = () => {
         {viewSelector === true ? <ViewSwitch /> : false}
       </div>
 
-      {/* ========================= */}
-      {/* PANEL MENÚ DESPLEGABLE (con OCTAGON BUTTONS) */}
-      {/* ========================= */}
+      {/* PANEL MENÚ DESPLEGABLE */}
       <div
         className={`fixed top-12 right-0 z-[300] h-[calc(100vh-3rem)] w-[260px] ${
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
         style={{ transition: "transform 180ms ease" }}
       >
-        <div
-          ref={menuRef}
-          className="h-full bg-[#143247] text-[#e6d8bd] border-l border-[#c8b38a] shadow-2xl"
-        >
+        <div ref={menuRef} className="h-full bg-[#143247] text-[#e6d8bd] shadow-2xl">
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-            <span className="font-titles text-lg">Menu</span>
+            <span
+              className="font-titles text-xl sm:text-2xl pb-[1px]"
+              style={{
+                fontVariantLigatures: "none",
+                fontFeatureSettings: '"liga" 0, "clig" 0, "calt" 0',
+              }}
+            >
+              menu
+            </span>
+
             <button
               type="button"
               onClick={() => setMenuOpen(false)}
@@ -440,7 +407,6 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* ✅ aquí van tus botones octagon */}
           <div className="p-3 flex flex-col gap-2 overflow-y-auto h-[calc(100%-56px)]">
             {octagonMenu.map((item) => (
               <Link
