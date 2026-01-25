@@ -11,15 +11,50 @@ const toAbsoluteUrl = (url) => {
   return `${base.replace(/\/$/, "")}${url.startsWith("/") ? "" : "/"}${url}`;
 };
 
+const getYouTubeId = (video) => {
+  // acepta: video.id (si es id), o youtubeUrl
+  console.log("VIDEO ITEM:", video);
+
+  const maybeId = video?.id || video?.youtubeId || video?.youtube_id || null;
+  if (maybeId && typeof maybeId === "string" && maybeId.length <= 20 && !maybeId.includes("http")) {
+    return maybeId;
+  }
+
+  const url = video?.youtubeUrl || video?.url || "";
+  if (!url || typeof url !== "string") return null;
+
+  // youtu.be/ID
+  const m1 = url.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/);
+  if (m1?.[1]) return m1[1];
+
+  // youtube.com/watch?v=ID
+  const m2 = url.match(/[?&]v=([A-Za-z0-9_-]{6,})/);
+  if (m2?.[1]) return m2[1];
+
+  // youtube.com/embed/ID
+  const m3 = url.match(/\/embed\/([A-Za-z0-9_-]{6,})/);
+  if (m3?.[1]) return m3[1];
+
+  return null;
+};
+
 const getRawThumbnail = (video) => {
-  return (
+  // 1) si ya trae thumbnail explícito, úsalo
+  const fromObj =
     video?.thumbnail ??
     video?.attributes?.thumbnail ??
     video?.attributes?.formats?.thumbnail?.url ??
     video?.attributes?.formats?.small?.url ??
     video?.attributes?.thumbnail?.url ??
-    null
-  );
+    null;
+
+  if (fromObj) return fromObj;
+
+  // 2) si es YouTube, genera thumbnail directo desde YouTube
+  const ytId = getYouTubeId(video);
+  if (ytId) return `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`;
+
+  return null;
 };
 
 const Video = ({ video }) => {
@@ -27,9 +62,14 @@ const Video = ({ video }) => {
   const thumbSrc = toAbsoluteUrl(rawThumb);
 
   const blur = video?.blurDataURL ?? video?.attributes?.blurDataURL ?? null;
-  const videoUrl = video?.url ?? video?.attributes?.url ?? "";
 
-  // Si no hay thumbnail, renderizamos un placeholder (evita “broken / blur raro”)
+  // url para abrir en el modal
+  const videoUrl =
+    video?.youtubeUrl ||
+    video?.url ||
+    video?.attributes?.url ||
+    "";
+
   if (!thumbSrc) {
     return (
       <div
@@ -57,7 +97,6 @@ const Video = ({ video }) => {
         src={thumbSrc}
         alt="video thumbnail"
         fill
-        // sizes basado en TUS widths reales (máximo 208px en 4k)
         sizes="(max-width: 640px) 72px, (max-width: 768px) 80px, (max-width: 900px) 96px, (max-width: 1280px) 72px, (max-width: 1536px) 82px, (max-width: 1920px) 112px, (max-width: 2560px) 144px, 208px"
         style={{ objectFit: "cover", objectPosition: "center" }}
         className="rounded-sm"

@@ -3,12 +3,10 @@ import Image from "next/image";
 import DynamicDecoMedia from "@/components/DynamicDecoMedia";
 import MainDiv from "@/components/MainDiv";
 import dynamic from "next/dynamic";
-import { getCloudinary } from "@/lib/cloudinary";
-import {
-  formatPhotos,
-  formatVideos,
-  formatSongs,
-} from "@/helpers/formatApiResponses";
+
+// ❌ Estos no se usan aquí (los dejo fuera para que no haya warnings)
+/// import { getCloudinary } from "@/lib/cloudinary";
+/// import { formatPhotos, formatVideos, formatSongs } from "@/helpers/formatApiResponses";
 
 export const metadata = {
   title: "Media",
@@ -47,6 +45,62 @@ const SplideCarousel = dynamic(() => import("@/components/SplideCarousel"), {
   ),
 });
 
+/**
+ * Lee una lista de videos de YouTube desde Cloudinary (raw JSON).
+ * Espera un JSON tipo:
+ * [
+ *   { "id": "P9DqYzd4aB8", "title": "Behind the scenes", "youtubeUrl": "https://www.youtube.com/watch?v=P9DqYzd4aB8" },
+ *   ...
+ * ]
+ */
+const fetchYouTubeJson = async () => {
+  const jsonUrl = process.env.NEXT_PUBLIC_VIDEOS_JSON_URL;
+
+  // Si no hay env, simplemente no agregamos videos de YT
+  if (!jsonUrl) return [];
+
+  // Acepta URL completa, o path relativo tipo "raw/upload/..../file.json"
+  const absoluteUrl = jsonUrl.startsWith("http")
+    ? jsonUrl
+    : `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/${jsonUrl.replace(
+      /^\//,
+      ""
+    )}`;
+
+  try {
+    const res = await fetch(absoluteUrl, { cache: "no-store" });
+    if (!res.ok) {
+      console.warn(
+        `YouTube JSON fetch failed: ${res.status} ${res.statusText} -> ${absoluteUrl}`
+      );
+      return [];
+    }
+
+    const data = await res.json();
+    if (!Array.isArray(data)) return [];
+
+    return data
+      .map((v) => ({
+        // normalizamos a la misma forma que ya usa tu UI:
+        id: v?.id || v?.youtubeId || v?.youtube_id || v?.youtubeUrl,
+        title: v?.title || "video",
+        url: v?.youtubeUrl || v?.url || "",
+        youtubeUrl: v?.youtubeUrl || v?.url || "",
+        source: "youtube",
+        // Thumbnail de YouTube (si no te viene en el JSON)
+        thumbnail:
+          v?.thumbnail ||
+          (v?.id
+            ? `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`
+            : null),
+      }))
+      .filter((v) => v.youtubeUrl);
+  } catch (e) {
+    console.error("Error reading YouTube JSON:", e);
+    return [];
+  }
+};
+
 export const fetchMediaData = async () => {
   try {
     const cloudinary = require("cloudinary").v2;
@@ -66,10 +120,11 @@ export const fetchMediaData = async () => {
       return res?.resources ?? [];
     };
 
-    const [photos, videos, songs] = await Promise.all([
+    const [photos, videos, songs, ytList] = await Promise.all([
       getFolder("Images", "image"),
       getFolder("Videos", "video"),
       getFolder("Sounds", "video"), // audio -> video
+      fetchYouTubeJson(), // ✅ YT JSON desde Cloudinary
     ]);
 
     const formattedPhotos = photos.map((r) => ({
@@ -80,11 +135,29 @@ export const fetchMediaData = async () => {
       height: r.height,
     }));
 
-    const formattedVideos = videos.map((r) => ({
+    const isRealVideo = (r) => {
+      const pid = (r?.public_id || "").toLowerCase();
+      const fmt = (r?.format || "").toLowerCase();
+
+      // evita que tu JSON se meta como "video"
+      if (pid.endsWith(".json")) return false;
+      if (fmt === "json") return false;
+
+      // opcional: lista blanca de formatos de video
+      const ok = ["mp4", "mov", "webm", "m4v", "avi", "mkv"];
+      if (fmt && !ok.includes(fmt)) return false;
+
+      return true;
+    };
+
+    const realVideos = (videos || []).filter(isRealVideo);
+
+    const formattedVideos = realVideos.map((r) => ({
       id: r.asset_id,
       public_id: r.public_id,
       url: r.secure_url,
       duration: r.duration,
+      source: "cloudinary",
       thumbnail: cloudinary.url(r.public_id, {
         resource_type: "video",
         format: "jpg",
@@ -93,6 +166,7 @@ export const fetchMediaData = async () => {
       }),
     }));
 
+
     const formattedSongs = songs.map((r) => ({
       id: r.asset_id,
       public_id: r.public_id,
@@ -100,17 +174,31 @@ export const fetchMediaData = async () => {
       duration: r.duration,
     }));
 
+    // ✅ Unimos Cloudinary videos + YouTube videos
+    //    (sin duplicar si por casualidad hubiera mismo url)
+    const mergedVideos = [...formattedVideos, ...(ytList || [])].filter(
+      (v, idx, arr) => {
+        const key = v.youtubeUrl || v.url;
+        return arr.findIndex((x) => (x.youtubeUrl || x.url) === key) === idx;
+      }
+    );
+
     console.log("Cloudinary photos:", formattedPhotos.length);
     console.log("Cloudinary videos:", formattedVideos.length);
+    console.log("YouTube videos (JSON):", ytList?.length || 0);
+    console.log("Merged videos:", mergedVideos.length);
     console.log("Cloudinary songs:", formattedSongs.length);
 
-    return { formattedSongs, formattedVideos, formattedPhotos };
+    return {
+      formattedSongs,
+      formattedVideos: mergedVideos, // ✅ importante: devolvemos los merged
+      formattedPhotos,
+    };
   } catch (error) {
     console.error("Error fetching media data (Cloudinary):", error);
     return { formattedSongs: [], formattedVideos: [], formattedPhotos: [] };
   }
 };
-
 
 const Media = async () => {
   const { formattedSongs, formattedVideos, formattedPhotos } =
