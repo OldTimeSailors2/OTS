@@ -25,33 +25,9 @@ const Navbar = () => {
   const [viewSelector, setViewSelector] = useState(false);
   const { navbarColor } = useNavbarColor();
 
-  // ✅ NUEVO: menú desplegable
+  // ✅ Menú desplegable
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
-
-  // ✅ NUEVO: items del menú (ajusta rutas si quieres)
-  const menuSections = useMemo(
-    () => [
-      {
-        items: [
-          { label: "Media", href: "/media" },
-          { label: "Music", href: "/media/music" },
-          { label: "Videos", href: "/media/videos" },
-          { label: "Photos", href: "/media/photos" },
-        ],
-      },
-      {
-        items: [
-          { label: "Tour / Tickets", href: "/tickets" },
-          { label: "Merch", href: "/merch" },
-          { label: "Fan Page", href: "/fan-page" },
-          { label: "Book the Band", href: "/book-the-band" },
-          { label: "Contact", href: "/contact" },
-        ],
-      },
-    ],
-    []
-  );
 
   const fixedRoutes = [
     "/tickets",
@@ -68,11 +44,9 @@ const Navbar = () => {
     pathname.startsWith("/tickets/") && !fixedRoutes.includes(pathname);
 
   const getBackgroundColor = (path) => {
-    if (path === "/media") {
-      return "rgba(35, 48, 64, 0.8)";
-    } else if (path === "/reviews") {
-      return "rgba(221, 50, 84, 0.8)";
-    } else return "transparent";
+    if (path === "/media") return "rgba(35, 48, 64, 0.8)";
+    if (path === "/reviews") return "rgba(221, 50, 84, 0.8)";
+    return "transparent";
   };
 
   useEffect(() => {
@@ -150,31 +124,26 @@ const Navbar = () => {
         break;
     }
   }, [pathname]);
+  const OCT_CLIP = "polygon(6% 0%, 94% 0%, 100% 50%, 94% 100%, 6% 100%, 0% 50%)";
+
 
   const isScrolled = useScrollTrigger({ threshold: 0 });
 
   const getNavbarBackground = () => {
     if (!isDynamicRoute || !isScrolled) return "";
-
-    if (navbarColor === "dark") {
-      return "bg-beigePatternMobile bg-cover";
-    } else if (navbarColor === "light") {
-      return "bg-[#1f344a]";
-    }
-
+    if (navbarColor === "dark") return "bg-beigePatternMobile bg-cover";
+    if (navbarColor === "light") return "bg-[#1f344a]";
     return "";
   };
 
   const getNavbarStyle = () => {
     if (isDynamicRoute && isScrolled && navbarColor === "light") {
-      return {
-        backgroundColor: "#1f344a",
-      };
+      return { backgroundColor: "#1f344a" };
     }
     return {};
   };
 
-  // ✅ NUEVO: Back
+  // ✅ Back
   const onBack = () => {
     try {
       router.back();
@@ -186,7 +155,7 @@ const Navbar = () => {
     }
   };
 
-  // ✅ NUEVO: cerrar menú con ESC
+  // ✅ cerrar menú con ESC
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.key === "Escape") setMenuOpen(false);
@@ -195,7 +164,7 @@ const Navbar = () => {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  // ✅ NUEVO: click afuera
+  // ✅ click afuera
   useEffect(() => {
     if (!menuOpen) return;
 
@@ -209,15 +178,65 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", onMouseDown);
   }, [menuOpen]);
 
-  // ✅ NUEVO: cerrar al navegar
+  // ✅ cerrar al navegar
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
 
+  // ✅ MISMO MENÚ “OCTAGON BUTTONS” (como LandingLeftSide)
+  const octagonMenu = useMemo(
+    () => [
+      {
+        label: "media",
+        href: "/media",
+        bg: "bg-beigePattern",
+        text: "text-darkBlue",
+      },
+      {
+        label: "tickets",
+        href: "/tickets",
+        bg: "bg-bluePattern",
+        text: "text-lightRed",
+      },
+      {
+        label: "merch",
+        href: "https://oldtimesailors.co.uk/",
+        target: "_blank",
+        bg: "bg-redPattern",
+        text: "text-beige",
+      },
+      {
+        label: "reviews",
+        href: "/reviews",
+        bg: "bg-bluePattern",
+        text: "text-beige",
+      },
+      {
+        label: "our clients",
+        href: "/our-clients",
+        bg: "bg-beigePattern",
+        text: "text-lightRed",
+      },
+      {
+        label: "services",
+        href: "/services",
+        bg: "bg-redPattern",
+        text: "text-beige",
+      },
+      {
+        label: "memberships",
+        href: "/memberships",
+        bg: "bg-beigePattern",
+        text: "text-darkBlue",
+      },
+    ],
+    []
+  );
+
   return (
     <div className="fixed top-0 left-0 w-screen z-[120]">
       {/* ========================= */}
-      {/* ✅ NUEVO: TOP BAR (Back + Hamburguesa) */}
+      {/* TOP BAR (Back + Hamburguesa) */}
       {/* ========================= */}
       <div className="h-12 w-full px-4 flex items-center justify-between bg-[#0f2536] border-b border-white/10">
         <button
@@ -244,7 +263,7 @@ const Navbar = () => {
       </div>
 
       {/* ========================= */}
-      {/* ✅ TU NAVBAR ORIGINAL (sin eliminar nada) */}
+      {/* TU NAVBAR ORIGINAL (sin eliminar nada) */}
       {/* ========================= */}
       <div
         style={getNavbarStyle()}
@@ -397,10 +416,10 @@ const Navbar = () => {
       </div>
 
       {/* ========================= */}
-      {/* ✅ NUEVO: PANEL MENÚ DESPLEGABLE (derecha) */}
+      {/* PANEL MENÚ DESPLEGABLE (con OCTAGON BUTTONS) */}
       {/* ========================= */}
       <div
-        className={`fixed top-12 right-0 z-[300] h-[calc(100vh-3rem)] w-72 ${
+        className={`fixed top-12 right-0 z-[300] h-[calc(100vh-3rem)] w-[260px] ${
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
         style={{ transition: "transform 180ms ease" }}
@@ -421,25 +440,21 @@ const Navbar = () => {
             </button>
           </div>
 
-          <nav className="py-2">
-            {menuSections.map((section, idx) => (
-              <div
-                key={idx}
-                className={`${idx > 0 ? "mt-2 pt-2 border-t border-white/10" : ""}`}
+          {/* ✅ aquí van tus botones octagon */}
+          <div className="p-3 flex flex-col gap-2 overflow-y-auto h-[calc(100%-56px)]">
+            {octagonMenu.map((item) => (
+              <Link
+                key={item.label}
+                className={`octagon flex items-center justify-center ${item.bg} bg-contain`}
+                href={item.href}
+                target={item.target}
               >
-                {section.items.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="px-4 py-2.5 flex items-center justify-between hover:bg-white/10 transition"
-                  >
-                    <span className="font-medium">{item.label}</span>
-                    <span className="text-white/60">›</span>
-                  </Link>
-                ))}
-              </div>
+                <p className={`font-titles ${item.text} text-xl sm:text-2xl pb-[1px] text-center`}>
+                  {item.label}
+                </p>
+              </Link>
             ))}
-          </nav>
+          </div>
         </div>
       </div>
     </div>
