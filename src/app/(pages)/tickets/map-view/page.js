@@ -36,23 +36,7 @@ const normalizeMarkers = (markers) => {
 
 const fetchMarkers = async () => {
   try {
-    const cloudinary = require("cloudinary").v2;
-
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-      secure: true,
-    });
-
-    // 🔁 Cambia el public_id al que uses en Cloudinary
-    const jsonPublicId = process.env.NEXT_PUBLIC_TICKETS_JSON_URL;
-
-    const rawResource = await cloudinary.api.resource(jsonPublicId, {
-      resource_type: "raw",
-    });
-
-    const jsonUrl = rawResource?.secure_url;
+    const jsonUrl = process.env.NEXT_PUBLIC_TICKETS_JSON_URL; // URL completa
     if (!jsonUrl) return [];
 
     const res = await fetch(jsonUrl, { cache: "no-store" });
@@ -61,10 +45,11 @@ const fetchMarkers = async () => {
     const markers = await res.json();
     return normalizeMarkers(markers);
   } catch (error) {
-    console.error("Error fetching markers (Cloudinary):", error);
+    console.error("Error fetching markers (Cloudinary URL):", error);
     return [];
   }
 };
+
 
 const MapView = async () => {
   const markersList = await fetchMarkers();
