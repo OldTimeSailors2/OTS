@@ -46,7 +46,7 @@ const fetchMarkers = async () => {
     });
 
     // 🔁 Cambia el public_id al que uses en Cloudinary
-    const jsonPublicId = "tickets/markers.json";
+    const jsonPublicId = process.env.NEXT_PUBLIC_TICKETS_JSON_URL;
 
     const rawResource = await cloudinary.api.resource(jsonPublicId, {
       resource_type: "raw",

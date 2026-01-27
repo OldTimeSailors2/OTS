@@ -4,10 +4,6 @@ import DynamicDecoMedia from "@/components/DynamicDecoMedia";
 import MainDiv from "@/components/MainDiv";
 import dynamic from "next/dynamic";
 
-// ❌ Estos no se usan aquí (los dejo fuera para que no haya warnings)
-/// import { getCloudinary } from "@/lib/cloudinary";
-/// import { formatPhotos, formatVideos, formatSongs } from "@/helpers/formatApiResponses";
-
 export const metadata = {
   title: "Media",
   description: "Check some of our music, photos and videos",
@@ -45,21 +41,13 @@ const SplideCarousel = dynamic(() => import("@/components/SplideCarousel"), {
   ),
 });
 
-/**
- * Lee una lista de videos de YouTube desde Cloudinary (raw JSON).
- * Espera un JSON tipo:
- * [
- *   { "id": "P9DqYzd4aB8", "title": "Behind the scenes", "youtubeUrl": "https://www.youtube.com/watch?v=P9DqYzd4aB8" },
- *   ...
- * ]
- */
+
 const fetchYouTubeJson = async () => {
   const jsonUrl = process.env.NEXT_PUBLIC_VIDEOS_JSON_URL;
 
-  // Si no hay env, simplemente no agregamos videos de YT
   if (!jsonUrl) return [];
 
-  // Acepta URL completa, o path relativo tipo "raw/upload/..../file.json"
+  // URL completa, o path relativo tipo "raw/upload/..../file.json"
   const absoluteUrl = jsonUrl.startsWith("http")
     ? jsonUrl
     : `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/${jsonUrl.replace(
@@ -81,13 +69,11 @@ const fetchYouTubeJson = async () => {
 
     return data
       .map((v) => ({
-        // normalizamos a la misma forma que ya usa tu UI:
         id: v?.id || v?.youtubeId || v?.youtube_id || v?.youtubeUrl,
         title: v?.title || "video",
         url: v?.youtubeUrl || v?.url || "",
         youtubeUrl: v?.youtubeUrl || v?.url || "",
         source: "youtube",
-        // Thumbnail de YouTube (si no te viene en el JSON)
         thumbnail:
           v?.thumbnail ||
           (v?.id
