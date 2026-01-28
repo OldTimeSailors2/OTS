@@ -24,12 +24,7 @@ const fetchClientsImages = async () => {
 
     // Si ya usas CLOUDINARY_URL, no hace falta config.
     // Si no, usa tus envs:
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-      secure: true,
-    });
+   cloudinary.config(process.env.CLOUDINARY_URL);
 
     // Cambia "Clients" por el folder real en tu Cloudinary
     const res = await cloudinary.api.resources_by_asset_folder("Clients", {

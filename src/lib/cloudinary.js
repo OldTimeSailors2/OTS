@@ -10,12 +10,7 @@ function assertEnv(name) {
 let configured = false;
 export function getCloudinary() {
   if (!configured) {
-    cloudinary.config({
-      cloud_name: assertEnv("CLOUDINARY_CLOUD_NAME"),
-      api_key: assertEnv("CLOUDINARY_API_KEY"),
-      api_secret: assertEnv("CLOUDINARY_API_SECRET"),
-      secure: true,
-    });
+  cloudinary.config(process.env.CLOUDINARY_URL);
     configured = true;
   }
   return cloudinary;

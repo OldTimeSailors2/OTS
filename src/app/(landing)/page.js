@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Social from "@/components/Social";
 
+
+
+
 const FOLDER = "Images/ImageLandingDesktop";
 
 const ASSET_KEYS = {
@@ -25,12 +28,7 @@ const fetchLandingAssets = async () => {
   try {
     const cloudinary = require("cloudinary").v2;
 
-    cloudinary.config({
-      secure: true,
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-    });
+  cloudinary.config(process.env.CLOUDINARY_URL);
 
     const res = await cloudinary.api.resources_by_asset_folder(FOLDER, {
       resource_type: "image",

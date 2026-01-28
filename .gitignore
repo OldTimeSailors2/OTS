@@ -1,5 +1,15 @@
-/.next
-/node_modules
-.env
+# Dependencies
+/node_modules/
+
+# Next.js
+/.next/
+/out/
+
+# Builds
 /dist/
 /build/
+
+# Env files (do not commit secrets)
+.env
+.env.*
+!.env.example
