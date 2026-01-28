@@ -59,12 +59,31 @@ const PhotosDisplay = () => {
     },
   };
 
-  if (!loaded || !Splide || !SplideSlide || !Modal.current || !ModalContent.current) {
+  if (
+    !loaded ||
+    !Splide ||
+    !SplideSlide ||
+    !Modal.current ||
+    !ModalContent.current
+  ) {
     return null;
   }
 
   const DynamicModal = Modal.current;
   const DynamicModalContent = ModalContent.current;
+
+  // Helper para construir URL de imagen:
+  // - Si hay loader (NEXT_PUBLIC_LOADER_API), lo usa
+  // - Si NO hay loader, usa la URL directa (Cloudinary)
+  const buildImgSrc = (rawSrc) => {
+    const src = String(rawSrc || "").trim();
+    if (!src) return "";
+
+    const loader = process.env.NEXT_PUBLIC_LOADER_API;
+    if (!loader) return src;
+
+    return `${loader}?url=${encodeURIComponent(src)}`;
+  };
 
   return (
     <DynamicModal
@@ -83,27 +102,33 @@ const PhotosDisplay = () => {
       <DynamicModalContent>
         <Splide options={options}>
           {photoList.map((photo) => {
-            const src =
+            const rawSrc =
               photo?.attributes?.formats?.xl?.url ||
               photo?.attributes?.url ||
               photo?.url ||
               "";
 
+            const src = buildImgSrc(rawSrc);
             const blurDataURL = photo?.blurDataURL;
 
             return (
               <SplideSlide key={photo?.id ?? photo?.public_id ?? src}>
-                <Image
-                  src={src}
-                  alt={`Slide ${photo?.id ?? ""}`}
-                  width={500}
-                  height={500}
-                  className="w-[98vw] h-[98vw] xl:h-[95dvh]"
-                  sizes="(max-width: 1280px) 95vw, 95dvh"
-                  style={{ objectFit: "contain" }}
-                  placeholder={blurDataURL ? "blur" : "empty"}
-                  blurDataURL={blurDataURL}
-                />
+                {/* viene vacío, no intenta renderizar Image */}
+                {src ? (
+                  <Image
+                    src={src}
+                    alt={`Slide ${photo?.id ?? ""}`}
+                    width={500}
+                    height={500}
+                    className="w-[98vw] h-[98vw] xl:h-[95dvh]"
+                    sizes="(max-width: 1280px) 95vw, 95dvh"
+                    style={{ objectFit: "contain" }}
+                    placeholder={blurDataURL ? "blur" : "empty"}
+                    blurDataURL={blurDataURL}
+                    // Si el loader externo falla con Next optimizer, descomenta:
+                    // unoptimized
+                  />
+                ) : null}
               </SplideSlide>
             );
           })}

@@ -8,50 +8,63 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 const LoaderContext = createContext({});
 
 export const LoaderProvider = ({ children }) => {
-  const loaderAPI = process.env.NEXT_PUBLIC_LOADER_API;
+  const loaderAPI = process.env.NEXT_PUBLIC_LOADER_API || ""; // ✅ fallback
   const warm = 180000;
   const interval = 172800000;
   const warmTimer = useRef(null);
-  let a = 0;
+
+  // ✅ Si no hay loaderAPI, no hacemos nada
+  const isLoaderEnabled = Boolean(loaderAPI);
+
+  // ✅ Reintentos controlados
+  const attemptsRef = useRef(0);
   const maxA = 3;
 
   const setWarm = () => {
+    if (!isLoaderEnabled) return;
+
     fetch(loaderAPI)
       .then((response) => {
         if (!response.ok) {
-          console.error(`Warm error ${response.status}`);
-          if (a < maxA) {
+          console.warn(`Warm error ${response.status}`);
+          if (attemptsRef.current < maxA) {
+            attemptsRef.current += 1;
             setTimeout(setWarm, 60000);
-            a++;
           }
         } else {
-          console.log("Warm");
+          // console.log("Warm");
+          attemptsRef.current = 0;
         }
       })
       .catch((error) => {
-        console.error("Warm error:", error);
+        console.warn("Warm error:", error?.message || error);
       });
   };
 
   const enhancedFetcher = async (url) => {
-    if (warmTimer.current) {
-      clearTimeout(warmTimer.current);
-    }
+    // ✅ si no hay url (loader deshabilitado), devolvemos settings vacíos
+    if (!url) return {};
+
+    if (warmTimer.current) clearTimeout(warmTimer.current);
     warmTimer.current = setTimeout(setWarm, interval - warm);
 
     return fetcher(url);
   };
 
-  const { data, error } = useSWR(loaderAPI, enhancedFetcher, {
-    refreshInterval: interval,
+  // ✅ Si loader no está habilitado, SWR no debe ejecutarse
+  const { data, error } = useSWR(isLoaderEnabled ? loaderAPI : null, enhancedFetcher, {
+    refreshInterval: isLoaderEnabled ? interval : 0,
+    revalidateOnFocus: false,
   });
 
   useEffect(() => {
-    if (error) console.error("Failed to fetch settings:", error);
+    if (error) console.warn("Loader settings fetch failed:", error?.message || error);
   }, [error]);
 
   return (
-    <LoaderContext.Provider value={data}>{children}</LoaderContext.Provider>
+    <LoaderContext.Provider value={data || {}}>
+      {children}
+    </LoaderContext.Provider>
   );
 };
 
