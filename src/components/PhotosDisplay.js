@@ -4,6 +4,14 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import useMedia from "@/hooks/useMedia";
 
+const DEBUG = process.env.NEXT_PUBLIC_DEBUG_MEDIA === "1";
+
+const getCloudinarySrc = (photo) => {
+  if (!photo) return "";
+  if (typeof photo === "string") return photo;
+  return String(photo.url || photo.secure_url || "").trim();
+};
+
 const PhotosDisplay = () => {
   const {
     isPhotoModalOpen,
@@ -37,6 +45,14 @@ const PhotosDisplay = () => {
     }
   }, [isPhotoModalOpen, loaded]);
 
+  useEffect(() => {
+    if (!DEBUG) return;
+    console.log("[PhotosDisplay] open:", isPhotoModalOpen);
+    console.log("[PhotosDisplay] clickedPhotoIndex:", clickedPhotoIndex);
+    console.log("[PhotosDisplay] photoList length:", photoList?.length || 0);
+    if (photoList?.length) console.log("[PhotosDisplay] first photo:", photoList[0]);
+  }, [isPhotoModalOpen, clickedPhotoIndex, photoList]);
+
   const handleClose = () => {
     closePhotoModal();
     deselectPhoto();
@@ -59,29 +75,12 @@ const PhotosDisplay = () => {
     },
   };
 
-  if (
-    !loaded ||
-    !Splide ||
-    !SplideSlide ||
-    !Modal.current ||
-    !ModalContent.current
-  ) {
+  if (!loaded || !Splide || !SplideSlide || !Modal.current || !ModalContent.current) {
     return null;
   }
 
   const DynamicModal = Modal.current;
   const DynamicModalContent = ModalContent.current;
-
-  // ✅ Cloudinary-only:
-  // esperamos que cada item venga como:
-  // { id, url, public_id?, width?, height?, blurDataURL? }
-  const getCloudinarySrc = (photo) => {
-    const src = String(photo?.url || photo?.secure_url || "").trim();
-    // opcional: valida que sea url absoluta
-    if (!src || (!src.startsWith("https://") && !src.startsWith("http://")))
-      return "";
-    return src;
-  };
 
   return (
     <DynamicModal
@@ -99,28 +98,29 @@ const PhotosDisplay = () => {
     >
       <DynamicModalContent>
         <Splide options={options}>
-          {photoList.map((photo, idx) => {
+          {(photoList || []).map((photo, idx) => {
             const src = getCloudinarySrc(photo);
-            const blurDataURL = photo?.blurDataURL || null;
 
-            const key = photo?.id ?? photo?.public_id ?? src ?? String(idx);
+            if (DEBUG) console.log("[PhotosDisplay] slide", idx, "src:", src);
 
             return (
-              <SplideSlide key={key}>
+              <SplideSlide key={photo?.id ?? photo?.public_id ?? src ?? idx}>
                 {src ? (
                   <Image
                     src={src}
-                    alt={`Slide ${photo?.public_id ?? photo?.id ?? ""}`}
-                    width={500}
-                    height={500}
+                    alt={photo?.public_id ? `Slide ${photo.public_id}` : `Slide ${idx}`}
+                    width={1200}
+                    height={1200}
                     className="w-[98vw] h-[98vw] xl:h-[95dvh]"
                     sizes="(max-width: 1280px) 95vw, 95dvh"
                     style={{ objectFit: "contain" }}
-                    placeholder={blurDataURL ? "blur" : "empty"}
-                    blurDataURL={blurDataURL || undefined}
-                 
+                    unoptimized
+                    onError={() => console.error("[PhotosDisplay] Image failed:", src, photo)}
+                    onLoadingComplete={() => DEBUG && console.log("[PhotosDisplay] loaded:", src)}
                   />
-                ) : null}
+                ) : (
+                  <div className="w-[98vw] h-[98vw] xl:h-[95dvh] bg-black" />
+                )}
               </SplideSlide>
             );
           })}
