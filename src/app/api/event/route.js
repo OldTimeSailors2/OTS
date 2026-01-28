@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
 
 const normalizeMarkers = (markers) => {
   if (!Array.isArray(markers)) return [];
@@ -20,41 +19,24 @@ const normalizeMarkers = (markers) => {
 
 export async function GET() {
   try {
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-      secure: true,
-    });
+    // ✅ Usa la URL pública (NO Admin API)
+    const jsonUrl = process.env.NEXT_PUBLIC_TICKETS_JSON_URL;
 
-    // 🔁 Cambia este public_id al que uses en Cloudinary
-    const jsonPublicId = "tickets/markers.json";
-
-    // 1) Obtener la URL del raw file desde Cloudinary
-    const rawResource = await cloudinary.api.resource(jsonPublicId, {
-      resource_type: "raw",
-    });
-
-    const jsonUrl = rawResource?.secure_url;
     if (!jsonUrl) {
       return NextResponse.json([], { status: 200 });
     }
 
-    // 2) Descargar el JSON desde la URL segura
     const res = await fetch(jsonUrl, { cache: "no-store" });
     if (!res.ok) {
+      // No rompas el build; responde vacío
       return NextResponse.json([], { status: 200 });
     }
 
     const markers = await res.json();
-    const formattedMarkers = normalizeMarkers(markers);
-
-    return NextResponse.json(formattedMarkers);
+    return NextResponse.json(normalizeMarkers(markers), { status: 200 });
   } catch (error) {
-    console.error("Error fetching markers (Cloudinary):", error);
-    return NextResponse.json(
-      { error: "Failed to fetch events" },
-      { status: 500 },
-    );
+    // ✅ No loggees objetos gigantes que puedan incluir secrets
+    console.warn("Error fetching markers (Cloudinary URL):", error?.message || error);
+    return NextResponse.json([], { status: 200 });
   }
 }
