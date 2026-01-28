@@ -2,6 +2,10 @@
 const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
+
+    // ✅ Esto va aquí (global), NO dentro de remotePatterns
+    unoptimized: true,
+
     remotePatterns: [
       {
         protocol: "https",
