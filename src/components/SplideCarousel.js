@@ -14,6 +14,7 @@ import useMusicPlayer from "@/hooks/useMusicPlayer";
 import "./carousel-styles.css";
 
 const SplideCarousel = ({ mediaType }) => {
+  const media = useMedia();
   const {
     playlist = [],
     videoList = [],
@@ -23,10 +24,10 @@ const SplideCarousel = ({ mediaType }) => {
     openVideoModal,
     selectPhoto,
     openPhotoModal,
-  } = useMedia();
+  } = media;
 
-  const { playSong, currentSong, isPlaying, togglePlayPause } =
-    useMusicPlayer();
+  const music = useMusicPlayer();
+  const { playSong, currentSong, isPlaying, togglePlayPause } = music;
 
   const playSongRef = useRef(playSong);
   const currentSongRef = useRef(currentSong);
@@ -39,6 +40,28 @@ const SplideCarousel = ({ mediaType }) => {
     togglePlayPauseRef.current = togglePlayPause;
     isPlayingRef.current = isPlaying;
   }, [playSong, currentSong, togglePlayPause, isPlaying]);
+
+  // ✅ Log inicial: confirma que el componente monta y tiene data/funciones
+  useEffect(() => {
+    console.log("[SplideCarousel] mounted", {
+      mediaType,
+      counts: {
+        songs: playlist?.length || 0,
+        videos: videoList?.length || 0,
+        photos: photoList?.length || 0,
+      },
+      functions: {
+        openModal: typeof openModal,
+        selectVideo: typeof selectVideo,
+        openVideoModal: typeof openVideoModal,
+        selectPhoto: typeof selectPhoto,
+        openPhotoModal: typeof openPhotoModal,
+      },
+      currentSong: currentSongRef.current?.id ?? null,
+      isPlaying: isPlayingRef.current ?? null,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mediaType]);
 
   const getBreakpoints = (type) => {
     switch (type) {
@@ -84,7 +107,7 @@ const SplideCarousel = ({ mediaType }) => {
             arrows: false,
             drag: true,
             keyboard: false,
-            padding: "6%",
+Combine: "6%",
           },
         };
 
@@ -148,56 +171,122 @@ const SplideCarousel = ({ mediaType }) => {
     return typeof el?.closest === "function" ? el.closest(selector) : null;
   };
 
-  const handleSlideClick = (eventLike) => {
-    if (!eventLike) return;
+  const handleClickCapture = (e) => {
+    // ✅ Log básico del click
+    console.log("[SplideCarousel] click capture", {
+      mediaType,
+      targetTag: e?.target?.tagName,
+      targetClass: e?.target?.className,
+    });
 
-    switch (mediaType) {
-      case "song": {
-        const target = getClosest(eventLike, "[data-song-id]");
-        if (!target) return;
+    if (!e) return;
 
-        // ✅ NO Number() porque asset_id es string
-        const songId = target.getAttribute("data-song-id");
-        if (!songId) return;
-
-        if (currentSongRef.current?.id === songId) {
-          openModal?.();
-        } else {
-          playSongRef.current?.(songId);
-          openModal?.();
-        }
-        break;
-      }
-
-      case "video": {
-        const target = getClosest(eventLike, "[data-video-url]");
-        if (!target) return;
-
-        const videoUrl = target.getAttribute("data-video-url");
-        if (!videoUrl) return;
-
-        if (isPlayingRef.current) togglePlayPauseRef.current?.();
-        selectVideo?.(videoUrl);
-        openVideoModal?.();
-        break;
-      }
-
-      case "photo": {
-        const target = getClosest(eventLike, "[data-photo-index]");
-        if (!target) return;
-
-        const idxStr = target.getAttribute("data-photo-index");
-        const idx = Number(idxStr);
-        if (Number.isNaN(idx)) return;
-
-        selectPhoto?.(idx);
-        openPhotoModal?.();
-        break;
-      }
-
-      default:
-        break;
+    // Evita que arrows disparen modal
+    const isArrow = getClosest(e, ".splide__arrow");
+    if (isArrow) {
+      console.log("[SplideCarousel] click ignored: arrow");
+      return;
     }
+
+    // ✅ Detecta dónde clickeaste
+    const songEl = getClosest(e, "[data-song-id]");
+    const videoEl = getClosest(e, "[data-video-url]");
+    const photoEl = getClosest(e, "[data-photo-index]");
+
+    console.log("[SplideCarousel] closest data elements", {
+      hasSongEl: Boolean(songEl),
+      hasVideoEl: Boolean(videoEl),
+      hasPhotoEl: Boolean(photoEl),
+      songId: songEl?.getAttribute?.("data-song-id") ?? null,
+      videoUrl: videoEl?.getAttribute?.("data-video-url") ?? null,
+      photoIndex: photoEl?.getAttribute?.("data-photo-index") ?? null,
+    });
+
+    // ✅ Ejecuta según mediaType
+    if (mediaType === "song") {
+      const target = songEl;
+      if (!target) {
+        console.warn("[SplideCarousel] SONG click: no data-song-id found");
+        return;
+      }
+
+      const songId = target.getAttribute("data-song-id");
+      console.log("[SplideCarousel] SONG click -> songId:", songId);
+
+      if (!songId) return;
+
+      console.log("[SplideCarousel] SONG funcs", {
+        openModal: typeof openModal,
+        playSong: typeof playSongRef.current,
+      });
+
+      if (currentSongRef.current?.id === songId) {
+        console.log("[SplideCarousel] SONG -> current song, opening modal");
+        openModal?.();
+      } else {
+        console.log("[SplideCarousel] SONG -> play + open modal");
+        playSongRef.current?.(songId);
+        openModal?.();
+      }
+      return;
+    }
+
+    if (mediaType === "video") {
+      const target = videoEl;
+      if (!target) {
+        console.warn("[SplideCarousel] VIDEO click: no data-video-url found");
+        return;
+      }
+
+      const videoUrl = target.getAttribute("data-video-url");
+      console.log("[SplideCarousel] VIDEO click -> videoUrl:", videoUrl);
+
+      console.log("[SplideCarousel] VIDEO funcs", {
+        selectVideo: typeof selectVideo,
+        openVideoModal: typeof openVideoModal,
+        togglePlayPause: typeof togglePlayPauseRef.current,
+        isPlaying: isPlayingRef.current,
+      });
+
+      if (!videoUrl) return;
+
+      if (isPlayingRef.current) {
+        console.log("[SplideCarousel] VIDEO -> pausing music");
+        togglePlayPauseRef.current?.();
+      }
+
+      console.log("[SplideCarousel] VIDEO -> select + open modal");
+      selectVideo?.(videoUrl);
+      openVideoModal?.();
+      return;
+    }
+
+    if (mediaType === "photo") {
+      const target = photoEl;
+      if (!target) {
+        console.warn("[SplideCarousel] PHOTO click: no data-photo-index found");
+        return;
+      }
+
+      const idxStr = target.getAttribute("data-photo-index");
+      const idx = Number(idxStr);
+
+      console.log("[SplideCarousel] PHOTO click -> idx:", idxStr, idx);
+
+      console.log("[SplideCarousel] PHOTO funcs", {
+        selectPhoto: typeof selectPhoto,
+        openPhotoModal: typeof openPhotoModal,
+      });
+
+      if (Number.isNaN(idx)) return;
+
+      console.log("[SplideCarousel] PHOTO -> select + open modal");
+      selectPhoto?.(idx);
+      openPhotoModal?.();
+      return;
+    }
+
+    console.warn("[SplideCarousel] Unknown mediaType:", mediaType);
   };
 
   const renderContent = () => {
@@ -218,7 +307,7 @@ const SplideCarousel = ({ mediaType }) => {
 
       case "photo":
         return (photoList || []).map((p, index) => (
-          <SplideSlide key={p.id}>
+          <SplideSlide key={p.id || p.public_id || p.url || index}>
             <Photo photo={p} index={index} />
           </SplideSlide>
         ));
@@ -233,13 +322,12 @@ const SplideCarousel = ({ mediaType }) => {
   };
 
   return (
-    <Splide
-      options={options}
-      // ✅ importante pasar el evento real como tercer parámetro
-      onClick={(splide, slide, event) => handleSlideClick(event)}
+    <div
+      onClickCapture={handleClickCapture}
+      style={{ pointerEvents: "auto" }}
     >
-      {renderContent()}
-    </Splide>
+      <Splide options={options}>{renderContent()}</Splide>
+    </div>
   );
 };
 

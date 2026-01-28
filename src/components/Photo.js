@@ -1,51 +1,37 @@
 import Image from "next/image";
 
 /**
- * Convierte URLs relativas ("/uploads/x.jpg") en absolutas usando NEXT_PUBLIC_API_URL.
- * Si ya es absoluta (http/https), la deja igual.
+ * Cloudinary-only:
+ * - Acepta URLs absolutas (https://...)
+ * - Acepta protocol-relative (//res.cloudinary.com/...) y las convierte a https
+ * - NO usa Strapi ni NEXT_PUBLIC_API_URL
  */
-const toAbsoluteUrl = (url) => {
+const toHttpsUrl = (url) => {
   if (!url || typeof url !== "string") return null;
 
-  // ya absoluta
-  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  if (url.startsWith("https://")) return url;
+  if (url.startsWith("http://")) return url.replace(/^http:\/\//, "https://");
+  if (url.startsWith("//")) return `https:${url}`;
 
-  // relativa
-  const base = process.env.NEXT_PUBLIC_API_URL;
-
-  // Si no hay base, devolvemos la relativa (puede funcionar si el host es el mismo)
-  if (!base) return url;
-
-  // Evita doble slash: base "https://x.com/" + "/uploads/a.jpg"
-  return `${base.replace(/\/$/, "")}${url.startsWith("/") ? "" : "/"}${url}`;
+  // Si llega algo relativo, no lo aceptamos (Cloudinary-only)
+  return null;
 };
 
 /**
- * Extrae una URL probable de diferentes estructuras:
- * - Strapi clásico: photo.attributes.url / formats.small.url
- * - Estructuras simples: photo.url / photo.src
+ * Cloudinary-only:
+ * Prioriza el campo url/secure_url que tú ya estás generando desde Cloudinary.
+ * (No attributes, no formats de Strapi)
  */
-const getRawSrc = (photo) => {
-  return (
-    photo?.attributes?.formats?.small?.url ??
-    photo?.attributes?.formats?.thumbnail?.url ??
-    photo?.attributes?.url ??
-    photo?.formats?.small?.url ??
-    photo?.formats?.thumbnail?.url ??
-    photo?.url ??
-    photo?.src ??
-    null
-  );
+const getCloudinarySrc = (photo) => {
+  return photo?.url ?? photo?.secure_url ?? null;
 };
 
 const Photo = ({ photo, index }) => {
-  const raw = getRawSrc(photo);
-  const src = toAbsoluteUrl(raw);
+  const raw = getCloudinarySrc(photo);
+  const src = toHttpsUrl(raw);
 
-  // Blur opcional si existe
-  const blur = photo?.blurDataURL ?? photo?.attributes?.blurDataURL ?? null;
+  const blur = photo?.blurDataURL ?? null;
 
-  // Si no hay src, no renderizamos imagen (evita error y “broken images”)
   if (!src) {
     return (
       <div
@@ -55,7 +41,7 @@ const Photo = ({ photo, index }) => {
           4k:w-[464px] 4k:h-[464px] relative cursor-pointer rounded-sm bg-white/10"
         data-photo-index={index}
         aria-label="photo placeholder"
-        title="Missing image source"
+        title="Missing Cloudinary image url"
       >
         <div className="items-overlay" />
       </div>
