@@ -6,37 +6,40 @@ export const metadata = {
   openGraph: {
     title: "Tickets",
     description: "Find out where are we playing next",
-    images: [
-      {
-        url: "/assets/opengraph-image.png",
-        alt: "Old Time Sailors",
-      },
-    ],
+    images: [{ url: "/assets/opengraph-image.png", alt: "Old Time Sailors" }],
   },
 };
 
-// ✅ Si tu JSON ya viene en este formato, no hace falta transformar mucho.
-// Mantengo normalización por seguridad.
 const normalizeMarkers = (markers) => {
   if (!Array.isArray(markers)) return [];
-  return markers.map((m, idx) => ({
-    id: m.id ?? String(idx),
-    markerPosition: m.markerPosition ?? null,
-    event: m.event ?? "",
-    location: m.location ?? "",
-    date: m.date ?? "",
-    ticketsURL: m.ticketsURL ?? "",
-    venueInfo: m.venueInfo ?? "",
-    gigStartTime: m.gigStartTime ?? "",
-    gigFinishTime: m.gigFinishTime ?? "",
-    typeOfShow: m.typeOfShow ?? "",
-    ...m,
-  }));
+
+  return markers
+    .map((m, idx) => ({
+      id: m.id ?? String(idx),
+
+      // ✅ lo importante: convertir lat/lon -> markerPosition(lat/lng)
+      markerPosition:
+        m.lat != null && m.lon != null
+          ? { lat: Number(m.lat), lng: Number(m.lon) }
+          : null,
+
+      // ✅ compatibilidad con tu popup (Maps usa event/location/date)
+      event: m.eventName ?? "",
+      location: m.venueName ?? "",
+      date: m.date ?? "",
+
+      // opcional: para que no pierdas info
+      gigStartTime: m.from ?? "",
+      gigFinishTime: m.to ?? "",
+      ...m,
+    }))
+    .filter((m) => m.markerPosition); // quita los que no tienen coords
 };
 
 const fetchMarkers = async () => {
   try {
-    const jsonUrl = process.env.NEXT_PUBLIC_TICKETS_JSON_URL; // URL completa
+    // ✅ usa TU env real
+    const jsonUrl = process.env.NEXT_PUBLIC_MARKERS_JSON_URL;
     if (!jsonUrl) return [];
 
     const res = await fetch(jsonUrl, { cache: "no-store" });
@@ -45,15 +48,18 @@ const fetchMarkers = async () => {
     const markers = await res.json();
     return normalizeMarkers(markers);
   } catch (error) {
-    console.error("Error fetching markers (Cloudinary URL):", error);
+    console.error("Error fetching markers:", error);
     return [];
   }
 };
 
-
 const MapView = async () => {
   const markersList = await fetchMarkers();
+  console.log("markersList:", markersList);
+
   return <MapViewComponent markersList={markersList} />;
+  
 };
+
 
 export default MapView;
