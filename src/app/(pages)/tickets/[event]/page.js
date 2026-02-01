@@ -8,9 +8,25 @@ import PowerLanding from "@/components/PowerLanding";
 import MainDiv from "@/components/MainDiv";
 import { useNavbarColor } from "@/context/NavbarColorProvider";
 
+const slugify = (value) =>
+  String(value ?? "")
+    .normalize("NFD") // separa tildes
+    .replace(/[\u0300-\u036f]/g, "") // elimina tildes
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "") // elimina : ( ) etc
+    .replace(/\s+/g, "-") // espacios -> guiones
+    .replace(/-+/g, "-"); // colapsa guiones dobles
+
 const GigLanding = () => {
   const params = useParams();
-  const eventParam = params?.event; // /tickets/<eventParam>
+
+  // ✅ Funciona sin importar si tu folder es [event], [id], [slug] o catch-all
+  const eventParam = useMemo(() => {
+    if (!params) return "";
+    const first = Object.values(params)[0];
+    return Array.isArray(first) ? first[0] : first;
+  }, [params]);
 
   const [currentEvent, setCurrentEvent] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -18,9 +34,20 @@ const GigLanding = () => {
 
   const { setNavbarColor } = useNavbarColor();
 
-  const eventIdFromUrl = useMemo(() => String(eventParam ?? "").trim(), [eventParam]);
-  const eventSlugFromUrl = useMemo(() => eventIdFromUrl.toLowerCase(), [eventIdFromUrl]);
+  const eventIdFromUrl = useMemo(() => {
+    try {
+      return decodeURIComponent(String(eventParam ?? "")).trim();
+    } catch {
+      return String(eventParam ?? "").trim();
+    }
+  }, [eventParam]);
 
+  const eventIdNormalized = useMemo(
+    () => eventIdFromUrl.toLowerCase().trim(),
+    [eventIdFromUrl]
+  );
+
+  // Pixel init (safe)
   useEffect(() => {
     let isMounted = true;
 
@@ -28,12 +55,15 @@ const GigLanding = () => {
       try {
         if (typeof window === "undefined") return;
 
-        const pixelId = process.env.NEXT_PUBLIC_PIXEL_ID || process.env.PIXEL_ID;
+        const pixelId =
+          process.env.NEXT_PUBLIC_PIXEL_ID || process.env.PIXEL_ID;
         if (!pixelId) return;
 
-        const mod = await import("react-facebook-pixel");
-
+        await import("react-facebook-pixel");
         if (!isMounted) return;
+
+        // Si luego quieres inicializar:
+        // ReactPixel.default.init(pixelId);
       } catch (e) {
         console.warn("Pixel init skipped:", e?.message || e);
       }
@@ -46,46 +76,62 @@ const GigLanding = () => {
     };
   }, []);
 
+  // Fetch + match
   useEffect(() => {
+    let alive = true;
+
     const fetchData = async () => {
       try {
         setIsLoading(true);
         setError(null);
 
         const events = await fetchEvents(); // /api/event
-        const raw = await fetchEvents();
-        console.log("RAW fetchEvents():", raw, "isArray?", Array.isArray(raw));
 
-        console.log("events length:", events.length, "first:", events[0]);
+        // ✅ Debug útil (puedes borrar luego)
+        console.log("params:", params);
+        console.log("eventParam:", eventParam);
+        console.log("eventIdFromUrl:", eventIdFromUrl);
+        console.log("events ids:", Array.isArray(events) ? events.map((e) => e?.id) : events);
 
+        if (!Array.isArray(events)) {
+          throw new Error("fetchEvents() no devolvió un array.");
+        }
 
-        let found = events.find((e) => String(e?.id ?? "") === eventIdFromUrl);
+        // 1) match directo por id (ahora tus ids ya son slugs)
+        let found = events.find(
+          (e) => String(e?.id ?? "").toLowerCase().trim() === eventIdNormalized
+        );
 
+        // 2) fallback: slugify(eventName/event) vs slugify(param)
         if (!found) {
-          found = events.find((e) => {
-            const slug = String(e?.eventName ?? e?.event ?? "")
-              .toLowerCase()
-              .trim()
-              .replace(/\s+/g, "-");
-            return slug === eventSlugFromUrl;
-          });
+          const targetSlug = slugify(eventIdFromUrl);
+          found = events.find(
+            (e) => slugify(e?.eventName ?? e?.event) === targetSlug
+          );
         }
 
         if (!found) {
           throw new Error(`Event "${eventIdFromUrl}" not found.`);
         }
 
+        if (!alive) return;
         setCurrentEvent(found);
       } catch (err) {
+        if (!alive) return;
         setError(err instanceof Error ? err.message : String(err));
         setCurrentEvent(null);
       } finally {
+        if (!alive) return;
         setIsLoading(false);
       }
     };
 
     if (eventIdFromUrl) fetchData();
-  }, [eventIdFromUrl, eventSlugFromUrl]);
+
+    return () => {
+      alive = false;
+    };
+  }, [params, eventParam, eventIdFromUrl, eventIdNormalized]);
 
   // ✅ Navbar color
   useEffect(() => {
@@ -128,8 +174,11 @@ const GigLanding = () => {
   return (
     <MainDiv>
       <div
-        className={`${currentEvent.typeOfShow === "Family" ? "bg-beigePattern bg-contain" : "bg-darkBlue bg-contain"
-          }`}
+        className={`${
+          currentEvent.typeOfShow === "Family"
+            ? "bg-beigePattern bg-contain"
+            : "bg-darkBlue bg-contain"
+        }`}
         style={{
           backgroundRepeat: "repeat",
           overscrollBehavior: "none",
