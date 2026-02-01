@@ -39,7 +39,7 @@ const normalizeMarkers = (markers) => {
 // Si Cloudinary falla o la env var no existe -> devolvemos []
 const fetchMarkers = async () => {
   try {
-    const jsonUrl = process.env.NEXT_PUBLIC_TICKETS_JSON_URL; // URL completa (Cloudinary raw)
+    const jsonUrl = process.env.NEXT_PUBLIC_MARKERS_JSON_URL; // URL completa (Cloudinary raw)
     if (!jsonUrl) return [];
 
     const res = await fetch(jsonUrl, { cache: "no-store" });

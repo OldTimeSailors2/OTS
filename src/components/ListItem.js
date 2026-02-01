@@ -1,67 +1,199 @@
-import Link from "next/link";
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+
+const normalizeDateString = (value) => {
+  if (typeof value !== "string") return "";
+  return value.trim();
+};
+
+const parseDateFlexible = (dateString) => {
+  const s = normalizeDateString(dateString);
+  if (!s) return null;
+
+  // dd/mm/yyyy o dd/mm/yy
+  const dmY = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/);
+  if (dmY) {
+    const day = dmY[1].padStart(2, "0");
+    const month = dmY[2].padStart(2, "0");
+    const year = dmY[3].length === 2 ? `20${dmY[3]}` : dmY[3];
+    const d = new Date(`${year}-${month}-${day}T00:00:00`);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  // yyyy-mm-dd
+  const iso = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (iso) {
+    const year = iso[1];
+    const month = iso[2].padStart(2, "0");
+    const day = iso[3].padStart(2, "0");
+    const d = new Date(`${year}-${month}-${day}T00:00:00`);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  // intento general
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? null : d;
+};
+
+const formatOneDate = (dateString) => {
+  const d = parseDateFlexible(dateString);
+  if (!d) return null;
+
+  const options = { day: "2-digit", month: "long" };
+  return new Intl.DateTimeFormat("en-US", options).format(d).replace(",", "");
+};
 
 const formatDateOrRange = (dateInput) => {
-  try {
-    // Helper function to format a single date
-    const formatDate = (dateString) => {
-      const [day, month, year] = dateString.split("/");
-      const fullYear = year.length === 2 ? `20${year}` : year; // Handle 2-digit years
-      const date = new Date(`${fullYear}-${month}-${day}`);
-      if (isNaN(date)) throw new Error("Invalid date format");
-      const options = { day: "2-digit", month: "long" };
-      return new Intl.DateTimeFormat("en-US", options).format(date).replace(",", "");
-    };
+  const raw = normalizeDateString(dateInput);
+  if (!raw) return "TBA";
 
-    // Check if input is a range (contains ' - ')
-    if (dateInput.includes(" - ")) {
-      const [startDate, endDate] = dateInput.split(" - ");
-      const formattedStartDate = formatDate(startDate);
-      const formattedEndDate = formatDate(endDate);
-      return `${formattedStartDate} - ${formattedEndDate}`;
-    } else {
-      // Single date case
-      return formatDate(dateInput);
-    }
-  } catch (error) {
-    console.error(error.message);
-    return "Invalid Date";
+  const parts = raw.split(/\s*[–—-]\s*/);
+  if (parts.length === 2) {
+    const [startRaw, endRaw] = parts.map((x) => x.trim());
+    const start = formatOneDate(startRaw);
+    const end = formatOneDate(endRaw);
+
+    if (start && end) return `${start} - ${end}`;
+    if (start) return `${start} -`;
+    if (end) return `- ${end}`;
+    return raw;
   }
+
+  const single = formatOneDate(raw);
+  return single ?? raw;
+};
+
+const normalizeTime = (t) => {
+  if (typeof t !== "string") return "";
+  const s = t.trim();
+  if (!s) return "";
+  return s;
+};
+
+const slugify = (text) => {
+  const s = (text ?? "").toString().trim();
+  if (!s) return "event";
+
+  return (
+    s
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/&/g, " and ")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "") || "event"
+  );
 };
 
 const ListItem = ({ event }) => {
-  let longDate = formatDateOrRange(event.date);
+  const safeEvent = event ?? {};
+
+  const safeTitle =
+    (typeof safeEvent.event === "string" && safeEvent.event) ||
+    (typeof safeEvent.eventName === "string" && safeEvent.eventName) ||
+    (typeof safeEvent.title === "string" && safeEvent.title) ||
+    "";
+
+  const safeLocation =
+    (typeof safeEvent.location === "string" && safeEvent.location) ||
+    (typeof safeEvent.venueName === "string" && safeEvent.venueName) ||
+    "";
+
+  const safeDate = typeof safeEvent.date === "string" ? safeEvent.date : "";
+
+  const safeStart =
+    (typeof safeEvent.gigStartTime === "string" && safeEvent.gigStartTime) ||
+    (typeof safeEvent.from === "string" && safeEvent.from) ||
+    "";
+
+  const safeEnd =
+    (typeof safeEvent.gigFinishTime === "string" && safeEvent.gigFinishTime) ||
+    (typeof safeEvent.to === "string" && safeEvent.to) ||
+    "";
+
+  const longDate = formatDateOrRange(safeDate);
+  const startTxt = normalizeTime(safeStart);
+  const endTxt = normalizeTime(safeEnd);
+
+  const slug = slugify(safeTitle || "event");
+  const href = `/tickets/${slug}`;
+
+  const log = (label) => (e) => {
+    console.log(`✅ ${label}`, {
+      type: e?.type,
+      target: e?.target,
+      currentTarget: e?.currentTarget,
+      href,
+      slug,
+      title: safeTitle,
+    });
+  };
+
   return (
-    <div className="relative border-b-3 border-lightRed py-2 mr-[29.18px] ml-[32.42px] md:mx-[5%]">
-      <div className="flex justify-between items-center">
-        <div className="space-y-0 md:space-y-1 pr-2 w-3/4">
-          <div className="flex items-baseline gap-1">
-            <span
-              className="text-[10px] text-darkBlue font-txt font-bold  xs:text-[14px] md:text-3xl truncate
-            "
-            >
+    <div
+      className="relative border-b-3 border-lightRed py-3 mr-[29.18px] ml-[32.42px] md:mx-[5%]"
+      onPointerDownCapture={log("ListItem onPointerDownCapture")}
+      onClickCapture={log("ListItem onClickCapture")}
+    >
+      <div
+        className="flex justify-between items-start gap-4"
+        onPointerDownCapture={log("Row onPointerDownCapture")}
+        onClickCapture={log("Row onClickCapture")}
+      >
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+            <span className="text-[12px] md:text-[18px] text-darkBlue font-txt font-bold">
               {longDate}
             </span>
-            <span className="text-[10.5px] font-txt text-darkBlue xs:text-[7.6px] md:text-2xl truncate">- {event.gigStartTime}</span>
-            <span className="text-[10px] font-txt text-darkBlue xs:text-[7.6px] md:text-2xl truncate">- {event.gigFinishTime}</span>
+
+            {startTxt ? (
+              <span className="text-[12px] md:text-[18px] text-darkBlue font-txt">
+                - {startTxt}
+              </span>
+            ) : null}
+
+            {endTxt ? (
+              <span className="text-[12px] md:text-[18px] text-darkBlue font-txt">
+                - {endTxt}
+              </span>
+            ) : null}
           </div>
-          <h2 className="text-[12px] xs:text-[26px] md:text-[42px] font-titles text-lightRed leading-none ">{event.event.toLowerCase()}</h2>
-          <p className="text-[11px] xs:text-[9.83px] text-darkBlue  font-txt  md:text-3xl">{event.location}</p>
-        </div>
-        <Image
-          src={"/assets/+info.png"}
-          width={108.12}
-          height={31.52}
-          onClick={() => (window.location.href = `/tickets/${event.event.replace(/\s+/g, "-").toLowerCase()}`)}
-        ></Image>
-        {/* <button
-          onClick={() => (window.location.href = `/tickets/${event.event.replace(/\s+/g, "-").toLowerCase()}`)}
-          className="flex items-center justify-center bg-ticketShape bg-cover bg-center bg-no-repeat h-[30px] w-[130px] xs:w-[130px] xs:h-[33px] md:h-[50px] md:w-[180px] lg:w-[220px] lg:h-[60px] 1xl:h-[65px] md:w-1/8 lg:w-1/10 mb-1"
-        >
-          <p className="text-center text-[25px] xs:text-[24px] md:text-[38px] lg:text-[42px] 1xl:text-[43px] font-txt font-bold uppercase text-beige">
-            + info
+
+          <h2 className="mt-1 text-[18px] xs:text-[24px] md:text-[40px] font-titles text-lightRed leading-none">
+            {safeTitle ? safeTitle.toLowerCase() : "tba"}
+          </h2>
+
+          <p className="mt-1 text-[13px] md:text-[22px] text-darkBlue font-txt">
+            {safeLocation}
           </p>
-        </button> */}
+        </div>
+
+        <div
+          className="shrink-0"
+          onPointerDownCapture={log("Right wrapper onPointerDownCapture")}
+          onClickCapture={log("Right wrapper onClickCapture")}
+        >
+          <Link
+            href={href}
+            aria-label="More info"
+            className="relative z-[9999] pointer-events-auto cursor-pointer inline-block"
+            onPointerDownCapture={log("Link onPointerDownCapture")}
+            onClickCapture={log("Link onClickCapture")}
+            onClick={log("Link onClick (bubble)")}
+          >
+            <Image
+              src="/assets/+info.png"
+              width={108.12}
+              height={31.52}
+              alt="More info"
+              priority
+              className="pointer-events-auto select-none"
+            />
+          </Link>
+        </div>
       </div>
     </div>
   );
