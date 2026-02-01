@@ -3,7 +3,8 @@
 import { useEffect, useState, useMemo, useCallback, Fragment, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useApiIsLoaded, Map, useMap, useMapsLibrary, Marker } from "@vis.gl/react-google-maps";
+import { useApiIsLoaded, Map as GoogleMap, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+
 import MainDiv from "./MainDiv";
 import windowLogo from "../../public/assets/logo-badge.svg";
 import CustomPopup from "./CustomPopup";
@@ -41,6 +42,9 @@ const Maps = ({ markersList = [] }) => {
   // ✅ refs para manejar overlay y mapType sin duplicar
   const overlayRef = useRef(null);
   const solidMapTypeSetRef = useRef(false);
+
+  // ✅ overlays HTML (botones) para markers
+  const htmlMarkerOverlaysRef = useRef([]); // array de overlayviews
 
   const restrictions = useMemo(
     () => ({
@@ -107,7 +111,7 @@ const Maps = ({ markersList = [] }) => {
     else setMapCenter(first);
   }, [markersList, map]);
 
-  // ✅ Overlay: ahora SI se recrea cuando cambia currentOverlay
+  // ✅ Overlay (imagen de fondo) + solidColor map
   useEffect(() => {
     if (!apiIsLoaded || !map || !coreLibrary || !mapsLibrary) return;
 
@@ -142,7 +146,6 @@ const Maps = ({ markersList = [] }) => {
     overlay.setMap(map);
     overlayRef.current = overlay;
 
-    // cleanup
     return () => {
       if (overlayRef.current) {
         overlayRef.current.setMap(null);
@@ -151,19 +154,22 @@ const Maps = ({ markersList = [] }) => {
     };
   }, [apiIsLoaded, map, coreLibrary, mapsLibrary, currentOverlay]);
 
-  const handleMarkerClick = (id, markerPosition) => {
-    if (!map) return;
+  const handleMarkerClick = useCallback(
+    (id, markerPosition) => {
+      if (!map) return;
 
-    if (activeMarkerId && activeMarkerId !== id) {
-      setIsTransitioning(true);
-      setActiveMarkerId(id);
-      setTimeout(() => map.panTo(markerPosition), 200);
-    } else {
-      setIsTransitioning(false);
-      setActiveMarkerId(id);
-      map.panTo(markerPosition);
-    }
-  };
+      if (activeMarkerId && activeMarkerId !== id) {
+        setIsTransitioning(true);
+        setActiveMarkerId(id);
+        setTimeout(() => map.panTo(markerPosition), 200);
+      } else {
+        setIsTransitioning(false);
+        setActiveMarkerId(id);
+        map.panTo(markerPosition);
+      }
+    },
+    [map, activeMarkerId]
+  );
 
   const createPopupContent = useCallback(
     (markerData) => (
@@ -180,19 +186,28 @@ const Maps = ({ markersList = [] }) => {
           <ul className="flex flex-col self-start max-xl:gap-1 -space-y-1">
             <li className="text-xl leading-5 md:text-3xl text-lightRed font-titles font-medium flex items-start max-xl:mb-0.5">
               event:
-              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">{markerData.event}</p>
+              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">
+                {markerData.event}
+              </p>
             </li>
             <li className="text-xl md:text-3xl text-lightRed font-titles font-medium flex items-start">
               location:
-              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">{markerData.location}</p>
+              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">
+                {markerData.location}
+              </p>
             </li>
             <li className="text-xl md:text-3xl text-lightRed font-titles font-medium flex items-start">
               date:
-              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">{markerData.date}</p>
+              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">
+                {markerData.date}
+              </p>
             </li>
           </ul>
 
-          <Link className="octagon-tickets flex items-center justify-center bg-darkBlue" href={`/tickets/${markerData.event.replace(/\s+/g, "-").toLowerCase()}`}>
+          <Link
+            className="octagon-tickets flex items-center justify-center bg-darkBlue"
+            href={`/tickets/${markerData.event.replace(/\s+/g, "-").toLowerCase()}`}
+          >
             <p className="text-center text-3xl md:text-[42px] font-titles text-lightRed">+ info</p>
           </Link>
         </div>
@@ -201,9 +216,122 @@ const Maps = ({ markersList = [] }) => {
     []
   );
 
+  /**
+   * ✅ HTML markers (botones) con OverlayView
+   *  - Son DOM real: click SIEMPRE funciona
+   *  - No necesitan MapID
+   */
+  useEffect(() => {
+    if (!apiIsLoaded || !map) return;
+    if (typeof window === "undefined" || !window.google?.maps) return;
+
+    const gmaps = window.google.maps;
+
+    // Limpia overlays anteriores
+    htmlMarkerOverlaysRef.current.forEach((ov) => ov?.setMap?.(null));
+    htmlMarkerOverlaysRef.current = [];
+
+    // Tamaño del botón (relacionado a tu escala)
+    const px = Math.max(18, markerIconScale * 4);
+
+    class HtmlButtonMarker extends gmaps.OverlayView {
+      constructor({ position, id, onClick }) {
+        super();
+        this.position = position;
+        this.id = id;
+        this.onClick = onClick;
+        this.div = null;
+        this.btn = null;
+        this._handle = null;
+      }
+
+      onAdd() {
+        const div = document.createElement("div");
+        div.style.position = "absolute";
+        div.style.transform = "translate(-50%, -50%)";
+        div.style.zIndex = "9999";
+        div.style.pointerEvents = "auto";
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.setAttribute("aria-label", `marker-${this.id}`);
+        btn.style.width = `${px}px`;
+        btn.style.height = `${px}px`;
+        btn.style.borderRadius = "9999px";
+        btn.style.background = "#dd3254";
+        btn.style.border = "2px solid #dd3254";
+        btn.style.cursor = "pointer";
+        btn.style.pointerEvents = "auto";
+        btn.style.boxShadow = "0 0 0 0 rgba(0,0,0,0)";
+        btn.onmouseenter = () => (btn.style.transform = "scale(1.08)");
+        btn.onmouseleave = () => (btn.style.transform = "scale(1)");
+
+        // IMPORTANTÍSIMO: evita que el mapa “se coma” el evento
+        this._handle = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.onClick?.();
+        };
+        btn.addEventListener("click", this._handle, { passive: false });
+
+        div.appendChild(btn);
+
+        // Pega al panel correcto
+        const panes = this.getPanes();
+        panes?.overlayMouseTarget?.appendChild(div);
+
+        this.div = div;
+        this.btn = btn;
+      }
+
+      draw() {
+        if (!this.div) return;
+        const projection = this.getProjection();
+        if (!projection) return;
+
+        const point = projection.fromLatLngToDivPixel(new gmaps.LatLng(this.position.lat, this.position.lng));
+        if (!point) return;
+
+        this.div.style.left = `${point.x}px`;
+        this.div.style.top = `${point.y}px`;
+      }
+
+      onRemove() {
+        if (this.btn && this._handle) {
+          this.btn.removeEventListener("click", this._handle);
+        }
+        if (this.div?.parentNode) {
+          this.div.parentNode.removeChild(this.div);
+        }
+        this.div = null;
+        this.btn = null;
+        this._handle = null;
+      }
+    }
+
+    // Crea overlays nuevos
+    const overlays = markersList
+      .filter((m) => m?.markerPosition)
+      .map((m) => {
+        const ov = new HtmlButtonMarker({
+          position: m.markerPosition,
+          id: m.id,
+          onClick: () => handleMarkerClick(m.id, m.markerPosition),
+        });
+        ov.setMap(map);
+        return ov;
+      });
+
+    htmlMarkerOverlaysRef.current = overlays;
+
+    return () => {
+      overlays.forEach((ov) => ov?.setMap?.(null));
+    };
+  }, [apiIsLoaded, map, markersList, markerIconScale, handleMarkerClick]);
+
   return (
     <MainDiv className={"h-dvh"}>
-      <Map
+      <GoogleMap
         zoom={5}
         maxZoom={9}
         center={mapCenter}
@@ -212,28 +340,16 @@ const Maps = ({ markersList = [] }) => {
         id={"MapOTS"}
         restriction={restrictions}
       >
-        {coreLibrary &&
-          markersList.map((m) => (
-            <Fragment key={m.id}>
-              <Marker
-                position={m.markerPosition}
-                onClick={() => handleMarkerClick(m.id, m.markerPosition)}
-                icon={{
-                  path: coreLibrary.SymbolPath.CIRCLE,
-                  fillColor: "#dd3254",
-                  fillOpacity: 1.0,
-                  scale: markerIconScale,
-                  strokeColor: "#dd3254",
-                  strokeWeight: 0.5,
-                }}
-              />
+        {/* ✅ Los puntos ya son botones HTML via OverlayView */}
 
-              <CustomPopup position={m.markerPosition} isVisible={activeMarkerId === m.id} isTransitioning={isTransitioning}>
-                {createPopupContent(m)}
-              </CustomPopup>
-            </Fragment>
-          ))}
-      </Map>
+        {markersList.map((m) => (
+          <Fragment key={m.id}>
+            <CustomPopup position={m.markerPosition} isVisible={activeMarkerId === m.id} isTransitioning={isTransitioning}>
+              {createPopupContent(m)}
+            </CustomPopup>
+          </Fragment>
+        ))}
+      </GoogleMap>
     </MainDiv>
   );
 };

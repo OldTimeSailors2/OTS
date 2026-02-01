@@ -1,6 +1,7 @@
 import "../globals.css";
 import localFont from "next/font/local";
 import PagesWrapper from "@/wrappers/PagesWrapper";
+import Providers from "@/app/providers"; // 
 
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
@@ -45,7 +46,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${khmer_mn.variable} ${royale_signage.variable} ${din_condensed.variable} bg-beigePattern`}
       >
-        <PagesWrapper>{children}</PagesWrapper>
+        <Providers>
+          <PagesWrapper>{children}</PagesWrapper>
+        </Providers>
       </body>
     </html>
   );
