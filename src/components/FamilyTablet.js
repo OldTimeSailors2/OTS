@@ -5,9 +5,8 @@ import Image from "next/image";
 import { memo } from "react";
 import { useRouter } from "next/navigation";
 
-import ReactPixel from 'react-facebook-pixel';
 const ClickPixel = (typeClick)=>{
-  ReactPixel.trackCustom('ClickPixel',{typeClick: typeClick});
+ // ReactPixel.trackCustom('ClickPixel',{typeClick: typeClick});
   console.log('Pixel send');
 }
 const formatDate = (inputDate) => {

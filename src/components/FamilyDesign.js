@@ -3,9 +3,8 @@ import { FaCalendar, FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import ReactPixel from 'react-facebook-pixel';
 const ClickPixel = (typeClick) => {
-    ReactPixel.trackCustom('ClickPixel', { typeClick: typeClick });
+//ReactPixel.trackCustom('ClickPixel', { typeClick: typeClick });
     console.log('Pixel send ' + typeClick);
 }
 const formatDate = (inputDate) => {

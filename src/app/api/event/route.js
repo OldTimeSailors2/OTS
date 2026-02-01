@@ -1,5 +1,13 @@
 import { NextResponse } from "next/server";
 
+const slugify = (s = "") =>
+  String(s)
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
 const normalizeMarkers = (markers) => {
   if (!Array.isArray(markers)) return [];
   return markers.map((m, idx) => ({
@@ -17,26 +25,29 @@ const normalizeMarkers = (markers) => {
   }));
 };
 
-export async function GET() {
+export async function GET(req) {
   try {
-    // ✅ Usa la URL pública (NO Admin API)
-    const jsonUrl = process.env.NEXT_PUBLIC_TICKETS_JSON_URL;
+    const { searchParams } = new URL(req.url);
+    const slug = searchParams.get("slug"); // /api/event?slug=...
 
-    if (!jsonUrl) {
-      return NextResponse.json([], { status: 200 });
-    }
+    const jsonUrl = process.env.NEXT_PUBLIC_MARKERS_JSON_URL; 
+    if (!jsonUrl) return NextResponse.json({ event: null }, { status: 200 });
 
     const res = await fetch(jsonUrl, { cache: "no-store" });
-    if (!res.ok) {
-      // No rompas el build; responde vacío
-      return NextResponse.json([], { status: 200 });
+    if (!res.ok) return NextResponse.json({ event: null }, { status: 200 });
+
+    const markers = normalizeMarkers(await res.json());
+
+    if (!slug) {
+      return NextResponse.json({ events: markers }, { status: 200 });
     }
 
-    const markers = await res.json();
-    return NextResponse.json(normalizeMarkers(markers), { status: 200 });
+    const normalizedSlug = slugify(slug);
+    const found = markers.find((m) => slugify(m.event) === normalizedSlug);
+
+    return NextResponse.json({ event: found ?? null }, { status: 200 });
   } catch (error) {
-    // ✅ No loggees objetos gigantes que puedan incluir secrets
-    console.warn("Error fetching markers (Cloudinary URL):", error?.message || error);
-    return NextResponse.json([], { status: 200 });
+    console.warn("Error fetching markers:", error?.message || error);
+    return NextResponse.json({ event: null }, { status: 200 });
   }
 }
