@@ -184,12 +184,10 @@ export default async function Home() {
         ))}
       </div>
 
-      {/* SOCIAL */}
       <div
         className="absolute left-1/2 -translate-x-1/2 z-30"
         style={{ bottom: `calc(${FRAME_PAD} - 6px)` }}
       >
-        {/* ✅ baja 10px sin romper el centrado */}
         <div style={{ transform: "translateY(10px)" }}>
           <Social
             className="landing-social"

@@ -6,14 +6,19 @@ import Image from "next/image";
 import Link from "next/link";
 import logo from "../../public/assets/logo.svg";
 import logo2 from "../../public/assets/logo-services.svg";
+
 import { TfiEmail } from "react-icons/tfi";
 import { FaWhatsapp, FaInstagram, FaFacebookF } from "react-icons/fa";
+
 import ViewSwitch from "./ViewSelectorSwitch";
 import { useNavbarColor } from "@/context/NavbarColorProvider";
 import useScrollTrigger from "@/hooks/useScrollTrigger";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+
+// ✅ IMPORTA TU COMPONENTE
+import Social from "./Social"; // <-- cambia esta ruta si Social.js está en otro folder
 
 const Navbar = () => {
   const router = useRouter();
@@ -28,7 +33,6 @@ const Navbar = () => {
   const [viewSelector, setViewSelector] = useState(false);
   const { navbarColor } = useNavbarColor();
 
-  // ✅ Menú desplegable
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -144,7 +148,6 @@ const Navbar = () => {
     return {};
   };
 
-  // ✅ Back
   const onBack = () => {
     try {
       router.back();
@@ -156,7 +159,6 @@ const Navbar = () => {
     }
   };
 
-  // ✅ cerrar menú con ESC
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.key === "Escape") setMenuOpen(false);
@@ -165,7 +167,6 @@ const Navbar = () => {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  // ✅ click afuera
   useEffect(() => {
     if (!menuOpen) return;
 
@@ -179,12 +180,10 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", onMouseDown);
   }, [menuOpen]);
 
-  // ✅ cerrar al navegar
   useEffect(() => {
     setMenuOpen(false);
   }, [pathname]);
 
-  // ✅ MISMO MENÚ “OCTAGON BUTTONS”
   const octagonMenu = useMemo(
     () => [
       { label: "media", href: "/media", bg: "bg-beigePattern", text: "text-darkBlue" },
@@ -198,9 +197,54 @@ const Navbar = () => {
     []
   );
 
+  const getPillClass = (key) => {
+    const isRed = key === "mail" || key === "instagram";
+    const isBlue = key === "whatsapp" || key === "facebook";
+
+    const bg =
+      navbarColor === "dark" &&
+      pathname != "/media" &&
+      pathname != "/reviews" &&
+      pathname != "/our-clients"
+        ? isRed
+          ? "bg-redPattern text-beige"
+          : "bg-bluePattern text-beige"
+        : isRed
+        ? "bg-beigePattern text-lightRed"
+        : "bg-beigePattern text-darkBlue";
+
+    return `${bg} bg-contain rounded-full p-1 sm:p-2 2k:p-3 4k:p-3.5 pointer-events-auto`;
+  };
+
+  const socialRenderers = {
+    mail: () => (
+      <TfiEmail
+        size={22}
+        className="xs:w-[24px] xs:h-[24px] iphone-3:w-[26px] iphone-3:h-[26px] sm:w-[30px] sm:h-[30px] 2k:w-[50px] 2k:h-[50px]  4k:w-[60px] 4k:h-[60px]"
+      />
+    ),
+    whatsapp: () => (
+      <FaWhatsapp
+        size={22}
+        className="xs:w-[24px] xs:h-[24px] iphone-3:w-[26px] iphone-3:h-[26px] sm:w-[30px] sm:h-[30px] 2k:w-[50px] 2k:h-[50px] 4k:w-[60px] 4k:h-[60px]"
+      />
+    ),
+    instagram: () => (
+      <FaInstagram
+        size={22}
+        className="xs:w-[24px] xs:h-[24px] iphone-3:w-[26px] iphone-3:h-[26px] sm:w-[30px] sm:h-[30px] 2k:w-[50px] 2k:h-[50px] 4k:w-[60px] 4k:h-[60px]"
+      />
+    ),
+    facebook: () => (
+      <FaFacebookF
+        size={22}
+        className="xs:w-[24px] xs:h-[24px] iphone-3:w-[26px] iphone-3:h-[26px] sm:w-[30px] sm:h-[30px] 2k:w-[50px] 2k:h-[50px] 4k:w-[60px] 4k:h-[60px]"
+      />
+    ),
+  };
+
   return (
     <div className="fixed top-0 left-0 w-screen z-[120]">
-      {/* TOP BAR */}
       <div className="h-12 w-full px-4 flex items-center justify-between bg-[#0f2536] border-b border-white/10">
         <button
           type="button"
@@ -226,7 +270,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* TU NAVBAR ORIGINAL */}
       <div
         style={getNavbarStyle()}
         className={`w-screen z-[100] flex flex-col justify-between pt-3 px-1 sm:px-4 3xl:px-9 ${
@@ -279,106 +322,43 @@ const Navbar = () => {
             </h1>
           </div>
 
-          {/* ✅ NO TOCO NADA AQUÍ: tus links de media */}
-          <div className="flex gap-1.5 xs:gap-2 sm:gap-4 items-center">
-            <Link
-              className={`${
-                pathname != "/media" &&
-                pathname != "/reviews" &&
-                pathname != "/our-clients" &&
-                navbarColor === "dark"
-                  ? "bg-redPattern text-beige"
-                  : "bg-beigePattern text-lightRed"
-              }
-              bg-contain rounded-full p-1 sm:p-2 2k:p-3 4k:p-3.5 pointer-events-auto`}
-              style={{
-                opacity: settings?.loader,
-                pointerEvents: settings?.photos ? "auto" : "none",
+          <div
+            style={{
+              opacity: settings?.loader,
+              pointerEvents: settings?.photos ? "auto" : "none",
+            }}
+          >
+            <Social
+              className="flex gap-1.5 xs:gap-2 sm:gap-4 items-center"
+              renderers={{
+                mail: () => (
+                  <span className={getPillClass("mail")}>
+                    {socialRenderers.mail()}
+                  </span>
+                ),
+                whatsapp: () => (
+                  <span className={getPillClass("whatsapp")}>
+                    {socialRenderers.whatsapp()}
+                  </span>
+                ),
+                instagram: () => (
+                  <span className={getPillClass("instagram")}>
+                    {socialRenderers.instagram()}
+                  </span>
+                ),
+                facebook: () => (
+                  <span className={getPillClass("facebook")}>
+                    {socialRenderers.facebook()}
+                  </span>
+                ),
               }}
-              href="mailto:captainnicholasmoffat@oldtimesailors.com"
-              target="_blank"
-            >
-              <TfiEmail
-                size={22}
-                className="xs:w-[24px] xs:h-[24px] iphone-3:w-[26px] iphone-3:h-[26px] sm:w-[30px] sm:h-[30px] 2k:w-[50px] 2k:h-[50px]  4k:w-[60px] 4k:h-[60px]"
-              />
-            </Link>
-
-            <Link
-              className={`${
-                navbarColor === "dark" &&
-                pathname != "/media" &&
-                pathname != "/reviews" &&
-                pathname != "/our-clients"
-                  ? "bg-bluePattern text-beige"
-                  : "bg-beigePattern text-darkBlue"
-              }
-              bg-contain rounded-full p-1 sm:p-2 2k:p-3 4k:p-3.5 pointer-events-auto`}
-              style={{
-                opacity: settings?.loader,
-                pointerEvents: settings?.photos ? "auto" : "none",
-              }}
-              href="https://wa.me/447539045312"
-              target="_blank"
-            >
-              <FaWhatsapp
-                size={22}
-                className="xs:w-[24px] xs:h-[24px] iphone-3:w-[26px] iphone-3:h-[26px] sm:w-[30px] sm:h-[30px] 2k:w-[50px] 2k:h-[50px] 4k:w-[60px] 4k:h-[60px]"
-              />
-            </Link>
-
-            <Link
-              className={`${
-                navbarColor === "dark" &&
-                pathname != "/media" &&
-                pathname != "/reviews" &&
-                pathname != "/our-clients"
-                  ? "bg-redPattern text-beige"
-                  : "bg-beigePattern text-lightRed"
-              }
-              bg-contain rounded-full p-1 sm:p-2 2k:p-3 4k:p-3.5 pointer-events-auto`}
-              style={{
-                opacity: settings?.loader,
-                pointerEvents: settings?.photos ? "auto" : "none",
-              }}
-              href="https://www.instagram.com/oldtimesailors"
-              target="_blank"
-            >
-              <FaInstagram
-                size={22}
-                className="xs:w-[24px] xs:h-[24px] iphone-3:w-[26px] iphone-3:h-[26px] sm:w-[30px] sm:h-[30px] 2k:w-[50px] 2k:h-[50px] 4k:w-[60px] 4k:h-[60px]"
-              />
-            </Link>
-
-            <Link
-              className={`${
-                navbarColor === "dark" &&
-                pathname != "/media" &&
-                pathname != "/reviews" &&
-                pathname != "/our-clients"
-                  ? "bg-bluePattern text-beige"
-                  : "bg-beigePattern text-darkBlue"
-              }
-              bg-contain rounded-full p-1 sm:p-2 2k:p-3 4k:p-3.5 pointer-events-auto`}
-              style={{
-                opacity: settings?.loader,
-                pointerEvents: settings?.photos ? "auto" : "none",
-              }}
-              href="https://www.facebook.com/oldtimesailors/"
-              target="_blank"
-            >
-              <FaFacebookF
-                size={22}
-                className="xs:w-[24px] xs:h-[24px] iphone-3:w-[26px] iphone-3:h-[26px] sm:w-[30px] sm:h-[30px] 2k:w-[50px] 2k:h-[50px] 4k:w-[60px] 4k:h-[60px]"
-              />
-            </Link>
+            />
           </div>
         </div>
 
         {viewSelector === true ? <ViewSwitch /> : false}
       </div>
 
-      {/* PANEL MENÚ DESPLEGABLE */}
       <div
         className={`fixed top-12 right-0 z-[300] h-[calc(100vh-3rem)] w-[260px] ${
           menuOpen ? "translate-x-0" : "translate-x-full"
