@@ -10,18 +10,17 @@ import { useNavbarColor } from "@/context/NavbarColorProvider";
 
 const slugify = (value) =>
   String(value ?? "")
-    .normalize("NFD") // separa tildes
-    .replace(/[\u0300-\u036f]/g, "") // elimina tildes
+    .normalize("NFD") 
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9\s-]/g, "") // elimina : ( ) etc
-    .replace(/\s+/g, "-") // espacios -> guiones
-    .replace(/-+/g, "-"); // colapsa guiones dobles
+    .replace(/[^a-z0-9\s-]/g, "") 
+    .replace(/\s+/g, "-") 
+    .replace(/-+/g, "-"); 
 
 const GigLanding = () => {
   const params = useParams();
 
-  // ✅ Funciona sin importar si tu folder es [event], [id], [slug] o catch-all
   const eventParam = useMemo(() => {
     if (!params) return "";
     const first = Object.values(params)[0];
@@ -47,7 +46,6 @@ const GigLanding = () => {
     [eventIdFromUrl]
   );
 
-  // Pixel init (safe)
   useEffect(() => {
     let isMounted = true;
 
@@ -62,8 +60,6 @@ const GigLanding = () => {
         await import("react-facebook-pixel");
         if (!isMounted) return;
 
-        // Si luego quieres inicializar:
-        // ReactPixel.default.init(pixelId);
       } catch (e) {
         console.warn("Pixel init skipped:", e?.message || e);
       }
@@ -87,22 +83,14 @@ const GigLanding = () => {
 
         const events = await fetchEvents(); // /api/event
 
-        // ✅ Debug útil (puedes borrar luego)
-        console.log("params:", params);
-        console.log("eventParam:", eventParam);
-        console.log("eventIdFromUrl:", eventIdFromUrl);
-        console.log("events ids:", Array.isArray(events) ? events.map((e) => e?.id) : events);
-
         if (!Array.isArray(events)) {
           throw new Error("fetchEvents() no devolvió un array.");
         }
 
-        // 1) match directo por id (ahora tus ids ya son slugs)
         let found = events.find(
           (e) => String(e?.id ?? "").toLowerCase().trim() === eventIdNormalized
         );
 
-        // 2) fallback: slugify(eventName/event) vs slugify(param)
         if (!found) {
           const targetSlug = slugify(eventIdFromUrl);
           found = events.find(
@@ -133,7 +121,7 @@ const GigLanding = () => {
     };
   }, [params, eventParam, eventIdFromUrl, eventIdNormalized]);
 
-  // ✅ Navbar color
+  //  Navbar color
   useEffect(() => {
     if (currentEvent) {
       setNavbarColor(currentEvent.typeOfShow === "Family" ? "dark" : "light");
