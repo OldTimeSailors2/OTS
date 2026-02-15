@@ -35,15 +35,19 @@ export const Power1360 = ({ data }) => {
   const dateStr = data?.date ?? "";
   const formattedDate = formatDate(dateStr);
 
+  // ✅ ESTE ES EL URL CORRECTO (del JSON)
+  const buyUrl = (data?.buyTickets ?? "").trim();
+
+  // ✅ Debug para confirmar que llega aquí y qué valor trae
+  console.log("✅ Power1360 buyTickets:", buyUrl);
+
   const start = data?.gigStartTime ?? data?.from ?? "";
   const end = data?.gigFinishTime ?? data?.to ?? "";
 
-  const timeText =
-    start && end ? `${start} to ${end}` : start ? start : end ? end : "";
+  const timeText = start && end ? `${start} to ${end}` : start ? start : end ? end : "";
 
-  const ticketsURL = data?.ticketsURL ?? "#";
   const venueInfo = data?.venueInfo ?? "";
-  const eventURL = "/eventURL"; 
+  const eventURL = "/eventURL";
 
   return (
     <>
@@ -94,36 +98,55 @@ export const Power1360 = ({ data }) => {
                 </div>
 
                 <div className="relative w-[330px] h-[100px]">
-                  <Link className="absolute left-12 inset-0 items-center justify-center text-beige" href={ticketsURL} target="_blank">
+                  <a
+                    href={buyUrl || "#"}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-disabled={!buyUrl}
+                    onClick={(e) => {
+                      console.log("✅ CLICK Power1360 buyTickets ->", buyUrl);
+                      if (!buyUrl) e.preventDefault();
+                    }}
+                    className={`absolute left-12 inset-0 z-[9999] block ${!buyUrl ? "pointer-events-none opacity-50 cursor-not-allowed" : "cursor-pointer"
+                      }`}
+                    style={{ pointerEvents: "auto" }}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 358.62 137.01"
                       preserveAspectRatio="none"
                       className="w-[100%] h-[100px] z-10"
+                      style={{ pointerEvents: "none" }}
                     >
                       <path
                         fill="#db3a57"
                         d="M25.61,0H333.01c0,14.15,11.47,25.61,25.61,25.61V111.4c-14.15,0-25.61,11.47-25.61,25.61H25.61c0-14.15-11.47-25.61-25.61-25.61V25.61C14.15,25.61,25.61,14.15,25.61,0Z"
                       />
                     </svg>
-                    <h3 className="relative font-txt justify-center text-[37px] uppercase -top-[79px] z-20 w-[100%] text-center">buy tickets</h3>
-                  </Link>
+
+                    <h3
+                      className="relative font-txt justify-center text-[37px] uppercase -top-[79px] z-20 w-[100%] text-center"
+                      style={{ pointerEvents: "none" }}
+                    >
+                      buy tickets
+                    </h3>
+                  </a>
                 </div>
+
               </div>
 
               <div className="text-[17px] pb-5 text-beige font-txt text-left leading-7">
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
-                  Heave ho and up she rises! Cast aside your compass, throw your maps overboard and join the mutinous crew of The Old Time Sailor as
-                  they set sail for the wild uninhabited islands of Irish Punk, Shanty Punk, Polka Rock, Romani Punk, Dark Cabaret, and Twisted
-                  Circus!
+                  Heave ho and up she rises! Cast aside your compass, throw your maps overboard and join the mutinous crew of The Old Time Sailor as they
+                  set sail for the wild uninhabited islands of Irish Punk, Shanty Punk, Polka Rock, Romani Punk, Dark Cabaret, and Twisted Circus!
                 </p>
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
                   &apos;Rock and row&apos; with our 21 strong crew of rebellious musicians as the navigate a voyage through the thrashing seas of Hevay Metal
                   and Hard Rock on a genre bending adventure into uncharted waters, join in the Wall of Death and thrash it out with your shipmates.
                 </p>
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
-                  Get ready for vigorous vocals, emphatic energy, mosh pits and head banging: we play it live and we play it loud, but as always with
-                  The Old Time Sailors... be prepared to expect the unexpected!
+                  Get ready for vigorous vocals, emphatic energy, mosh pits and head banging: we play it live and we play it loud, but as always with The
+                  Old Time Sailors... be prepared to expect the unexpected!
                 </p>
               </div>
             </div>
@@ -193,7 +216,6 @@ export const Power1360 = ({ data }) => {
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </>
