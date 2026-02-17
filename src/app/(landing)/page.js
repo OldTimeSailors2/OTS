@@ -177,7 +177,7 @@ export default async function Home() {
           <Link
             key={href}
             href={href}
-            className={`octagon my-1 font-titles md:text-2xl flex items-center justify-center ${bg} ${text} w-28 md:w-36 h-8`}
+            className={`octagon my-1 font-titles md:text-2xl flex items-center justify-center ${bg} ${text} w-44 md:w-36 h-10`}
           >
             {label}
           </Link>
