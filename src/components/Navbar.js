@@ -203,15 +203,15 @@ const Navbar = () => {
 
     const bg =
       navbarColor === "dark" &&
-      pathname != "/media" &&
-      pathname != "/reviews" &&
-      pathname != "/our-clients"
+        pathname != "/media" &&
+        pathname != "/reviews" &&
+        pathname != "/our-clients"
         ? isRed
           ? "bg-redPattern text-beige"
           : "bg-bluePattern text-beige"
         : isRed
-        ? "bg-beigePattern text-lightRed"
-        : "bg-beigePattern text-darkBlue";
+          ? "bg-beigePattern text-lightRed"
+          : "bg-beigePattern text-darkBlue";
 
     return `${bg} bg-contain rounded-full p-1 sm:p-2 2k:p-3 4k:p-3.5 pointer-events-auto`;
   };
@@ -272,11 +272,10 @@ const Navbar = () => {
 
       <div
         style={getNavbarStyle()}
-        className={`w-screen z-[100] flex flex-col justify-between pt-3 px-1 sm:px-4 3xl:px-9 ${
-          pathname === "/tickets/calendar-view" || pathname === "/tickets"
-            ? "bg-beigePatternMobile bg-cover"
-            : ""
-        } ${getNavbarBackground()}`}
+        className={`w-screen z-[100] flex flex-col justify-between pt-3 px-1 sm:px-4 3xl:px-9 ${pathname === "/tickets/calendar-view" || pathname === "/tickets"
+          ? "bg-beigePatternMobile bg-cover"
+          : ""
+          } ${getNavbarBackground()}`}
       >
         <div className="flex justify-between">
           <div className="flex gap-1.5 sm:gap-4 items-center">
@@ -299,20 +298,24 @@ const Navbar = () => {
                     ? logo
                     : logo2
                 }
-                width={65}
-                height={65}
+                width={55}
+                height={55}
                 priority={true}
                 alt="OTS Logo"
-                className="xs:w-[80px] xs:h-[80px] sm:w-32 sm:h-32 fullHD:w-40 fullHD:h-40 2k:w-48 2k:h-48 4k:w-64 4k:h-64 pointer-events-auto"
+                className="xs:w-[60px] xs:h-[60px]
+       sm:w-24 sm:h-24
+       fullHD:w-32 fullHD:h-32
+       2k:w-40 2k:h-40
+       4k:w-56 4k:h-56
+       pointer-events-auto"
               />
             </Link>
 
             <h1
               className={`octagon-navbar bg-${titleBg} bg-contain text-${titleColor} font-titles
               text-2xl xs2:text-[26px] sm:text-[40px] fullHD:text-5xl 2k:text-7xl 4k:text-8xl
-              flex items-center justify-center fullHD:pb-0.5 fullHD:pl-2 ${
-                isDynamicRoute ? "hidden" : "visible"
-              }`}
+              flex items-center justify-center fullHD:pb-0.5 fullHD:pl-2 ${isDynamicRoute ? "hidden" : "visible"
+                }`}
               style={{
                 opacity: settings?.loader,
                 pointerEvents: settings?.photos ? "auto" : "none",
@@ -360,9 +363,8 @@ const Navbar = () => {
       </div>
 
       <div
-        className={`fixed top-12 right-0 z-[300] h-[calc(100vh-3rem)] w-[260px] ${
-          menuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-12 right-0 z-[300] h-[calc(100vh-3rem)] w-[260px] ${menuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
         style={{ transition: "transform 180ms ease" }}
       >
         <div ref={menuRef} className="h-full bg-[#143247] text-[#e6d8bd] shadow-2xl">

@@ -66,18 +66,7 @@ export const Power1360 = ({ data }) => {
             </div>
 
             <div className="absolute w-[310px] top-[20px] -right-[100px] z-20">
-              <div className="bg-beige h-[220px] p-6 rounded-3xl">
-                <h3 className="text-lightRed text-[30px] font-titles leading-none">
-                  <p>more about</p>
-                  <p>the venue</p>
-                </h3>
-                <div className="mt-0.5 tracking-wide">
-                  <p className="text-darkBlue text-[15px] font-txt leading-tight">{venueInfo}</p>
-                  <Link href={eventURL}>
-                    <p className="text-darkBlue text-[14px] mt-1 font-titles underline">contact the venue for + info</p>
-                  </Link>
-                </div>
-              </div>
+          
             </div>
 
             <div className="border-t-2 border-dashed border-beige my-4" />

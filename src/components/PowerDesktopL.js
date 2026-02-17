@@ -44,21 +44,7 @@ export const PowerDesktopL = ({ data }) => {
               <p className="text-lightRed font-txt text-[30px] mt-4 lowercase">{location}</p>
             </div>
             <div className="absolute w-[450px]  top-[20px] -right-[100px] z-20">
-              <div className="bg-beige h-[300px] p-6 rounded-3xl">
-                <h3 className="text-lightRed text-[60px] font-titles leading-none">
-                  more about
-                  <br />
-                  the venue
-                </h3>
-                <div className="mt-0.5 tracking-wide">
-                  <p className="text-darkBlue text-[15px] font-txt leading-tight">
-                    {venueInfo}
-                  </p>
-                  <Link href={eventURL}>
-                    <p className="text-darkBlue text-[20px] mt-1 font-titles underline">contact the venue for + info</p>
-                  </Link>
-                </div>
-              </div>
+            
             </div>
             <div className="border-t-2 border-dashed border-beige my-4" />
 
