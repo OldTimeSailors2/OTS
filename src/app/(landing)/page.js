@@ -199,7 +199,6 @@ export default async function Home() {
               mail: assets.mail,
               spotify: assets.spotify,
             }}
-            iconSize={{ w: 53, h: 12 }}
           />
         </div>
       </div>
