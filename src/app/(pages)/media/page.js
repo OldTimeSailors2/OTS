@@ -197,7 +197,7 @@ const Media = async () => {
           photos={formattedPhotos}
         >
           <section className="w-full flex flex-col 1xl:mt-3 1xxl:mt-5 2k:mt-0">
-            <div className="flex items-center px-2 sm:px-6 mb-1 2k:mb-3">
+            <div className="flex items-center px-2 sm:px-6 mt-4 mb-1 2k:mt-6 2k:mb-3">
               <Image
                 src="/assets/media-deco-1.svg"
                 width={35}
@@ -215,7 +215,7 @@ const Media = async () => {
           </section>
 
           <section className="w-full flex flex-col">
-            <div className="flex items-center px-2 sm:px-6 mb-2 2k:mb-5">
+            <div className="flex items-center px-2 sm:px-6 mt-4 mb-2 2k:mt-6 2k:mb-5">
               <Image
                 src="/assets/media-deco-1.svg"
                 width={35}
