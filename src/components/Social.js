@@ -7,8 +7,8 @@ export default function Social({
   renderers = {},   
   itemClassName = "", 
 }) {
-  const W = 53;
-  const H = 12;
+  const W = 60;
+  const H = 60;
 
   const items = [
     { key: "instagram", href: "https://www.instagram.com/oldtimesailors", label: "Instagram" },
@@ -46,7 +46,7 @@ export default function Social({
                 width={W}
                 height={H}
                 priority
-                style={{ width: "auto", height: "auto" }}
+                style={{ width: "60px", height: "60px" }}
               />
             )}
           </Link>
