@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 const Song = ({ song }) => {
+  
   return (
     <div
       className="
@@ -22,7 +23,7 @@ const Song = ({ song }) => {
         title={song.title}
       >
         {/* Sin line-clamp para que no dependa de plugin */}
-        {song.title}
+        {song.public_id}
       </h2>
 
       {/* ✅ CUADRITO */}
@@ -39,7 +40,6 @@ const Song = ({ song }) => {
       >
         {/* overlay detrás del icono/texto */}
         <div className="items-overlay rounded-lg absolute inset-0 z-0" />
-
         <Image
           src="/assets/song-icon.svg"
           width={60}
