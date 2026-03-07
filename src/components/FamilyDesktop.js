@@ -53,6 +53,8 @@ export const FamilyDesktop = ({ data }) => {
                   more about 
                   <br />
                   the venue
+                  <br />
+                  laptop
                 </h3>
                 <div className="mt-0.5 tracking-wide">
                   <p className="text-beige text-[15px] font-txt leading-tight">

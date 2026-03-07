@@ -48,6 +48,8 @@ export const Family1360 = ({ data }) => {
                 <h3 className="text-lightRed text-[30px] font-titles leading-none">
                   <p>more about x</p>
                   <p>the venue</p>
+                  <br />
+                  laptop
                 </h3>
                 <div className="mt-0.5 tracking-wide">
                   <p className="text-beige text-[15px] font-txt leading-tight">
