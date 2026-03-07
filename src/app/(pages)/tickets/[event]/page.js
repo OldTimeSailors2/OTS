@@ -82,7 +82,7 @@ const GigLanding = () => {
         setError(null);
 
         const events = await fetchEvents(); // /api/event
-          console.log("params:", params);
+        console.log("params:", params);
         console.log("eventParam:", eventParam);
         console.log("eventIdFromUrl:", eventIdFromUrl);
         console.log("events ids:", Array.isArray(events) ? events.map((e) => e?.id) : events);
@@ -131,60 +131,33 @@ const GigLanding = () => {
       setNavbarColor(currentEvent.typeOfShow === "Family" ? "dark" : "light");
     }
   }, [currentEvent, setNavbarColor]);
-
-  if (isLoading) {
-    return (
-      <MainDiv>
-        <div className="p-6 text-center">
-          <p className="text-xl font-semibold">Loading...</p>
-        </div>
-      </MainDiv>
-    );
-  }
-
-  if (error) {
-    return (
-      <MainDiv>
-        <div className="p-6 text-center">
-          <p className="text-xl font-semibold">No se pudo cargar el evento</p>
-          <p className="mt-2 opacity-80">{error}</p>
-        </div>
-      </MainDiv>
-    );
-  }
-
-  if (!currentEvent) {
-    return (
-      <MainDiv>
-        <div className="p-6 text-center">
-          <p className="text-xl font-semibold">No event found</p>
-        </div>
-      </MainDiv>
-    );
-  }
-
-  return (
-    <MainDiv>
-      <div
-        className={`${
-          currentEvent.typeOfShow === "Family"
-            ? "bg-beigePattern bg-contain"
-            : "bg-darkBlue bg-contain"
-        }`}
-        style={{
-          backgroundRepeat: "repeat",
-          overscrollBehavior: "none",
-          scrollBehavior: "smooth",
-        }}
-      >
+  return(
+  <MainDiv>
+  {(isLoading || error || !currentEvent)?
+      <div className="p-6 text-center">
+        <p className="text-xl font-semibold">{
+          isLoading ? "Loading..." :
+          error ? "No se pudo cargar el evento" :
+          !currentEvent ? "No event found" :""
+        }</p>
+        {error && <p className="mt-2 opacity-80">{error}</p>}
+      </div>
+    :
+      <div className={`${
+        currentEvent.typeOfShow === "Family"
+        ? "bg-beigePattern bg-contain"
+        : "bg-darkBlue bg-contain"
+        } bg-repeat overscroll-none scroll-smooth`}
+        >
         {currentEvent.typeOfShow === "Family" ? (
           <FamilyLanding data={currentEvent} />
         ) : (
           <PowerLanding data={currentEvent} />
         )}
       </div>
-    </MainDiv>
-  );
+      }
+      </MainDiv>)
+
 };
 
 export default GigLanding;
