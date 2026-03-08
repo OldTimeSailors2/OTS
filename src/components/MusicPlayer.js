@@ -85,7 +85,7 @@ const MusicPlayer = () => {
   }, []);
 
   // ✅ Title seguro (nunca undefined)
-  const safeTitle = useMemo(() => currentSong?.title ?? "", [currentSong]);
+  const safeTitle = useMemo(() => currentSong?.public_id ?? "", [currentSong]);
 
   // ✅ FIX: no uses currentSong?.title.length (puede ser undefined)
   const isMarqueeNeeded = safeTitle.length > marqueeThreshold;
