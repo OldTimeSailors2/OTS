@@ -9,7 +9,9 @@ export const PowerDesktopL = ({ data }) => {
   const { event, location, date, ticketsURL, venueInfo, gigStartTime, gigFinishTime } = data;
   const formattedDate = formatDate(date);
   const eventURL = "/eventURL";
-  const router = useRouter();
+  const router = useRouter(); 
+  const buyUrl = (data?.buyTickets ?? "").trim();
+
   return (
     <>
       <div className="relative -bottom-[100px]">
@@ -50,7 +52,7 @@ export const PowerDesktopL = ({ data }) => {
                 </div>
 
                 <div className="relative w-[400px] h-[120px]">
-                  <Link className="absolute left-4 inset-0  items-center justify-center  text-beige " href={ticketsURL} target="_blank">
+                  <a className="absolute left-4 inset-0  items-center justify-center  text-beige " href={buyUrl || "#"} target="_blank" rel="noreferrer" aria-disabled={!buyUrl} onClick={() => ClickPixel("BuyTicket")}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 358.62 137.01"
@@ -63,7 +65,7 @@ export const PowerDesktopL = ({ data }) => {
                       />
                     </svg>
                     <h3 className="relative font-txt justify-center text-[55px] uppercase -top-[99px] z-20 w-[100%] text-center">buy tickets</h3>
-                  </Link>
+                  </a>
                 </div>
               </div>
               <div className="text-[27px] pr-[175px] text-beige font-txt text-left leading-10">

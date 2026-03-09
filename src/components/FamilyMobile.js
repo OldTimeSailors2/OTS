@@ -272,7 +272,12 @@ export const FamilyMobile = ({ data, variant = "s" }) => {
           ))}
 
           <div className={styles.ctaWrap}>
-            <Link className={styles.ctaLink} href={ticketsURL} target="_blank" onClick={() => ClickPixel("BuyTicket")}>
+            <a className={styles.ctaa}
+              href={ticketsURL || "#"}
+              target="_blank"
+              rel="noreferrer"
+              aria-disabled={!ticketsURL}
+              onClick={() => ClickPixel("BuyTicket")}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 358.62 137.01" preserveAspectRatio="none" className={styles.ctaSvg}>
                 <path
                   fill="#db3a57"
@@ -280,7 +285,7 @@ export const FamilyMobile = ({ data, variant = "s" }) => {
                 />
               </svg>
               <h3 className={styles.ctaText}>buy tickets</h3>
-            </Link>
+            </a>
           </div>
 
           {styles.descriptionMode === "split2" ? (

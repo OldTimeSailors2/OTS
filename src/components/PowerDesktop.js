@@ -20,6 +20,7 @@ export const PowerDesktop = ({ data }) => {
 
   const ticketsURL = data?.ticketsURL ?? "#";
   const venueInfo = data?.venueInfo ?? "";
+  const buyUrl = (data?.buyTickets ?? "").trim();
 
   const eventURL = "/eventURL";
 
@@ -75,9 +76,9 @@ export const PowerDesktop = ({ data }) => {
                 </div>
 
                 <div className="relative w-[400px] h-[100px]">
-                  <Link
+                  <a
                     className="absolute left-[70px] top-[5px] inset-0 items-center justify-center text-beige"
-                    href={ticketsURL}
+                    href={buyUrl || "#"}
                     target="_blank"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 358.62 137.01" preserveAspectRatio="none" className="w-[100%] h-[100px] z-10">
@@ -87,7 +88,7 @@ export const PowerDesktop = ({ data }) => {
                       />
                     </svg>
                     <h3 className="relative font-txt justify-center text-[47px] uppercase -top-[85px] z-20 w-[100%] text-center">buy tickets</h3>
-                  </Link>
+                  </a>
                 </div>
               </div>
 

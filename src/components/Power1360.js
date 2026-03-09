@@ -105,7 +105,7 @@ export const Power1360 = ({ data }) => {
                       className="relative font-txt justify-center text-[37px] uppercase -top-[79px] z-20 w-[100%] text-center"
                       style={{ pointerEvents: "none" }}
                     >
-                      buy tickets
+                      buy tickets 1360
                     </h3>
                   </a>
                 </div>

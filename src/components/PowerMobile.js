@@ -165,6 +165,7 @@ export const PowerMobile = ({ data, variant = "s" }) => {
   const eventURL = "/eventURL";
   const router = useRouter();
   const s = SIZES[variant];
+  const buyUrl = (data?.buyTickets ?? "").trim();
 
   return (
     <>
@@ -215,7 +216,7 @@ export const PowerMobile = ({ data, variant = "s" }) => {
 
                 {/* Tickets button */}
                 <div className={s.ticketsWrapper}>
-                  <Link className={s.ticketsLink} href={ticketsURL} target="_blank">
+                  <Link className={s.ticketsLink} href={buyUrl || "#"} target="_blank" rel="noreferrer" aria-disabled={!buyUrl} onClick={() => ClickPixel("BuyTicket")}>
                     {s.ticketsImgSrc ? (
                       <Image src={s.ticketsImgSrc} width={s.ticketsImgW} height={s.ticketsImgH} alt="buy tickets" />
                     ) : (
