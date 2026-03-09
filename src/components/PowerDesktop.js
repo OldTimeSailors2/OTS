@@ -3,20 +3,8 @@ import { FaCalendar, FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { formatDate } from "@/utils/formatDate";
 
-const formatDate = (inputDate) => {
-  if (!inputDate || typeof inputDate !== "string") return "";
-
-  const [day, month, year] = inputDate.split("/").map(Number);
-  if (!day || !month || !year) return inputDate;
-
-  const date = new Date(year, month - 1, day);
-
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-  return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-};
 
 export const PowerDesktop = ({ data }) => {
   const router = useRouter();
