@@ -8,10 +8,10 @@ const MainDiv = ({ children, className }) => {
 
   return (
     <main
-      className={`${className}`}
+      className={className}
       style={{
         opacity: settings?.loader,
-        pointerEvents: settings?.photos ? "auto" : "none",
+        pointerEvents: "auto",
       }}
     >
       {children}

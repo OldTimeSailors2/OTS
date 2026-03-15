@@ -6,11 +6,18 @@ import { useRouter } from "next/navigation";
 import { formatDate } from "@/utils/formatDate";
 
 export const PowerDesktopL = ({ data }) => {
-  const { event, location, date, ticketsURL, venueInfo, gigStartTime, gigFinishTime } = data;
+  const { event, location, date, venueInfo, gigStartTime, gigFinishTime } = data;
   const formattedDate = formatDate(date);
   const eventURL = "/eventURL";
-  const router = useRouter(); 
-  const buyUrl = (data?.buyTickets ?? "").trim();
+  const router = useRouter();
+
+  const rawBuyUrl = (data?.buyTickets ?? "").trim();
+  const buyUrl =
+    rawBuyUrl && /^https?:\/\//i.test(rawBuyUrl)
+      ? rawBuyUrl
+      : rawBuyUrl
+        ? `https://${rawBuyUrl}`
+        : "";
 
   return (
     <>
@@ -21,15 +28,15 @@ export const PowerDesktopL = ({ data }) => {
             <div className="text-left px-10">
               <h1 className="leading-none lowercase font-titles">
                 <span className="text-lightRed text-[55px]">old time sailors </span>
-                <span className="text-beige  text-[55px]"> at</span>
+                <span className="text-beige text-[55px]"> at</span>
                 <br />
                 <span className="text-beige text-[55px]">{event}</span>
               </h1>
               <p className="text-lightRed font-txt text-[30px] mt-4 lowercase">{location}</p>
             </div>
-            <div className="absolute w-[450px]  top-[20px] -right-[100px] z-20">
-            
-            </div>
+
+            <div className="absolute w-[450px] top-[20px] -right-[100px] z-20"></div>
+
             <div className="border-t-2 border-dashed border-beige my-4" />
 
             {/* Event info */}
@@ -51,23 +58,48 @@ export const PowerDesktopL = ({ data }) => {
                   ))}
                 </div>
 
-                <div className="relative w-[400px] h-[120px]">
-                  <a className="absolute left-4 inset-0  items-center justify-center  text-beige " href={buyUrl || "#"} target="_blank" rel="noreferrer" aria-disabled={!buyUrl} onClick={() => ClickPixel("BuyTicket")}>
+                <div className="relative w-[400px] h-[120px] ml-4">
+                  <a
+                    href={buyUrl || "#"}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-disabled={!buyUrl}
+                    onClick={(e) => {
+                      if (!buyUrl) {
+                        e.preventDefault();
+                        return;
+                      }
+                      if (typeof ClickPixel === "function") {
+                        ClickPixel("BuyTicket");
+                      }
+                    }}
+                    className={`absolute inset-0 z-[9999] block text-beige ${
+                      !buyUrl ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                    }`}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 358.62 137.01"
                       preserveAspectRatio="none"
-                      className="w-[100%] h-[120px] z-10"
+                      className="w-full h-full"
+                      style={{ pointerEvents: "none" }}
                     >
                       <path
                         fill="#db3a57"
                         d="M25.61,0H333.01c0,14.15,11.47,25.61,25.61,25.61V111.4c-14.15,0-25.61,11.47-25.61,25.61H25.61c0-14.15-11.47-25.61-25.61-25.61V25.61C14.15,25.61,25.61,14.15,25.61,0Z"
                       />
                     </svg>
-                    <h3 className="relative font-txt justify-center text-[55px] uppercase -top-[99px] z-20 w-[100%] text-center">buy tickets</h3>
+
+                    <span
+                      className="absolute inset-0 flex items-center justify-center font-txt text-[55px] uppercase text-center"
+                      style={{ pointerEvents: "none" }}
+                    >
+                      buy tickets
+                    </span>
                   </a>
                 </div>
               </div>
+
               <div className="text-[27px] pr-[175px] text-beige font-txt text-left leading-10">
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
                   Heave ho and up she rises! Cast aside your compass, throw your maps overboard and join the mutinous crew of The Old Time Sailor as
@@ -75,7 +107,7 @@ export const PowerDesktopL = ({ data }) => {
                   Circus!
                 </p>
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
-                  'Rock and row' with our 21 strong crew of rebellious musicians as the navigate a voyage through the thrashing seas of Hevay Metal
+                  {"'"}Rock and row{"'"} with our 21 strong crew of rebellious musicians as the navigate a voyage through the thrashing seas of Hevay Metal
                   and Hard Rock on a genre bending adventure into uncharted waters, join in the Wall of Death and thrash it out with your shipmates.
                 </p>
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
@@ -85,17 +117,42 @@ export const PowerDesktopL = ({ data }) => {
               </div>
             </div>
           </div>
+
           <div className="absolute right-[21px] -top-[230px] z-10">
-            <Image src="/assets/powerPhoto1.webp" alt="Performance" width={470} height={470} className="w-[470px] h-[470px] " loading="lazy" />
+            <Image
+              src="/assets/powerPhoto1.webp"
+              alt="Performance"
+              width={470}
+              height={470}
+              className="w-[470px] h-[470px]"
+              loading="lazy"
+            />
           </div>
+
           {/* Photo 2 */}
           <div className="absolute right-[95px] top-[225px] z-20">
-            <Image src="/assets/powerPhoto4.jpg" alt="Musicians" width={650} height={200} className="w-[650px] " loading="lazy" />
+            <Image
+              src="/assets/powerPhoto4.jpg"
+              alt="Musicians"
+              width={650}
+              height={200}
+              className="w-[650px]"
+              loading="lazy"
+            />
           </div>
+
           {/* Photo 3 */}
           <div className="absolute left-[500px] top-[550px] z-30">
-            <Image src="/assets/powerPhoto3.webp" alt="Crowd" width={750} height={600} className="w-[750px]" loading="lazy" />
+            <Image
+              src="/assets/powerPhoto3.webp"
+              alt="Crowd"
+              width={750}
+              height={600}
+              className="w-[750px]"
+              loading="lazy"
+            />
           </div>
+
           <div className="absolute -right-[40px] top-[810px]">
             <Image
               src="/assets/shipDrawing.webp"
@@ -106,16 +163,24 @@ export const PowerDesktopL = ({ data }) => {
               loading="lazy"
             />
           </div>
+
           <div className="relative bottom-[550px] w-full">
-            <div className="absolute top-[85px] left-[0px] z-30 ">
-              <Image src="/assets/powerVideoBox2.svg" alt="Video frame" width={650} height={550} className="w-[650px] h-[550px]" priority={true} />
+            <div className="absolute top-[85px] left-[0px] z-30">
+              <Image
+                src="/assets/powerVideoBox2.svg"
+                alt="Video frame"
+                width={650}
+                height={550}
+                className="w-[650px] h-[550px]"
+                priority={true}
+              />
             </div>
 
             <div className="absolute inset-0 top-[240px] left-[75px] z-50">
               <video
                 controls
                 preload="none"
-                poster={"/assets/thumbnailVideoP.webp"}
+                poster="/assets/thumbnailVideoP.webp"
                 className="object-cover w-[500px] h-[280px] rounded-sm hover:opacity-100 [&::-webkit-media-controls]:opacity-0 hover:[&::-webkit-media-controls]:opacity-100 [&::-webkit-media-controls]:transition-opacity"
               >
                 <source src="/assets/powerVideo.mp4" type="video/mp4" />
@@ -135,8 +200,9 @@ export const PowerDesktopL = ({ data }) => {
 
             <p className="absolute inset-0 font-titles text-darkBlue left-[130px] top-[45px] text-[75px]">more gigs</p>
           </div>
+
           {/* Title */}
-          <div className="absolute -bottom-[800px]  left-[15px] z-10 ">
+          <div className="absolute -bottom-[800px] left-[15px] z-10">
             <div className="flex flex-row items-center gap-3 mb-5">
               <div className="leading-tight">
                 <p className="text-lightRed text-[190px] font-titles">power</p>
@@ -155,4 +221,5 @@ export const PowerDesktopL = ({ data }) => {
     </>
   );
 };
+
 export default PowerDesktopL;
