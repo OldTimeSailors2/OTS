@@ -47,10 +47,8 @@ const PhotosDisplay = () => {
 
   useEffect(() => {
     if (!DEBUG) return;
-    console.log("[PhotosDisplay] open:", isPhotoModalOpen);
-    console.log("[PhotosDisplay] clickedPhotoIndex:", clickedPhotoIndex);
-    console.log("[PhotosDisplay] photoList length:", photoList?.length || 0);
-    if (photoList?.length) console.log("[PhotosDisplay] first photo:", photoList[0]);
+   
+   
   }, [isPhotoModalOpen, clickedPhotoIndex, photoList]);
 
   const handleClose = () => {
@@ -101,7 +99,6 @@ const PhotosDisplay = () => {
           {(photoList || []).map((photo, idx) => {
             const src = getCloudinarySrc(photo);
 
-            if (DEBUG) console.log("[PhotosDisplay] slide", idx, "src:", src);
 
             return (
               <SplideSlide key={photo?.id ?? photo?.public_id ?? src ?? idx}>
@@ -116,7 +113,6 @@ const PhotosDisplay = () => {
                     style={{ objectFit: "contain" }}
                     unoptimized
                     onError={() => console.error("[PhotosDisplay] Image failed:", src, photo)}
-                    onLoadingComplete={() => DEBUG && console.log("[PhotosDisplay] loaded:", src)}
                   />
                 ) : (
                   <div className="w-[98vw] h-[98vw] xl:h-[95dvh] bg-black" />

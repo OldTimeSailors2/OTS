@@ -15,9 +15,7 @@ const getCloudinarySrc = (photo) => {
 const Photo = ({ photo, index }) => {
   const src = getCloudinarySrc(photo);
 
-  if (DEBUG) {
-    console.log("[Photo thumbnail] index:", index, "src:", src, "photo:", photo);
-  }
+
 
   // si viene vacío, no rompemos el carrusel
   if (!src) {
@@ -58,7 +56,6 @@ const Photo = ({ photo, index }) => {
           console.error("[Photo thumbnail] Image failed:", src, photo);
         }}
         onLoadingComplete={() => {
-          if (DEBUG) console.log("[Photo thumbnail] loaded:", src);
         }}
       />
     </div>

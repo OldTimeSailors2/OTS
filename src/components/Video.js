@@ -13,7 +13,6 @@ const toAbsoluteUrl = (url) => {
 
 const getYouTubeId = (video) => {
   // acepta: video.id (si es id), o youtubeUrl
-  console.log("VIDEO ITEM:", video);
 
   const maybeId = video?.id || video?.youtubeId || video?.youtube_id || null;
   if (maybeId && typeof maybeId === "string" && maybeId.length <= 20 && !maybeId.includes("http")) {

@@ -122,14 +122,7 @@ const ListItem = ({ event }) => {
   const href = `/tickets/${slug}`;
 
   const log = (label) => (e) => {
-    console.log(`✅ ${label}`, {
-      type: e?.type,
-      target: e?.target,
-      currentTarget: e?.currentTarget,
-      href,
-      slug,
-      title: safeTitle,
-    });
+   
   };
 
   return (

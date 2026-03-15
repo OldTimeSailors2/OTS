@@ -7,7 +7,6 @@ import { formatDate } from "@/utils/formatDate";
 
 const ClickPixel = (typeClick) => {
   // ReactPixel.trackCustom('ClickPixel', { typeClick: typeClick });
-  console.log("Pixel send", typeClick);
 };
 
 

@@ -55,7 +55,6 @@ const fetchMarkers = async () => {
 
 const MapView = async () => {
   const markersList = await fetchMarkers();
-  console.log("markersList:", markersList);
 
   return <MapViewComponent markersList={markersList} />;
   

@@ -155,15 +155,7 @@ export const fetchMediaData = async () => {
       url: r.secure_url,
       duration: r.duration,
     }));
-    console.log(
-      "Cloudinary songs mapped:",
-      songs.map((r) => ({
-        display_name: r.display_name,
-        filename: r.filename,
-        original_filename: r.original_filename,
-        public_id: r.public_id,
-      }))
-    );
+
     // ✅ Unimos Cloudinary videos + YouTube videos
     //    (sin duplicar si por casualidad hubiera mismo url)
     const mergedVideos = [...formattedVideos, ...(ytList || [])].filter(
@@ -172,13 +164,6 @@ export const fetchMediaData = async () => {
         return arr.findIndex((x) => (x.youtubeUrl || x.url) === key) === idx;
       }
     );
-
-    console.log("Cloudinary photos:", formattedPhotos.length);
-    console.log("Cloudinary videos:", formattedVideos.length);
-    console.log("YouTube videos (JSON):", ytList?.length || 0);
-    console.log("Merged videos:", mergedVideos.length);
-    console.log("Cloudinary songs:", formattedSongs.length);
-
     return {
       formattedSongs,
       formattedVideos: mergedVideos, // ✅ importante: devolvemos los merged

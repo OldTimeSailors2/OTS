@@ -25,8 +25,6 @@ const ResponsiveImage = ({ images }) => {
 
   // ✅ Debug rápido (puedes quitarlo luego)
   useEffect(() => {
-    console.log("[ResponsiveImage] mode:", isDesktopOrLaptop ? "desktop" : "mobile");
-    console.log("[ResponsiveImage] src:", src);
   }, [isDesktopOrLaptop, src]);
 
   if (!src) {
@@ -52,9 +50,6 @@ const ResponsiveImage = ({ images }) => {
         }
         // ✅ CLAVE: evita /_next/image (y por ende el 402 en Vercel Preview)
         unoptimized
-        // ✅ Debug si falla carga
-        onError={(e) => console.error("[ResponsiveImage] Image error:", src, e)}
-        onLoad={() => console.log("[ResponsiveImage] Loaded:", src)}
       />
     </div>
   );

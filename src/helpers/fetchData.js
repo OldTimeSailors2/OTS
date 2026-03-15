@@ -17,6 +17,5 @@ export const fetchEvents = async () => {
   if (Array.isArray(data?.markers)) return data.markers;
 
   // fallback
-  console.log("API /api/event payload:", data);
   return [];
 };

@@ -82,11 +82,7 @@ const GigLanding = () => {
         setError(null);
 
         const events = await fetchEvents(); // /api/event
-        console.log("params:", params);
-        console.log("eventParam:", eventParam);
-        console.log("eventIdFromUrl:", eventIdFromUrl);
-        console.log("events ids:", Array.isArray(events) ? events.map((e) => e?.id) : events);
-
+    
         if (!Array.isArray(events)) {
           throw new Error("fetchEvents() no devolvió un array.");
         }

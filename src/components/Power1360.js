@@ -29,7 +29,6 @@ export const Power1360 = ({ data }) => {
 
   const buyUrl = (data?.buyTickets ?? "").trim();
 
-  console.log("✅ Power1360 buyTickets:", buyUrl);
 
   const start = data?.gigStartTime ?? data?.from ?? "";
   const end = data?.gigFinishTime ?? data?.to ?? "";
@@ -81,7 +80,6 @@ export const Power1360 = ({ data }) => {
                     rel="noreferrer"
                     aria-disabled={!buyUrl}
                     onClick={(e) => {
-                      console.log("✅ CLICK Power1360 buyTickets ->", buyUrl);
                       if (!buyUrl) e.preventDefault();
                     }}
                     className={` left-12 inset-0 z-[9999] block ${
