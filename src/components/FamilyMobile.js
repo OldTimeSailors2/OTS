@@ -243,27 +243,7 @@ export const FamilyMobile = ({ data, variant = "s" }) => {
 
         {styles.dividerClass && <div className={styles.dividerClass} />}
 
-        <div className={styles.venueWrap}>
-          <div className={styles.venueBox}>
-            <h3 className={styles.venueTitle}>
-              <p>more about</p>
-              <p>the venue</p>
-            </h3>
-            <div className="mt-0.5">
-              <p className={styles.venueText}>{venueInfo}</p>
-              <a
-                href={buyUrl || "#"}
-                target="_blank"
-                rel="noreferrer"
-                className={`${!buyUrl ? "opacity-50 pointer-events-none" : ""}`}
-              >
-                <p className="text-white mt-3 font-titles underline text-[18px]">
-                  contact the venue for + info
-                </p>
-              </a>
-            </div>
-          </div>
-        </div>
+    
 
         <div className={styles.infoWrap}>
           {[
@@ -357,7 +337,6 @@ export const FamilyMobile = ({ data, variant = "s" }) => {
             <Image src="/assets/familyPhoto1.webp" alt="Performance" width={200} height={200} quality={75} className={styles.photo1Class} loading="lazy" />
             <div className={styles.backWrap} onClick={() => router.back()} role="button" tabIndex={0}>
               <Image src="/assets/arrow2.webp" alt="More gigs" width={180} height={55} quality={75} className={styles.backImage} loading="lazy" />
-              <p className={styles.backText}>more gigs</p>
             </div>
           </div>
 
