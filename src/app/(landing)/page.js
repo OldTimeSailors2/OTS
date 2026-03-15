@@ -168,7 +168,7 @@ export default async function Home() {
       >
         {[
           { href: "/media", label: "media", bg: "bg-cream", text: "txt-darkBlue" },
-          { href: "/tickets", label: "tickets", bg: "bg-darkBlue", text: "txt-red" },
+          { href: "/tickets/calendar-view", label: "tickets", bg: "bg-darkBlue", text: "txt-red" },
           { href: "https://oldtimesailors.co.uk", label: "merch", bg: "bg-red", text: "txt-cream" },
           { href: "/reviews", label: "reviews", bg: "bg-darkBlue", text: "txt-cream" },
           { href: "/our-clients", label: "our clients", bg: "bg-cream", text: "txt-red" },

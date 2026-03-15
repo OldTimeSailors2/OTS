@@ -187,7 +187,7 @@ const Navbar = () => {
   const octagonMenu = useMemo(
     () => [
       { label: "media", href: "/media", bg: "bg-beigePattern", text: "text-darkBlue" },
-      { label: "tickets", href: "/tickets", bg: "bg-bluePattern", text: "text-lightRed" },
+      { label: "tickets", href: "/tickets/calendar-view", bg: "bg-bluePattern", text: "text-lightRed" },
       { label: "merch", href: "https://oldtimesailors.co.uk/", target: "_blank", bg: "bg-redPattern", text: "text-beige" },
       { label: "reviews", href: "/reviews", bg: "bg-bluePattern", text: "text-beige" },
       { label: "our clients", href: "/our-clients", bg: "bg-beigePattern", text: "text-lightRed" },
