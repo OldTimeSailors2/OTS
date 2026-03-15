@@ -179,7 +179,7 @@ const ListItem = ({ event }) => {
           <Link
             href={href}
             aria-label="More info"
-            className="relative z-[9999] pointer-events-auto cursor-pointer inline-block"
+            className="relative pointer-events-auto cursor-pointer inline-block"
             onPointerDownCapture={log("Link onPointerDownCapture")}
             onClickCapture={log("Link onClickCapture")}
             onClick={log("Link onClick (bubble)")}
