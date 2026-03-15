@@ -2,7 +2,6 @@ import Image from "next/image";
 import { formatSongTitle } from "@/utils/formatSongTitle";
 
 const Song = ({ song }) => {
-  console.log("[Song.jsx] song:", song);
   const songTitle = formatSongTitle(song.title || song.public_id);
 
   return (

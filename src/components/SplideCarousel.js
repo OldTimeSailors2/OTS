@@ -43,23 +43,7 @@ const SplideCarousel = ({ mediaType }) => {
 
   // ✅ Log inicial: confirma que el componente monta y tiene data/funciones
   useEffect(() => {
-    console.log("[SplideCarousel] mounted", {
-      mediaType,
-      counts: {
-        songs: playlist?.length || 0,
-        videos: videoList?.length || 0,
-        photos: photoList?.length || 0,
-      },
-      functions: {
-        openModal: typeof openModal,
-        selectVideo: typeof selectVideo,
-        openVideoModal: typeof openVideoModal,
-        selectPhoto: typeof selectPhoto,
-        openPhotoModal: typeof openPhotoModal,
-      },
-      currentSong: currentSongRef.current?.id ?? null,
-      isPlaying: isPlayingRef.current ?? null,
-    });
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mediaType]);
 
@@ -172,19 +156,14 @@ Combine: "6%",
   };
 
   const handleClickCapture = (e) => {
-    // ✅ Log básico del click
-    console.log("[SplideCarousel] click capture", {
-      mediaType,
-      targetTag: e?.target?.tagName,
-      targetClass: e?.target?.className,
-    });
+
 
     if (!e) return;
 
     // Evita que arrows disparen modal
     const isArrow = getClosest(e, ".splide__arrow");
     if (isArrow) {
-      console.log("[SplideCarousel] click ignored: arrow");
+   
       return;
     }
 
@@ -193,38 +172,25 @@ Combine: "6%",
     const videoEl = getClosest(e, "[data-video-url]");
     const photoEl = getClosest(e, "[data-photo-index]");
 
-    console.log("[SplideCarousel] closest data elements", {
-      hasSongEl: Boolean(songEl),
-      hasVideoEl: Boolean(videoEl),
-      hasPhotoEl: Boolean(photoEl),
-      songId: songEl?.getAttribute?.("data-song-id") ?? null,
-      videoUrl: videoEl?.getAttribute?.("data-video-url") ?? null,
-      photoIndex: photoEl?.getAttribute?.("data-photo-index") ?? null,
-    });
 
     // ✅ Ejecuta según mediaType
     if (mediaType === "song") {
       const target = songEl;
       if (!target) {
-        console.warn("[SplideCarousel] SONG click: no data-song-id found");
+     
         return;
       }
 
       const songId = target.getAttribute("data-song-id");
-      console.log("[SplideCarousel] SONG click -> songId:", songId);
+  
 
       if (!songId) return;
 
-      console.log("[SplideCarousel] SONG funcs", {
-        openModal: typeof openModal,
-        playSong: typeof playSongRef.current,
-      });
+  
 
       if (currentSongRef.current?.id === songId) {
-        console.log("[SplideCarousel] SONG -> current song, opening modal");
         openModal?.();
       } else {
-        console.log("[SplideCarousel] SONG -> play + open modal");
         playSongRef.current?.(songId);
         openModal?.();
       }
@@ -234,28 +200,19 @@ Combine: "6%",
     if (mediaType === "video") {
       const target = videoEl;
       if (!target) {
-        console.warn("[SplideCarousel] VIDEO click: no data-video-url found");
         return;
       }
 
       const videoUrl = target.getAttribute("data-video-url");
-      console.log("[SplideCarousel] VIDEO click -> videoUrl:", videoUrl);
 
-      console.log("[SplideCarousel] VIDEO funcs", {
-        selectVideo: typeof selectVideo,
-        openVideoModal: typeof openVideoModal,
-        togglePlayPause: typeof togglePlayPauseRef.current,
-        isPlaying: isPlayingRef.current,
-      });
+  
 
       if (!videoUrl) return;
 
       if (isPlayingRef.current) {
-        console.log("[SplideCarousel] VIDEO -> pausing music");
         togglePlayPauseRef.current?.();
       }
 
-      console.log("[SplideCarousel] VIDEO -> select + open modal");
       selectVideo?.(videoUrl);
       openVideoModal?.();
       return;
@@ -264,29 +221,18 @@ Combine: "6%",
     if (mediaType === "photo") {
       const target = photoEl;
       if (!target) {
-        console.warn("[SplideCarousel] PHOTO click: no data-photo-index found");
         return;
       }
 
       const idxStr = target.getAttribute("data-photo-index");
       const idx = Number(idxStr);
 
-      console.log("[SplideCarousel] PHOTO click -> idx:", idxStr, idx);
-
-      console.log("[SplideCarousel] PHOTO funcs", {
-        selectPhoto: typeof selectPhoto,
-        openPhotoModal: typeof openPhotoModal,
-      });
-
       if (Number.isNaN(idx)) return;
 
-      console.log("[SplideCarousel] PHOTO -> select + open modal");
       selectPhoto?.(idx);
       openPhotoModal?.();
       return;
     }
-
-    console.warn("[SplideCarousel] Unknown mediaType:", mediaType);
   };
 
   const renderContent = () => {
