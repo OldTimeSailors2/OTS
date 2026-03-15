@@ -1,58 +1,75 @@
 import Image from "next/image";
+import { formatSongTitle } from "@/utils/formatSongTitle";
 
 const Song = ({ song }) => {
-  
+  console.log("[Song.jsx] song:", song);
+  const songTitle = formatSongTitle(song.title || song.public_id);
+
   return (
     <div
       className="
-        w-[72px] sm:w-20 md:w-24 min-[900px]:w-28 xl:w-[72px] 1xxl:w-[82px] 4xl:w-[103px] fullHD:w-28 2k:w-36 4k:w-44
-        flex flex-col items-center justify-start gap-2
+        w-[88px] sm:w-[104px] md:w-[118px] min-[900px]:w-[128px] xl:w-[110px]
+        1xxl:w-[126px] 4xl:w-[150px] fullHD:w-[138px] 2k:w-[172px] 4k:w-[210px]
+        flex flex-col items-center justify-start
         cursor-pointer select-none
       "
       data-song-id={song.id}
     >
-      {/* ✅ TÍTULO SIEMPRE VISIBLE */}
       <h2
         className="
-          font-txt text-[11px] sm:text-sm min-[900px]:text-[15px] xl:text-[12px] fullHD:text-base 2k:text-lg 4k:text-2xl
-          text-center font-light uppercase tracking-tighter leading-tight
           w-full
+          min-h-[42px] sm:min-h-[52px] md:min-h-[58px] xl:min-h-[52px]
+          fullHD:min-h-[62px] 2k:min-h-[74px] 4k:min-h-[98px]
+          mb-2 sm:mb-3
+          px-1 sm:px-2
+          text-center uppercase
+          font-txt font-light
+          text-[11px] sm:text-[13px] md:text-[15px] xl:text-[14px]
+          fullHD:text-[16px] 2k:text-[20px] 4k:text-[28px]
+          leading-[1.35]
+          tracking-[0.01em]
+          text-[#F4E8D6]
           relative z-20
-          px-1
+          break-words
         "
-        title={song.title}
+        title={songTitle}
       >
-        {/* Sin line-clamp para que no dependa de plugin */}
-        {song.public_id}
+        {songTitle}
       </h2>
 
-      {/* ✅ CUADRITO */}
       <div
         className="
           bg-beige rounded-lg 2k:rounded-xl 4k:rounded-2xl
           p-2 sm:p-2.5 xl:p-2 2k:p-3 4k:p-4
           flex items-center justify-center
           relative
-          w-full
-          aspect-square
+          w-[42px] h-[42px]
+          sm:w-[48px] sm:h-[48px]
+          md:w-[54px] md:h-[54px]
+          xl:w-[46px] xl:h-[46px]
+          fullHD:w-[54px] fullHD:h-[54px]
+          2k:w-[66px] 2k:h-[66px]
+          4k:w-[84px] 4k:h-[84px]
           overflow-hidden
+          shrink-0
         "
       >
-        {/* overlay detrás del icono/texto */}
         <div className="items-overlay rounded-lg absolute inset-0 z-0" />
+
         <Image
           src="/assets/song-icon.svg"
           width={60}
           height={60}
-          alt="Song icon"
+          alt={`Play ${songTitle}`}
           className="
             relative z-10
-            h-[30px] w-[30px]
-            sm:h-[40px] sm:w-[40px]
-            min-[900px]:h-[50px] min-[900px]:w-[50px]
-            xl:h-[30px] xl:w-[30px]
-            2k:h-[55px] 2k:w-[55px]
-            4k:h-[75px] 4k:w-[75px]
+            h-[22px] w-[22px]
+            sm:h-[26px] sm:w-[26px]
+            md:h-[30px] md:w-[30px]
+            xl:h-[24px] xl:w-[24px]
+            fullHD:h-[28px] fullHD:w-[28px]
+            2k:h-[36px] 2k:w-[36px]
+            4k:h-[46px] 4k:w-[46px]
           "
         />
       </div>

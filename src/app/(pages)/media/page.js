@@ -150,11 +150,20 @@ export const fetchMediaData = async () => {
 
     const formattedSongs = songs.map((r) => ({
       id: r.asset_id,
+      title: r.display_name || r.filename || r.original_filename || r.public_id,
       public_id: r.public_id,
       url: r.secure_url,
       duration: r.duration,
     }));
-
+    console.log(
+      "Cloudinary songs mapped:",
+      songs.map((r) => ({
+        display_name: r.display_name,
+        filename: r.filename,
+        original_filename: r.original_filename,
+        public_id: r.public_id,
+      }))
+    );
     // ✅ Unimos Cloudinary videos + YouTube videos
     //    (sin duplicar si por casualidad hubiera mismo url)
     const mergedVideos = [...formattedVideos, ...(ytList || [])].filter(

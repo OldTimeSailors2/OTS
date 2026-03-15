@@ -13,6 +13,7 @@ import {
 } from "react-icons/tb";
 import { TbArrowsShuffle2 } from "react-icons/tb";
 import { TbRepeat, TbRepeatOff, TbRepeatOnce } from "react-icons/tb";
+import { formatSongTitle } from "@/utils/formatSongTitle";
 
 const MusicPlayer = () => {
   const {
@@ -85,7 +86,9 @@ const MusicPlayer = () => {
   }, []);
 
   // ✅ Title seguro (nunca undefined)
-  const safeTitle = useMemo(() => currentSong?.public_id ?? "", [currentSong]);
+  const safeTitle = useMemo(() => {
+    return formatSongTitle(currentSong?.title || currentSong?.public_id || "");
+  }, [currentSong]);
 
   // ✅ FIX: no uses currentSong?.title.length (puede ser undefined)
   const isMarqueeNeeded = safeTitle.length > marqueeThreshold;
