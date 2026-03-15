@@ -10,7 +10,7 @@ import { formatDate } from "@/utils/formatDate";
 
 const SIZES = {
   s: {
-    outerWrapper: "relative -bottom-[50px] px-[15px]",
+    outerWrapper: "relative -bottom-[50px] px-[15px] pt-8",
     innerWrapper: "relative w-full my-[10px]",
     mainBox: "border-[3px] border-beige p-2 m-4 relative",
     titleText: "text-xl",
@@ -73,7 +73,7 @@ const SIZES = {
   },
 
   m: {
-    outerWrapper: "relative top-[18.67px] -bottom-[50px] z-0 transform translate-z-0 will-change-transform",
+    outerWrapper: "relative top-[18.67px] -bottom-[50px] z-0 transform translate-z-0 will-change-transform pt-6",
     innerWrapper: "relative w-full h-full my-[10px]",
     mainBox: "border-[2px] border-beige relative mr-[32.72px] ml-[35.28px]",
     titleText: "text-[21px]",
@@ -138,7 +138,7 @@ const SIZES = {
   },
 
   l: {
-    outerWrapper: "relative -bottom-[65px] px-[15px] z-0 transform translate-z-0 will-change-transform",
+    outerWrapper: "relative -bottom-[65px] px-[15px] z-0 transform translate-z-0 will-change-transform pt-6",
     innerWrapper: "relative w-full h-full my-[10px]",
     mainBox: "border-[3px] border-beige p-2 m-4 relative",
     titleText: "text-2xl",
