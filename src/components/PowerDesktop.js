@@ -67,12 +67,18 @@ export const PowerDesktop = ({ data }) => {
                 </h3>
                 <div className="mt-0.5 tracking-wide">
                   <p className="text-white text-[16px] font-txt leading-tight">{venueInfo}</p>
-
-                  <Link href={eventURL}>
-                    <p className="text-white text-[15px] mt-1 font-titles underline">
+                  <a
+                    href={buyUrl || "#"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`${!buyUrl ? "opacity-50 pointer-events-none" : ""}`}
+                  >
+                    <p className="text-white mt-3 font-titles underline text-[18px]">
                       contact the venue for + info
                     </p>
-                  </Link>
+                  </a>
+
+
                 </div>
               </div>
             </div>
@@ -109,9 +115,8 @@ export const PowerDesktop = ({ data }) => {
                         e.preventDefault();
                       }
                     }}
-                    className={` inset-0 z-[9999] block ${
-                      !buyUrl ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                    }`}
+                    className={` inset-0 z-[9999] block ${!buyUrl ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                      }`}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -138,19 +143,16 @@ export const PowerDesktop = ({ data }) => {
 
               <div className="text-xl pr-[150px] pb-7 font-txt text-left leading-10">
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
-                  Heave ho and up she rises! Cast aside your compass, throw your maps overboard and join the
-                  mutinous crew of The Old Time Sailor as they set sail for the wild uninhabited islands of
-                  Irish Punk, Shanty Punk, Polka Rock, Romani Punk, Dark Cabaret, and Twisted Circus!
+                  You are invited to board the Sailorette and join the plentiful crew, ‘The Old Time Sailors’, for a night of footstomping, dancing and singing!
+                  You will be sailing back to the 19th century for an immersive experience of traditional seafaring music performed in a way you have never seen before. The Motley Crew and their plethora of traditional and eclectic instruments will take you back to the time of clashing tankards, and drunken debauchery.
+                Sing and dance along like a drunken sailor as the band perform centuries old folk and shanty songs. Fancy dress is encouraged, so pull out your best seafaring garments me hearties and join.
+                
                 </p>
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
-                  &apos;Rock and row&apos; with our 21 strong crew of rebellious musicians as the navigate a
-                  voyage through the thrashing seas of Hevay Metal and Hard Rock on a genre bending adventure
-                  into uncharted waters, join in the Wall of Death and thrash it out with your shipmates.
+                
                 </p>
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
-                  Get ready for vigorous vocals, emphatic energy, mosh pits and head banging: we play it live
-                  and we play it loud, but as always with The Old Time Sailors... be prepared to expect the
-                  unexpected!
+                 
                 </p>
               </div>
             </div>

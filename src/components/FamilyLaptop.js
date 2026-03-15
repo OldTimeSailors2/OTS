@@ -210,9 +210,16 @@ export const FamilyLaptop = ({ data, variant = "laptop" }) => {
                 </h3>
                 <div className="mt-0.5 tracking-wide">
                   <p className=" text-[15px] font-txt leading-tight">{venueInfo}</p>
-                  <Link href={eventURL}>
-                    <p className="text-white text-[15px] mt-1 font-titles underline">contact the venue for + info</p>
-                  </Link>
+                  <a
+                    href={buyUrl || "#"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`${!buyUrl ? "opacity-50 pointer-events-none" : ""}`}
+                  >
+                    <p className="text-white mt-3 font-titles underline text-[18px]">
+                      contact the venue for + info
+                    </p>
+                  </a>
                 </div>
               </div>
             </div>

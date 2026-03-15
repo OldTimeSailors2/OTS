@@ -253,11 +253,16 @@ export const PowerMobile = ({ data, variant = "s" }) => {
                 </h3>
                 <div className="mt-0.5">
                   <p className={`text-white leading-tight font-txt ${s.venueInfoText}`}>{venueInfo}</p>
-                  <Link href={eventURL}>
-                    <p className={`text-white mt-1 underline font-titles ${s.venueLinkText}`}>
+                  <a
+                    href={buyUrl || "#"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`${!buyUrl ? "opacity-50 pointer-events-none" : ""}`}
+                  >
+                    <p className="text-white mt-3 font-titles underline text-[18px]">
                       contact the venue for + info
                     </p>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
@@ -292,9 +297,8 @@ export const PowerMobile = ({ data, variant = "s" }) => {
                         ClickPixel("BuyTicket");
                       }
                     }}
-                    className={` inset-0 z-[9999] block ${
-                      !buyUrl ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                    }`}
+                    className={` inset-0 z-[9999] block ${!buyUrl ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                      }`}
                   >
                     {s.ticketsImgSrc ? (
                       <Image

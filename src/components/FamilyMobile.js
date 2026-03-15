@@ -252,9 +252,16 @@ export const FamilyMobile = ({ data, variant = "s" }) => {
             </h3>
             <div className="mt-0.5">
               <p className={styles.venueText}>{venueInfo}</p>
-              <Link href={eventURL}>
-                <p className={styles.venueLink}>contact the venue for + info</p>
-              </Link>
+              <a
+                href={buyUrl || "#"}
+                target="_blank"
+                rel="noreferrer"
+                className={`${!buyUrl ? "opacity-50 pointer-events-none" : ""}`}
+              >
+                <p className="text-white mt-3 font-titles underline text-[18px]">
+                  contact the venue for + info
+                </p>
+              </a>
             </div>
           </div>
         </div>
