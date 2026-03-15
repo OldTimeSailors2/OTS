@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 /*Animation*/
+html{
+  background-color: #E9DFCB ;
+}
 
 @keyframes rotate-spring {
   0% {

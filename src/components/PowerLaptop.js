@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import { FaCalendar, FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
@@ -9,23 +12,23 @@ const SIZES = {
   md: {
     outerWrapper: "relative top-[330px] right-[5px]",
     innerWrapper: "relative w-full my-[50px]",
-    mainBox: "border-[3px] border-beige p-2 relative w-[650px] -right-[95px] -top-[310px]",
+    mainBox: "border-[5px] border-beige p-2 relative w-[650px] -right-[95px] -top-[310px]",
     titleText: "text-[40px]",
     locationMt: "",
     venueCard: "absolute w-[250px] top-[27px] -right-[75px] z-20",
-    venueCardInner: "bg-beige p-4 rounded-3xl",
+    venueCardInner: "bg-darkBlue p-4 rounded-3xl",
     venueTitleText: "text-[25px]",
     venueInfoText: "text-[12px]",
     venueLinkText: "text-[12px]",
     eventSpaceY: "space-y-2 p-4",
-    eventInfoItem: "flex items-center gap-2 text-beige font-txt px-4",
+    eventInfoItem: "flex items-center gap-2 font-txt px-4",
     eventIconSize: "text-[18px]",
     eventTextSize: "text-[18px]",
 
     ticketsWrapper: "relative w-[240px] h-[95px] mt-[10px] ml-1 shrink-0",
     ticketsText: "text-[32px]",
 
-    descText: "text-[15px] pt-5 text-beige font-txt text-left leading-7 px-4",
+    descText: "text-[15px] pt-5 font-txt text-left leading-7 px-4",
     photo1: { wrapper: "absolute right-[15px] -top-[230px] z-10", w: 200, h: 200, cls: "w-[200px] h-[200px]" },
     photo2: { wrapper: "absolute right-[25px] -top-[35px] z-30", w: 290, h: 200, cls: "w-[290px]" },
     photo3: { wrapper: "absolute right-[275px] top-[255px] w-[380px] z-40", w: 400, h: 400, cls: "h-[360px]" },
@@ -44,29 +47,29 @@ const SIZES = {
     titleSection: "absolute -bottom-[190px] left-[45px] z-10 pb-8",
     titleLeading: "leading-[63px]",
     titleTextSize: "text-lightRed text-[80px] font-titles",
-    subtitleWrapper: "text-beige text-[20px] -mb-[75px] -ml-[35px]",
+    subtitleWrapper: "text-[20px] -mb-[75px] -ml-[35px]",
   },
 
   lg: {
     outerWrapper: "relative -bottom-[100px]",
     innerWrapper: "relative w-full h-full my-[250px]",
-    mainBox: "border border-beige p-2 relative w-[950px] -right-[95px] -top-[310px]",
+    mainBox: "border-2 border-beige p-2 relative w-[950px] -right-[95px] -top-[310px]",
     titleText: "text-[55px]",
     locationMt: "mt-4",
     venueCard: "absolute w-[350px] top-[20px] -right-[100px] z-20",
-    venueCardInner: "bg-beige h-[220px] p-6 rounded-3xl",
+    venueCardInner: "bg-darkBlue h-[220px] p-6 rounded-3xl",
     venueTitleText: "text-[30px]",
     venueInfoText: "text-[17px]",
     venueLinkText: "text-[15px]",
     eventSpaceY: "space-y-6 p-4",
-    eventInfoItem: "flex items-center gap-2 text-beige font-txt",
+    eventInfoItem: "flex items-center gap-2 font-txt",
     eventIconSize: "text-[21px]",
     eventTextSize: "text-[21px]",
 
     ticketsWrapper: "relative w-[300px] h-[100px] mt-[6px] ml-[90px] shrink-0",
     ticketsText: "text-[40px]",
 
-    descText: "text-[19px] pb-5 text-beige font-txt text-left leading-8",
+    descText: "text-[19px] pb-5 font-txt text-left leading-8",
     photo1: { wrapper: "absolute right-[15px] -top-[230px] z-10", w: 290, h: 290, cls: "w-[290px] h-[290px]" },
     photo2: { wrapper: "absolute right-[25px] top-[53px] z-20", w: 390, h: 200, cls: "w-[390px]" },
     photo3: { wrapper: "absolute left-[520px] top-[288px] z-30", w: 550, h: 400, cls: "w-[550px]" },
@@ -85,7 +88,7 @@ const SIZES = {
     titleSection: "absolute -bottom-[420px] left-[35px] z-10",
     titleLeading: "leading-[100px]",
     titleTextSize: "text-lightRed text-[125px] font-titles",
-    subtitleWrapper: "text-beige text-[30px] -mb-[150px] -ml-[65px]",
+    subtitleWrapper: "text-[30px] -mb-[150px] -ml-[65px]",
   },
 
   tablet: {
@@ -95,19 +98,19 @@ const SIZES = {
     titleText: "text-[40px]",
     locationMt: "",
     venueCard: "absolute w-56 top-9 -right-6 z-20",
-    venueCardInner: "bg-beige p-6 rounded-3xl",
+    venueCardInner: "bg-darkBlue p-6 rounded-3xl",
     venueTitleText: "text-[25px]",
     venueInfoText: "text-[15px]",
     venueLinkText: "text-[16px]",
     eventSpaceY: "space-y-6",
-    eventInfoItem: "flex items-center gap-2 text-beige font-txt",
+    eventInfoItem: "flex items-center gap-2 font-txt",
     eventIconSize: "text-[18px]",
     eventTextSize: "text-[18px]",
 
     ticketsWrapper: "relative w-[220px] h-[65px] mt-4 ml-4 shrink-0",
     ticketsText: "text-[27px]",
 
-    descText: "text-[20px] pb-9 pt-5 text-beige font-txt text-left",
+    descText: "text-[20px] pb-9 pt-5 font-txt text-left",
     photo1: { wrapper: "absolute left-[0px] top-[860px] z-20", w: 300, h: 280, cls: "h-[320px] ml-7 mt-4" },
     photo2: { wrapper: "absolute right-[20px] top-[620px] z-10", w: 320, h: 320, cls: "w-full" },
     photo3: { wrapper: "absolute right-[15px] top-[870px] w-[450px] z-10", w: 400, h: 400, cls: "w-full h-auto" },
@@ -126,7 +129,7 @@ const SIZES = {
     titleSection: "absolute bottom-[0px] left-[15px] z-30",
     titleLeading: "leading-[75px] mb-6",
     titleTextSize: "text-lightRed text-[90px] font-titles",
-    subtitleWrapper: "text-beige text-[20px] -ml-[45px] mt-[70px]",
+    subtitleWrapper: "text-[20px] -ml-[45px] mt-[70px]",
   },
 };
 
@@ -136,6 +139,17 @@ export const PowerLaptop = ({ data, variant = "md" }) => {
   const eventURL = "/eventURL";
   const router = useRouter();
   const s = SIZES[variant];
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const previousBg = html.style.backgroundColor;
+
+    html.style.backgroundColor = "#E9DFCB";
+
+    return () => {
+      html.style.backgroundColor = previousBg;
+    };
+  }, []);
 
   const rawBuyUrl = (data?.buyTickets ?? "").trim();
   const buyUrl =
@@ -153,9 +167,9 @@ export const PowerLaptop = ({ data, variant = "md" }) => {
           <div className="text-left px-10">
             <h1 className="font-titles leading-none lowercase">
               <span className={`text-lightRed ${s.titleText}`}>old time sailors </span>
-              <span className={`text-beige ${s.titleText}`}>at</span>
+              <span className={s.titleText}>at</span>
               <br />
-              <span className={`text-beige ${s.titleText}`}>{event}</span>
+              <span className={s.titleText}>{event}</span>
             </h1>
             <p className={`text-lightRed font-txt text-[30px] lowercase ${s.locationMt}`}>{location}</p>
           </div>
@@ -168,9 +182,9 @@ export const PowerLaptop = ({ data, variant = "md" }) => {
                 <p>the venue</p>
               </h3>
               <div className="mt-0.5 tracking-wide">
-                <p className={`text-darkBlue font-txt leading-tight ${s.venueInfoText}`}>{venueInfo}</p>
+                <p className={`text-white font-txt leading-tight ${s.venueInfoText}`}>{venueInfo}</p>
                 <Link href={eventURL}>
-                  <p className={`text-darkBlue mt-1 font-titles underline ${s.venueLinkText}`}>
+                  <p className={`text-white mt-1 font-titles underline ${s.venueLinkText}`}>
                     contact the venue for + info
                   </p>
                 </Link>
@@ -208,7 +222,7 @@ export const PowerLaptop = ({ data, variant = "md" }) => {
                       e.preventDefault();
                     }
                   }}
-                  className={`absolute inset-0 z-[9999] block text-beige ${
+                  className={` inset-0 z-[9999] block ${
                     !buyUrl ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                   }`}
                 >
@@ -335,13 +349,13 @@ export const PowerLaptop = ({ data, variant = "md" }) => {
         <div className={s.titleSection}>
           <div className="flex flex-row items-center gap-3 mb-5">
             <div className={s.titleLeading}>
-              <p className={s.titleTextSize}>power</p>
+              <p className={s.titleTextSize}>family</p>
               <p className={s.titleTextSize}>show</p>
             </div>
             <div className={s.subtitleWrapper}>
               <div className="font-txt leading-tight tracking-widest uppercase">
-                <p>an upbeat, darker show. get ready to</p>
-                <p>party below deck like a pirate!</p>
+                <p>A TRADITIONAL SAILOR SHOW,</p>
+                <p>SING ALONG AND DANCE WITH US!</p>
               </div>
             </div>
           </div>

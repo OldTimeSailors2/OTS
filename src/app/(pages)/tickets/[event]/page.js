@@ -146,7 +146,7 @@ const GigLanding = () => {
       <div className={`${
         currentEvent.typeOfShow === "Family"
         ? "bg-beigePattern bg-contain"
-        : "bg-darkBlue bg-contain"
+        : "bg-contain"
         } bg-repeat overscroll-none scroll-smooth`}
         >
         {currentEvent.typeOfShow === "Family" ? (

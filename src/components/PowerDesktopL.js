@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import { FaCalendar, FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
@@ -10,6 +13,17 @@ export const PowerDesktopL = ({ data }) => {
   const formattedDate = formatDate(date);
   const eventURL = "/eventURL";
   const router = useRouter();
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const previousBg = html.style.backgroundColor;
+
+    html.style.backgroundColor = "#E9DFCB";
+
+    return () => {
+      html.style.backgroundColor = previousBg;
+    };
+  }, []);
 
   const rawBuyUrl = (data?.buyTickets ?? "").trim();
   const buyUrl =
@@ -24,13 +38,13 @@ export const PowerDesktopL = ({ data }) => {
       <div className="relative -bottom-[100px]">
         <div className="relative w-full h-full my-[250px]">
           {/* Contenedor principal con borde */}
-          <div className="relative border-[3px] border-beige p-2 w-[1200px] h-[850px] -right-[130px] -top-[310px]">
+          <div className="relative border-[5px] border-beige p-2 w-[1200px] h-[850px] -right-[130px] -top-[310px]">
             <div className="text-left px-10">
               <h1 className="leading-none lowercase font-titles">
                 <span className="text-lightRed text-[55px]">old time sailors </span>
-                <span className="text-beige text-[55px]"> at</span>
+                <span className="text-[55px]"> at</span>
                 <br />
-                <span className="text-beige text-[55px]">{event}</span>
+                <span className="text-[55px]">{event}</span>
               </h1>
               <p className="text-lightRed font-txt text-[30px] mt-4 lowercase">{location}</p>
             </div>
@@ -51,7 +65,7 @@ export const PowerDesktopL = ({ data }) => {
                       text: `${gigStartTime} to ${gigFinishTime}`,
                     },
                   ].map(({ icon: Icon, text }) => (
-                    <div key={text} className="flex items-center gap-2 text-beige font-txt">
+                    <div key={text} className="flex items-center gap-2 font-txt">
                       <Icon className="text-[25px] text-lightRed" />
                       <span className="text-[25px] font-txt">{text}</span>
                     </div>
@@ -73,7 +87,7 @@ export const PowerDesktopL = ({ data }) => {
                         ClickPixel("BuyTicket");
                       }
                     }}
-                    className={`absolute inset-0 z-[9999] block text-beige ${
+                    className={` inset-0 z-[9999] block ${
                       !buyUrl ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                     }`}
                   >
@@ -100,7 +114,7 @@ export const PowerDesktopL = ({ data }) => {
                 </div>
               </div>
 
-              <div className="text-[27px] pr-[175px] text-beige font-txt text-left leading-10">
+              <div className="text-[27px] pr-[175px] font-txt text-left leading-10">
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
                   Heave ho and up she rises! Cast aside your compass, throw your maps overboard and join the mutinous crew of The Old Time Sailor as
                   they set sail for the wild uninhabited islands of Irish Punk, Shanty Punk, Polka Rock, Romani Punk, Dark Cabaret, and Twisted
@@ -205,13 +219,13 @@ export const PowerDesktopL = ({ data }) => {
           <div className="absolute -bottom-[800px] left-[15px] z-10">
             <div className="flex flex-row items-center gap-3 mb-5">
               <div className="leading-tight">
-                <p className="text-lightRed text-[190px] font-titles">power</p>
+                <p className="text-lightRed text-[190px] font-titles">family</p>
                 <p className="text-lightRed text-[190px] font-titles">show</p>
               </div>
-              <div className="text-beige text-[40px] -mb-[280px] -ml-[105px]">
+              <div className="text-[40px] -mb-[280px] -ml-[105px]">
                 <div className="font-txt leading-tight tracking-widest">
-                  <p>AN UPBEAT, DARKER SHOW. GET READY TO</p>
-                  <p>PARTY BELOW DECK LIKE A PIRATE!</p>
+                  <p>A TRADITIONAL SAILOR SHOW,</p>
+                  <p>SING ALONG AND DANCE WITH US!</p>
                 </div>
               </div>
             </div>

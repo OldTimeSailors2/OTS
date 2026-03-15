@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import { FaCalendar, FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
@@ -7,6 +10,17 @@ import { formatDate } from "@/utils/formatDate";
 
 export const PowerDesktop = ({ data }) => {
   const router = useRouter();
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const previousBg = html.style.backgroundColor;
+
+    html.style.backgroundColor = "#E9DFCB";
+
+    return () => {
+      html.style.backgroundColor = previousBg;
+    };
+  }, []);
 
   const title = data?.eventName ?? data?.event ?? "";
   const venue = data?.venueName ?? data?.location ?? "";
@@ -32,30 +46,30 @@ export const PowerDesktop = ({ data }) => {
     <>
       <div className="relative -bottom-[170px]">
         <div className="relative w-full h-full my-[250px]">
-          <div className="border-[3px] border-beige p-2 relative w-[1100px] -right-[100px] -top-[310px]">
+          <div className="border-[5px] border-beige p-2 relative w-[1100px] -right-[100px] -top-[310px]">
             <div className="text-left px-10">
               <h1 className="leading-none font-titles lowercase pt-2">
                 <span className="text-lightRed text-[55px]">old time sailors </span>
-                <span className="text-beige text-[55px]"> at</span>
+                <span className="text-[55px]"> at</span>
                 <br />
-                <span className="text-beige text-[55px]">{title}</span>
+                <span className="text-[55px]">{title}</span>
               </h1>
 
               <p className="text-lightRed font-txt text-[30px] lowercase">{venue}</p>
             </div>
 
             <div className="absolute w-[350px] top-[20px] -right-[100px] z-20">
-              <div className="bg-beige h-[220px] p-6 rounded-3xl">
+              <div className="bg-darkBlue h-[220px] p-6 rounded-3xl">
                 <h3 className="text-lightRed text-[30px] font-titles leading-none">
                   more about
                   <br />
                   the venue
                 </h3>
                 <div className="mt-0.5 tracking-wide">
-                  <p className="text-darkBlue text-[16px] font-txt leading-tight">{venueInfo}</p>
+                  <p className="text-white text-[16px] font-txt leading-tight">{venueInfo}</p>
 
                   <Link href={eventURL}>
-                    <p className="text-darkBlue text-[15px] mt-1 font-titles underline">
+                    <p className="text-white text-[15px] mt-1 font-titles underline">
                       contact the venue for + info
                     </p>
                   </Link>
@@ -76,7 +90,7 @@ export const PowerDesktop = ({ data }) => {
                   ].map(({ icon: Icon, text }, idx) => (
                     <div
                       key={`${idx}-${text}`}
-                      className="flex items-center gap-2 text-beige font-txt leading-tight"
+                      className="flex items-center gap-2 font-txt leading-tight"
                     >
                       <Icon className="text-[25px] text-lightRed" />
                       <span className="text-[25px] font-txt">{text}</span>
@@ -95,7 +109,7 @@ export const PowerDesktop = ({ data }) => {
                         e.preventDefault();
                       }
                     }}
-                    className={`absolute inset-0 z-[9999] block text-beige ${
+                    className={` inset-0 z-[9999] block ${
                       !buyUrl ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                     }`}
                   >
@@ -122,7 +136,7 @@ export const PowerDesktop = ({ data }) => {
                 </div>
               </div>
 
-              <div className="text-xl pr-[150px] pb-7 text-beige font-txt text-left leading-10">
+              <div className="text-xl pr-[150px] pb-7 font-txt text-left leading-10">
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
                   Heave ho and up she rises! Cast aside your compass, throw your maps overboard and join the
                   mutinous crew of The Old Time Sailor as they set sail for the wild uninhabited islands of
@@ -234,13 +248,13 @@ export const PowerDesktop = ({ data }) => {
           <div className="absolute -bottom-[500px] left-[15px] z-10">
             <div className="flex flex-row items-center gap-3 mb-5">
               <div className="leading-[140px]">
-                <p className="text-lightRed text-[180px] font-titles">power</p>
+                <p className="text-lightRed text-[180px] font-titles">family</p>
                 <p className="text-lightRed text-[180px] font-titles">show</p>
               </div>
-              <div className="text-beige text-[30px] -mb-[205px] -ml-[105px]">
+              <div className="text-[30px] -mb-[205px] -ml-[105px]">
                 <div className="font-txt font-bold leading-tight tracking-widest uppercase">
-                  <p>an upbeat, darker show. get ready to</p>
-                  <p>party below deck line like a pirate</p>
+                  <p>A TRADITIONAL SAILOR SHOW,</p>
+                  <p>SING ALONG AND DANCE WITH US!</p>
                 </div>
               </div>
             </div>

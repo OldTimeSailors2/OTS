@@ -21,7 +21,7 @@ export const metadata = {
 const Reviews = () => {
   return (
     <MainDiv className="w-screen h-dvh bg-redPatternMobile md1:bg-redPatternTablet xl:bg-redPattern bg-contain pt-[77px] xs:pt-[92px] sm:pt-[140px] fullHD:pt-[172px] 2k:pt-[204px] 4k:pt-[268px] pb-[18px] md1:pb-[44px] xl:pb-[40px] 2k:pb-[52px] 4k:pb-[64px]">
-      <div className="w-full h-full flex justify-between items-stretch font-txt text-beige text-justify pt-2 xl:pt-1 1xl:pt-2 1xxl:p-4 max-w-screen-xl:overflow-auto">
+      <div className="w-full h-full flex justify-between items-stretch font-txt  text-justify pt-2 xl:pt-1 1xl:pt-2 1xxl:p-4 max-w-screen-xl:overflow-auto">
         <div className="relative hidden xl:block xl:mx-2">
           <Image
             src="/assets/reviews-line-desktop.svg"

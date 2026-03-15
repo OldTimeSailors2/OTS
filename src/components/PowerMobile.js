@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import { FaCalendar, FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
@@ -14,7 +17,7 @@ const SIZES = {
     locationCls: "text-lightRed text-sm font-txt",
     dashedBorder: null,
     venueCard: "absolute -right-[28px] top-[70px] w-[145px]",
-    venueCardInner: "bg-beige p-3 py-4 rounded-2xl",
+    venueCardInner: "bg-darkBlue p-3 py-4 rounded-2xl",
     venueTitleText: "text-[15px]",
     venueInfoText: "text-[8px]",
     venueLinkText: "text-[8px]",
@@ -22,13 +25,13 @@ const SIZES = {
     eventInner: "space-y-3",
     eventInfoItem: "flex items-center gap-2 text-darkBlue font-bold",
     eventIconSize: "text-[10px] text-lightRed",
-    eventTextSize: "text-[8px] text-beige font-txt",
+    eventTextSize: "text-[8px] font-txt",
 
     ticketsWrapper: "relative w-[45%] h-[35px]",
     ticketsTextSize: "text-[16px]",
     ticketsImgSrc: null,
 
-    descText: "text-[12px] pb-5 pt-5 text-beige font-txt text-left",
+    descText: "text-[12px] pb-5 pt-5 font-txt text-left",
     mediaWrap: "w-full h-[400px] relative top-5 -left-3",
     mediaTopWrap: "relative h-[200px]",
     videoContainer: "relative w-[210px] h-[120px] left-[5px]",
@@ -62,7 +65,7 @@ const SIZES = {
     titleSection: "absolute bottom-6 left-4 z-20",
     titleLeading: "flex flex-col leading-none",
     titleTextSize: "text-lightRed text-[35px] font-titles",
-    subtitleWrapper: "text-beige text-[8px] flex flex-col",
+    subtitleWrapper: "text-[8px] flex flex-col",
     subtitleInner: "-ml-[30px] mt-[40px] leading-none tracking-widest font-txt uppercase",
     shipCls: "w-[150px] h-[130px] absolute bottom-[10px] -right-2 z-10 mix-blend-multiply brightness-[55%] opacity-[75%]",
     shipW: 150,
@@ -77,7 +80,7 @@ const SIZES = {
     locationCls: "text-lightRed text-[10.6px] font-txt uppercase",
     dashedBorder: "border-more-dashed-beige my-2",
     venueCard: "absolute -right-[24.5px] top-[24px] w-[146.03px]",
-    venueCardInner: "bg-beige p-[11.82px] rounded-2xl",
+    venueCardInner: "bg-darkBlue p-[11.82px] rounded-2xl",
     venueTitleText: "text-[18px]",
     venueInfoText: "text-[8.9px]",
     venueLinkText: "text-[8.9px]",
@@ -85,7 +88,7 @@ const SIZES = {
     eventInner: "ml-[11.61px] mr-[10px]",
     eventInfoItem: "flex items-center gap-1 text-darkBlue font-txt",
     eventIconSize: "text-[9.5px] text-lightRed",
-    eventTextSize: "text-[9.5px] text-beige",
+    eventTextSize: "text-[9.5px]",
 
     ticketsWrapper: "relative w-[161.56px] h-[26.44px] -left-[1.05px] mt-1",
     ticketsTextSize: null,
@@ -93,7 +96,7 @@ const SIZES = {
     ticketsImgW: 161.56,
     ticketsImgH: 26.44,
 
-    descText: "text-[10px] pb-6 pt-11 text-beige font-txt text-left",
+    descText: "text-[10px] pb-6 pt-11 font-txt text-left",
     mediaWrap: "w-full h-[auto] relative top-[33px] -left-5 mb-10",
     mediaTopWrap: "relative h-[200px]",
     videoContainer: "absolute left-[39.62px] -top-[42px] z-20 w-[239px] h-[148px]",
@@ -127,7 +130,7 @@ const SIZES = {
     titleSection: "absolute -bottom-[30px] left-[20px] z-30",
     titleLeading: "flex flex-col leading-[43.7px]",
     titleTextSize: "text-lightRed text-[49px] font-titles",
-    subtitleWrapper: "text-beige text-[9.45px] flex flex-col",
+    subtitleWrapper: "text-[9.45px] flex flex-col",
     subtitleInner: "-ml-[35px] mt-[58px] font-txt font-bold leading-none tracking-widest uppercase truncate",
     shipCls: "w-[153.24px] h-[112.52px] absolute -bottom-[37px] -right-[2px] z-0 mix-blend-multiply brightness-[35%] contrast-[250%] opacity-[85%]",
     shipW: 170,
@@ -142,7 +145,7 @@ const SIZES = {
     locationCls: "text-lightRed text-xl font-txt",
     dashedBorder: "border-more-dashed-beige my-4",
     venueCard: "absolute -right-[12px] top-[70px] w-[176px]",
-    venueCardInner: "bg-beige p-3 py-4 rounded-2xl",
+    venueCardInner: "bg-darkBlue p-3 py-4 rounded-2xl",
     venueTitleText: "text-lg",
     venueInfoText: "text-[9px]",
     venueLinkText: "text-[9px]",
@@ -150,13 +153,13 @@ const SIZES = {
     eventInner: "space-y-2",
     eventInfoItem: "flex items-center gap-2 text-darkBlue",
     eventIconSize: "text-[13px] text-lightRed",
-    eventTextSize: "text-[13px] text-beige font-txt",
+    eventTextSize: "text-[13px] font-txt",
 
     ticketsWrapper: "relative w-[55%] h-[35px] left-4",
     ticketsTextSize: "text-[20px]",
     ticketsImgSrc: null,
 
-    descText: "text-sm pb-6 pt-2 text-beige font-txt text-left",
+    descText: "text-sm pb-6 pt-2 font-txt text-left",
     mediaWrap: "w-full h-[auto] relative top-[40px] -left-2",
     mediaTopWrap: "relative h-[200px]",
     videoContainer: "relative w-[295px] h-[130px] -left-[4px]",
@@ -190,7 +193,7 @@ const SIZES = {
     titleSection: "absolute -bottom-[95px] left-[20px] z-30",
     titleLeading: "flex flex-col leading-[45px]",
     titleTextSize: "text-lightRed text-[57px] font-titles",
-    subtitleWrapper: "text-beige text-[9px] flex flex-col gap-4",
+    subtitleWrapper: "text-[9px] flex flex-col gap-4",
     subtitleInner: "-ml-[30px] mt-[62px] font-txt leading-none tracking-wider uppercase",
     shipCls: "w-[180px] h-[145px] absolute -bottom-[110px] -right-[5px] z-20 mix-blend-multiply brightness-[55%] opacity-[75%]",
     shipW: 180,
@@ -204,6 +207,17 @@ export const PowerMobile = ({ data, variant = "s" }) => {
   const eventURL = "/eventURL";
   const router = useRouter();
   const s = SIZES[variant];
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const previousBg = html.style.backgroundColor;
+
+    html.style.backgroundColor = "#E9DFCB";
+
+    return () => {
+      html.style.backgroundColor = previousBg;
+    };
+  }, []);
 
   const rawBuyUrl = (data?.buyTickets ?? "").trim();
   const buyUrl =
@@ -221,9 +235,9 @@ export const PowerMobile = ({ data, variant = "s" }) => {
             <div className="text-left lowercase">
               <h1 className="font-titles leading-none">
                 <span className={`text-lightRed ${s.titleText}`}>old time sailors </span>
-                <span className={`text-beige ${s.titleText}`}> at</span>
+                <span className={s.titleText}> at</span>
                 <br />
-                <span className={`text-beige ${s.titleText}`}>{event}</span>
+                <span className={s.titleText}>{event}</span>
               </h1>
               <p className={s.locationCls}>{location}</p>
             </div>
@@ -238,9 +252,9 @@ export const PowerMobile = ({ data, variant = "s" }) => {
                   <p>the venue</p>
                 </h3>
                 <div className="mt-0.5">
-                  <p className={`text-darkBlue leading-tight font-txt ${s.venueInfoText}`}>{venueInfo}</p>
+                  <p className={`text-white leading-tight font-txt ${s.venueInfoText}`}>{venueInfo}</p>
                   <Link href={eventURL}>
-                    <p className={`text-darkBlue mt-1 underline font-titles ${s.venueLinkText}`}>
+                    <p className={`text-white mt-1 underline font-titles ${s.venueLinkText}`}>
                       contact the venue for + info
                     </p>
                   </Link>
@@ -278,7 +292,7 @@ export const PowerMobile = ({ data, variant = "s" }) => {
                         ClickPixel("BuyTicket");
                       }
                     }}
-                    className={`absolute inset-0 z-[9999] block ${
+                    className={` inset-0 z-[9999] block ${
                       !buyUrl ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                     }`}
                   >
@@ -305,7 +319,7 @@ export const PowerMobile = ({ data, variant = "s" }) => {
                           />
                         </svg>
                         <span
-                          className={`absolute inset-0 flex items-center justify-center font-txt uppercase text-center text-beige ${s.ticketsTextSize}`}
+                          className={`absolute inset-0 flex items-center justify-center font-txt uppercase text-center ${s.ticketsTextSize}`}
                           style={{ pointerEvents: "none" }}
                         >
                           buy tickets
@@ -417,13 +431,13 @@ export const PowerMobile = ({ data, variant = "s" }) => {
         <div className={s.titleSection}>
           <div className="flex flex-row items-center gap-3">
             <div className={s.titleLeading}>
-              <p className={s.titleTextSize}>power</p>
+              <p className={s.titleTextSize}>family</p>
               <p className={s.titleTextSize}>show</p>
             </div>
             <div className={s.subtitleWrapper}>
               <div className={s.subtitleInner}>
-                <p>an upbeat, darker show. get ready to</p>
-                <p>party below deck like a pirate!</p>
+                <p>A TRADITIONAL SAILOR SHOW,</p>
+                <p>SING ALONG AND DANCE WITH US!</p>
               </div>
             </div>
           </div>

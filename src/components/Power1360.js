@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import { FaCalendar, FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
@@ -5,28 +8,27 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/utils/formatDate";
 
-
 export const Power1360 = ({ data }) => {
-  console.log("✅ RENDER Power1360", data);
-  console.log("✅ Power1360 keys:", Object.keys(data || {}));
-  console.log("✅ Power1360 mapped:", {
-    title: data?.eventName ?? data?.event,
-    venue: data?.venueName ?? data?.location,
-    start: data?.gigStartTime ?? data?.from,
-    end: data?.gigFinishTime ?? data?.to,
-  });
-
   const router = useRouter();
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const previousBg = html.style.backgroundColor;
+
+    html.style.backgroundColor = "#E9DFCB";
+
+    return () => {
+      html.style.backgroundColor = previousBg;
+    };
+  }, []);
 
   const title = data?.eventName ?? data?.event ?? "";
   const venue = data?.venueName ?? data?.location ?? "";
   const dateStr = data?.date ?? "";
   const formattedDate = formatDate(dateStr);
 
-  // ✅ ESTE ES EL URL CORRECTO (del JSON)
   const buyUrl = (data?.buyTickets ?? "").trim();
 
-  // ✅ Debug para confirmar que llega aquí y qué valor trae
   console.log("✅ Power1360 buyTickets:", buyUrl);
 
   const start = data?.gigStartTime ?? data?.from ?? "";
@@ -41,21 +43,19 @@ export const Power1360 = ({ data }) => {
     <>
       <div className="relative -bottom-[100px]">
         <div className="relative w-full h-full my-[250px]">
-          <div className="border-[3px] border-beige p-2 relative w-[850px] -right-[104px] -top-[310px]">
+          <div className="border-[5px] border-beige p-2 relative w-[850px] -right-[104px] -top-[310px]">
             <div className="text-left px-10">
               <h1 className="font-titles leading-none lowercase">
                 <span className="text-lightRed text-[55px]">old time sailors </span>
-                <span className="text-beige  text-[55px]"> at</span>
+                <span className="text-[55px]"> at</span>
                 <br />
-                <span className="text-beige  text-[55px]">{title}</span>
+                <span className="text-[55px]">{title}</span>
               </h1>
 
               <p className="text-lightRed font-txt text-[30px] mt-4 lowercase">{venue}</p>
             </div>
 
-            <div className="absolute w-[310px] top-[20px] -right-[100px] z-20">
-          
-            </div>
+            <div className="absolute w-[310px] top-[20px] -right-[100px] z-20"></div>
 
             <div className="border-t-2 border-dashed border-beige my-4" />
 
@@ -67,7 +67,7 @@ export const Power1360 = ({ data }) => {
                     { icon: FaCalendar, text: formattedDate || "—" },
                     { icon: FaClock, text: timeText || "—" },
                   ].map(({ icon: Icon, text }, idx) => (
-                    <div key={`${idx}-${text}`} className="flex items-center gap-2 text-beige font-txt">
+                    <div key={`${idx}-${text}`} className="flex items-center gap-2 font-txt">
                       <Icon className="text-[18px] text-lightRed" />
                       <span className="text-[18px] font-txt">{text}</span>
                     </div>
@@ -84,8 +84,9 @@ export const Power1360 = ({ data }) => {
                       console.log("✅ CLICK Power1360 buyTickets ->", buyUrl);
                       if (!buyUrl) e.preventDefault();
                     }}
-                    className={`absolute left-12 inset-0 z-[9999] block ${!buyUrl ? "pointer-events-none opacity-50 cursor-not-allowed" : "cursor-pointer"
-                      }`}
+                    className={` left-12 inset-0 z-[9999] block ${
+                      !buyUrl ? "pointer-events-none opacity-50 cursor-not-allowed" : "cursor-pointer"
+                    }`}
                     style={{ pointerEvents: "auto" }}
                   >
                     <svg
@@ -109,10 +110,9 @@ export const Power1360 = ({ data }) => {
                     </h3>
                   </a>
                 </div>
-
               </div>
 
-              <div className="text-[17px] pb-5 text-beige font-txt text-left leading-7">
+              <div className="text-[17px] pb-5 font-txt text-left leading-7">
                 <p className="leading-relaxed [&:not(:last-child)]:mb-0">
                   Heave ho and up she rises! Cast aside your compass, throw your maps overboard and join the mutinous crew of The Old Time Sailor as they
                   set sail for the wild uninhabited islands of Irish Punk, Shanty Punk, Polka Rock, Romani Punk, Dark Cabaret, and Twisted Circus!
@@ -179,16 +179,16 @@ export const Power1360 = ({ data }) => {
             <p className="absolute inset-0 font-titles text-darkBlue left-[130px] top-[156px] text-[50px]">more gigs</p>
           </div>
 
-          <div className="absolute -bottom-[320px]  left-[90px] z-10 ">
+          <div className="absolute -bottom-[320px] left-[90px] z-10 ">
             <div className="flex flex-row items-center gap-3 mb-5">
               <div className="leading-[90px]">
-                <p className="text-lightRed text-[110px] font-titles m-0">power</p>
+                <p className="text-lightRed text-[110px] font-titles m-0">family</p>
                 <p className="text-lightRed text-[110px] font-titles m-0">show</p>
               </div>
-              <div className="text-beige text-[25px] -mb-[150px] -ml-[65px] leading-none">
+              <div className="text-[25px] -mb-[150px] -ml-[65px] leading-none">
                 <div className="font-txt leading-none tracking-widest">
-                  <p className="m-0">AN UPBEAT, DARKER SHOW. GET READY TO</p>
-                  <p className="m-0">PARTY BELOW DECK LIKE A PIRATE!</p>
+                  <p className="m-0">A TRADITIONAL SAILOR SHOW,</p>
+                  <p className="m-0">SING ALONG AND DANCE WITH US!</p>
                 </div>
               </div>
             </div>

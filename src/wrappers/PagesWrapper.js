@@ -13,7 +13,7 @@ const PagesWrapper = ({ children }) => {
         <NavbarColorProvider>
           <Navbar/>
           {children}
-          <Footer />
+          {/* <Footer /> */}
         </NavbarColorProvider>
       </LoaderProvider>
     </NextUIProvider>

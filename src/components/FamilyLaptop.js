@@ -23,7 +23,7 @@ const stylesByVariant = {
     iconSize: "text-[25px]",
     eventText: "text-[25px] font-txt",
     ctaWrap: "relative w-[400px] h-[100px]",
-    ctaLink: "absolute left-[70px] top-[5px] inset-0 items-center justify-center text-beige",
+    ctaLink: "absolute left-[70px] top-[5px] inset-0 items-center justify-center ",
     ctaSvg: "w-[100%] h-[100px] z-10",
     ctaText: "relative font-txt justify-center text-[47px] uppercase -top-[85px] z-20 w-[100%] text-center",
     descriptionWrap: "text-[22px] pb-5 pr-[150px] text-darkBlue font-txt",
@@ -43,7 +43,7 @@ const stylesByVariant = {
       "object-cover w-[540px] h-[240px] border-darkBlue border-[10px] rounded-sm shadow-gray-500 shadow-[2px_-2px_5px_rgba(0,0,0,0.3)] hover:opacity-100 [&::-webkit-media-controls]:opacity-0 hover:[&::-webkit-media-controls]:opacity-100 [&::-webkit-media-controls]:transition-opacity",
     backWrap: "relative -top-[6em]",
     backImgClass: "absolute left-[10px] top-[25px] w-[450px] h-[110px]",
-    backTextClass: "absolute inset-0 font-titles text-beige left-[150px] top-[35px] text-[65px]",
+    backTextClass: "absolute inset-0 font-titles  left-[150px] top-[35px] text-[65px]",
     titleWrap: "absolute top-[55em] left-[15px] z-10",
     titleBlockClass: "leading-[140px]",
     familyTextClass: "text-darkBlue text-[180px] font-titles",
@@ -62,7 +62,7 @@ const stylesByVariant = {
     iconSize: "text-[19px]",
     eventText: "text-[19px] font-bold",
     ctaWrap: "relative w-[20vw]",
-    ctaLink: "absolute inset-0 items-center justify-center text-beige",
+    ctaLink: "absolute inset-0 items-center justify-center ",
     ctaSvg: "w-[100%] h-[15vh] z-10",
     ctaText: "relative font-txt uppercase justify-center text-[40px] -top-[11.5vh] z-20 w-[100%] text-center",
     descriptionWrap: "text-[19px] text-left text-darkBlue leading-8 font-txt",
@@ -82,7 +82,7 @@ const stylesByVariant = {
       "object-cover w-[540px] h-[300px] border-darkBlue border-[10px] rounded-sm shadow-gray-500 shadow-[2px_-2px_5px_rgba(0,0,0,0.3)] hover:opacity-100 [&::-webkit-media-controls]:opacity-0 hover:[&::-webkit-media-controls]:opacity-100 [&::-webkit-media-controls]:transition-opacity",
     backWrap: "relative",
     backImgClass: "absolute left-[10px] top-[-48vh] w-[430px] h-[120px] cursor-pointer",
-    backTextClass: "absolute inset-0 font-titles text-beige left-[150px] top-[-45vh] text-[50px]",
+    backTextClass: "absolute inset-0 font-titles  left-[150px] top-[-45vh] text-[50px]",
     titleWrap: "absolute -bottom-[15vh] left-[15px] z-10",
     titleBlockClass: "leading-[110px]",
     familyTextClass: "text-darkBlue text-[125px] font-titles",
@@ -101,7 +101,7 @@ const stylesByVariant = {
     iconSize: "text-[18px] text-darkBlue",
     eventText: "text-[18px] font-txt",
     ctaWrap: "relative w-[330px] h-[100px]",
-    ctaLink: "absolute left-12 inset-0 items-center justify-center text-beige",
+    ctaLink: "absolute left-12 inset-0 items-center justify-center ",
     ctaSvg: "w-[100%] h-[100px] z-10",
     ctaText: "relative font-txt justify-center text-[37px] uppercase -top-[79px] z-20 w-[100%] text-center",
     descriptionWrap: "text-[17px] text-left text-darkBlue font-txt leading-7",
@@ -121,7 +121,7 @@ const stylesByVariant = {
       "object-cover w-[540px] h-[300px] border-darkBlue border-[10px] rounded-sm shadow-gray-500 shadow-[2px_-2px_5px_rgba(0,0,0,0.3)] hover:opacity-100 [&::-webkit-media-controls]:opacity-0 hover:[&::-webkit-media-controls]:opacity-100 [&::-webkit-media-controls]:transition-opacity",
     backWrap: "relative -top-[150px]",
     backImgClass: "absolute left-[10px] top-[145px] w-[360px] h-[100px]",
-    backTextClass: "absolute inset-0 font-titles text-beige left-[130px] top-[156px] text-[50px]",
+    backTextClass: "absolute inset-0 font-titles  left-[130px] top-[156px] text-[50px]",
     titleWrap: "absolute -bottom-[320px] left-[90px] z-10",
     titleBlockClass: "leading-[90px]",
     familyTextClass: "text-darkBlue text-[110px] font-titles m-0",
@@ -140,7 +140,7 @@ const stylesByVariant = {
     iconSize: "text-[25px]",
     eventText: "text-[25px] font-txt",
     ctaWrap: "relative w-[400px] h-[100px]",
-    ctaLink: "absolute left-[70px] top-[5px] inset-0 items-center justify-center text-beige",
+    ctaLink: "absolute left-[70px] top-[5px] inset-0 items-center justify-center ",
     ctaSvg: "w-[100%] h-[100px] z-10",
     ctaText: "relative font-txt justify-center text-[47px] uppercase -top-[85px] z-20 w-[100%] text-center",
     descriptionWrap: "text-[22px] pb-5 pr-[150px] text-darkBlue font-txt",
@@ -160,7 +160,7 @@ const stylesByVariant = {
       "object-cover w-[540px] h-[340px] border-darkBlue border-[10px] rounded-sm shadow-gray-500 shadow-[2px_-2px_5px_rgba(0,0,0,0.3)] hover:opacity-100 [&::-webkit-media-controls]:opacity-0 hover:[&::-webkit-media-controls]:opacity-100 [&::-webkit-media-controls]:transition-opacity",
     backWrap: "relative top-[15px]",
     backImgClass: "absolute left-[10px] top-[25px] w-[450px] h-[110px]",
-    backTextClass: "absolute inset-0 font-titles text-beige left-[150px] top-[35px] text-[65px]",
+    backTextClass: "absolute inset-0 font-titles  left-[150px] top-[35px] text-[65px]",
     titleWrap: "absolute -bottom-[470px] left-[15px] z-10",
     titleBlockClass: "leading-[140px]",
     familyTextClass: "text-darkBlue text-[180px] font-titles",
@@ -209,9 +209,9 @@ export const FamilyLaptop = ({ data, variant = "laptop" }) => {
                   )}
                 </h3>
                 <div className="mt-0.5 tracking-wide">
-                  <p className="text-beige text-[15px] font-txt leading-tight">{venueInfo}</p>
+                  <p className=" text-[15px] font-txt leading-tight">{venueInfo}</p>
                   <Link href={eventURL}>
-                    <p className="text-beige text-[15px] mt-1 font-titles underline">contact the venue for + info</p>
+                    <p className="text-white text-[15px] mt-1 font-titles underline">contact the venue for + info</p>
                   </Link>
                 </div>
               </div>
