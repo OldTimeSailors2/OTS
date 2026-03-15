@@ -129,20 +129,20 @@ export const Power1360 = ({ data }) => {
           </div>
 
           <div className="absolute right-[18px] -top-[230px] z-10">
-            <Image src="/assets/powerPhoto1.webp" alt="Performance" width={290} height={290} className="w-[290px] h-[290px]" loading="lazy" />
+            <Image src="/assets/familyPhoto1.webp" alt="Performance" width={290} height={290} className="w-[290px] h-[290px]" loading="lazy" />
           </div>
 
           <div className="absolute right-[45px] top-[53px] z-20">
-            <Image src="/assets/powerPhoto4.jpg" alt="Musicians" width={390} height={200} className="w-[390px]" loading="lazy" />
+            <Image src="/assets/familyPhoto2.webp" alt="Musicians" width={390} height={200} className="w-[390px]" loading="lazy" />
           </div>
 
           <div className="absolute left-[510px] top-[300px] z-30">
-            <Image src="/assets/powerPhoto3.webp" alt="Crowd" width={450} height={450} className="w-[450px] h-[450px]" loading="lazy" />
+            <Image  src="/assets/familyPhoto3.webp" alt="Crowd" width={450} height={450} className="w-[450px] h-[450px]" loading="lazy" />
           </div>
 
           <div className="absolute right-[5px] -bottom-[300px]">
             <Image
-              src="/assets/shipDrawing.webp"
+              src="/assets/drawing2.webp"
               alt="Background drawing"
               width={450}
               height={450}
@@ -168,14 +168,13 @@ export const Power1360 = ({ data }) => {
 
           <div className="relative -top-[150px]" onClick={() => router.back()} role="button" tabIndex={0}>
             <Image
-              src="/assets/beigeArrow.webp"
+              src="/assets/arrow2.png"
               alt="More gigs"
               width={360}
               height={100}
               className="absolute left-[10px] top-[145px] w-[360px] h-[100px]"
               loading="lazy"
             />
-            <p className="absolute inset-0 font-titles text-darkBlue left-[130px] top-[156px] text-[50px]">more gigs</p>
           </div>
 
           <div className="absolute -bottom-[320px] left-[90px] z-10 ">

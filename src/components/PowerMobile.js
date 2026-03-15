@@ -51,7 +51,7 @@ const SIZES = {
     photo1Cls: "w-[143px] h-[145px] z-10",
     photo1W: 145,
     photo1H: 145,
-    arrowSrc: "/assets/beigeArrow.webp",
+    arrowSrc: "/assets/arrow2.png",
     arrowWrap: "relative",
     arrowImgCls: "absolute right-8 -bottom-12 w-[145px] h-[40px]",
     arrowW: 145,
@@ -179,7 +179,7 @@ const SIZES = {
     photo1Cls: "w-[195px] h-[195px] z-10",
     photo1W: 185,
     photo1H: 185,
-    arrowSrc: "/assets/beigeArrow.webp",
+    arrowSrc: "/assets/arrow2.png",
     arrowWrap: "relative",
     arrowImgCls: "w-[180px] h-[55px] absolute right-[45px] -bottom-[65px]",
     arrowW: 180,
@@ -385,7 +385,7 @@ export const PowerMobile = ({ data, variant = "s" }) => {
           {/* Photo 2 */}
           <div className={s.photo2Wrap}>
             <Image
-              src="/assets/powerPhoto4.jpg"
+              src="/assets/familyPhoto2.webp"
               alt="Musicians"
               width={s.photo2W}
               height={s.photo2H}
@@ -399,7 +399,7 @@ export const PowerMobile = ({ data, variant = "s" }) => {
         <div className={s.mediaBottomWrap}>
           <div className={s.photo1Container}>
             <Image
-              src="/assets/powerPhoto1.webp"
+              src="/assets/familyPhoto1.webp"
               alt="Performance"
               width={s.photo1W}
               height={s.photo1H}
@@ -421,7 +421,7 @@ export const PowerMobile = ({ data, variant = "s" }) => {
 
           <div className={s.photo3Wrap}>
             <Image
-              src="/assets/powerPhoto3.webp"
+              src="/assets/familyPhoto3.webp"
               alt="Crowd"
               width={s.photo3W}
               height={s.photo3H}
@@ -448,7 +448,7 @@ export const PowerMobile = ({ data, variant = "s" }) => {
         </div>
 
         <Image
-          src="/assets/shipDrawing.webp"
+         src="/assets/drawing2.webp"
           alt="Background drawing"
           width={s.shipW}
           height={s.shipH}

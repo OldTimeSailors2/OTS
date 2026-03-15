@@ -50,8 +50,8 @@ export const PowerDesktopL = ({ data }) => {
             </div>
 
             {/* Venue card */}
-            <div className="absolute w-[450px] top-[20px] -right-[260px] z-20">
-              <div className="bg-darkBlue h-[250px] p-6 rounded-3xl">
+            <div className="absolute w-[450px] top-[20px] -right-[380px] z-20">
+              <div className="bg-darkBlue h-[260px] p-6 rounded-3xl">
                 <h3 className="text-lightRed font-titles leading-none text-[38px]">
                   <p>more about</p>
                   <p>the venue</p>
@@ -155,7 +155,7 @@ export const PowerDesktopL = ({ data }) => {
 
           <div className="absolute right-[21px] -top-[230px] z-10">
             <Image
-              src="/assets/powerPhoto1.webp"
+              src="/assets/familyPhoto1.webp"
               alt="Performance"
               width={470}
               height={470}
@@ -167,7 +167,7 @@ export const PowerDesktopL = ({ data }) => {
           {/* Photo 2 */}
           <div className="absolute right-[95px] top-[225px] z-20">
             <Image
-              src="/assets/powerPhoto4.jpg"
+              src="/assets/familyPhoto2.webp"
               alt="Musicians"
               width={650}
               height={200}
@@ -177,9 +177,9 @@ export const PowerDesktopL = ({ data }) => {
           </div>
 
           {/* Photo 3 */}
-          <div className="absolute left-[500px] top-[550px] z-30">
+          <div className="absolute left-[650px] top-[550px] z-30">
             <Image
-              src="/assets/powerPhoto3.webp"
+              src="/assets/familyPhoto3.webp"
               alt="Crowd"
               width={750}
               height={600}
@@ -188,9 +188,9 @@ export const PowerDesktopL = ({ data }) => {
             />
           </div>
 
-          <div className="absolute -right-[40px] top-[810px]">
+          <div className="absolute -right-[40px] top-[980px]">
             <Image
-              src="/assets/shipDrawing.webp"
+             src="/assets/drawing2.webp"
               alt="Background drawing"
               width={800}
               height={800}
@@ -225,7 +225,7 @@ export const PowerDesktopL = ({ data }) => {
 
           <div className="relative top-[100px]" onClick={() => router.back()} role="button" tabIndex={0}>
             <Image
-              src="/assets/beigeArrow.webp"
+              src="/assets/arrow2.png"
               alt="More gigs"
               width={470}
               height={150}
@@ -233,7 +233,6 @@ export const PowerDesktopL = ({ data }) => {
               loading="lazy"
             />
 
-            <p className="absolute inset-0 font-titles text-darkBlue left-[130px] top-[45px] text-[75px]">more gigs</p>
           </div>
 
           {/* Title */}

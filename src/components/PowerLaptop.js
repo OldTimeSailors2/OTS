@@ -256,16 +256,16 @@ export const PowerLaptop = ({ data, variant = "md" }) => {
             {/* Description */}
             <div className={s.descText}>
               <p className="leading-relaxed [&:not(:last-child)]:mb-0">
-                 You are invited to board the Sailorette and join the plentiful crew, ‘The Old Time Sailors’, for a night of footstomping, dancing and singing!
-                  You will be sailing back to the 19th century for an immersive experience of traditional seafaring music performed in a way you have never seen before. The Motley Crew and their plethora of traditional and eclectic instruments will take you back to the time of clashing tankards, and drunken debauchery.
+                You are invited to board the Sailorette and join the plentiful crew, ‘The Old Time Sailors’, for a night of footstomping, dancing and singing!
+                You will be sailing back to the 19th century for an immersive experience of traditional seafaring music performed in a way you have never seen before. The Motley Crew and their plethora of traditional and eclectic instruments will take you back to the time of clashing tankards, and drunken debauchery.
                 Sing and dance along like a drunken sailor as the band perform centuries old folk and shanty songs. Fancy dress is encouraged, so pull out your best seafaring garments me hearties and join.
-                
+
               </p>
               <p className="leading-relaxed [&:not(:last-child)]:mb-0">
-              
+
               </p>
               <p className="leading-relaxed [&:not(:last-child)]:mb-0">
-              
+
               </p>
             </div>
           </div>
@@ -274,7 +274,7 @@ export const PowerLaptop = ({ data, variant = "md" }) => {
         {/* Photos */}
         <div className={s.photo1.wrapper}>
           <Image
-            src="/assets/powerPhoto1.webp"
+            src="/assets/familyPhoto1.webp"
             alt="Performance"
             width={s.photo1.w}
             height={s.photo1.h}
@@ -285,7 +285,7 @@ export const PowerLaptop = ({ data, variant = "md" }) => {
 
         <div className={s.photo2.wrapper}>
           <Image
-            src="/assets/powerPhoto4.jpg"
+            src="/assets/familyPhoto2.webp"
             alt="Musicians"
             width={s.photo2.w}
             height={s.photo2.h}
@@ -296,7 +296,7 @@ export const PowerLaptop = ({ data, variant = "md" }) => {
 
         <div className={s.photo3.wrapper}>
           <Image
-            src="/assets/powerPhoto3.webp"
+            src="/assets/familyPhoto3.webp"
             alt="Crowd"
             width={s.photo3.w}
             height={s.photo3.h}
@@ -308,7 +308,7 @@ export const PowerLaptop = ({ data, variant = "md" }) => {
         {/* Ship drawing */}
         <div className={s.ship.wrapper}>
           <Image
-            src="/assets/shipDrawing.webp"
+           src="/assets/drawing2.webp"
             alt="Background drawing"
             width={s.ship.w}
             height={s.ship.h}
@@ -337,16 +337,13 @@ export const PowerLaptop = ({ data, variant = "md" }) => {
         {/* Back arrow / more gigs */}
         <div className={s.arrowImg.wrapper} onClick={() => router.back()} role="button" tabIndex={0}>
           <Image
-            src="/assets/beigeArrow.webp"
+            src="/assets/arrow2.png"
             alt="More gigs"
             width={s.arrowImg.w}
             height={s.arrowImg.h}
             className={s.arrowImg.imgCls}
             loading="lazy"
           />
-          <Link href="/tickets/calendar-view">
-            <p className={s.moreGigsText}>more gigs</p>
-          </Link>
         </div>
 
         {/* Title section */}
