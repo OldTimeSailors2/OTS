@@ -245,7 +245,7 @@ export const PowerMobile = ({ data, variant = "s" }) => {
             {s.dashedBorder && <div className={s.dashedBorder} />}
 
             {/* Venue card */}
-            <div className={s.venueCard}>
+            {/* <div className={s.venueCard}>
               <div className={s.venueCardInner}>
                 <h3 className={`text-lightRed font-titles leading-none ${s.venueTitleText}`}>
                   <p>more about</p>
@@ -265,7 +265,7 @@ export const PowerMobile = ({ data, variant = "s" }) => {
                   </a>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Event info */}
             <div className={s.eventSpaceY}>
@@ -415,7 +415,6 @@ export const PowerMobile = ({ data, variant = "s" }) => {
                 className={s.arrowImgCls}
                 loading="lazy"
               />
-              {s.showMoreGigs && <p className={s.moreGigsText}>more gigs</p>}
             </div>
           </div>
 
