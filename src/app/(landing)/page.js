@@ -172,7 +172,7 @@ export default async function Home() {
           { href: "https://oldtimesailors.co.uk", label: "merch", bg: "bg-red", text: "txt-cream" },
           { href: "/reviews", label: "reviews", bg: "bg-darkBlue", text: "txt-cream" },
           { href: "/our-clients", label: "our clients", bg: "bg-cream", text: "txt-red" },
-          { href: "/services", label: "services", bg: "bg-red", text: "txt-cream" },
+          // { href: "/services", label: "services", bg: "bg-red", text: "txt-cream" },
         ].map(({ href, label, bg, text }) => (
           <Link
             key={href}

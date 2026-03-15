@@ -191,7 +191,7 @@ const Navbar = () => {
       { label: "merch", href: "https://oldtimesailors.co.uk/", target: "_blank", bg: "bg-redPattern", text: "text-beige" },
       { label: "reviews", href: "/reviews", bg: "bg-white", text: "text-beige" },
       { label: "our clients", href: "/our-clients", bg: "bg-beigePattern", text: "text-lightRed" },
-      { label: "services", href: "/services", bg: "bg-redPattern", text: "text-beige" },
+      // { label: "services", href: "/services", bg: "bg-redPattern", text: "text-beige" },
       { label: "memberships", href: "/memberships", bg: "bg-beigePattern", text: "text-darkBlue" },
     ],
     []
