@@ -1,6 +1,12 @@
 import "../globals.css";
 import localFont from "next/font/local";
 import PagesWrapper from "@/wrappers/PagesWrapper";
+import Providers from "@/app/providers"; // 
+
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+
+config.autoAddCss = false;
 
 const khmer_mn = localFont({
   src: "../../../public/fonts/Times-Sans-Serif.ttf",
@@ -15,6 +21,7 @@ const royale_signage = localFont({
   variable: "--font-titles",
   display: "swap",
 });
+
 const din_condensed = localFont({
   src: "../../../public/fonts/DIN-Condensed-Bold.ttf",
   subsets: ["latin"],
@@ -29,15 +36,19 @@ export const metadata = {
   },
   metadataBase: "https://www.oldtimesailors.com/",
   other: {
-    'facebook-domain-verification': "ei0vjazzjn34rvxwbue1yrkjzntbzk",
+    "facebook-domain-verification": "ei0vjazzjn34rvxwbue1yrkjzntbzk",
   },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${khmer_mn.variable} ${royale_signage.variable} ${din_condensed.variable} bg-beigePattern`}>
-        <PagesWrapper>{children}</PagesWrapper>
+      <body
+        className={`${khmer_mn.variable} ${royale_signage.variable} ${din_condensed.variable} bg-beigePattern`}
+      >
+        <Providers>
+          <PagesWrapper>{children}</PagesWrapper>
+        </Providers>
       </body>
     </html>
   );

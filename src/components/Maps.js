@@ -1,33 +1,33 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback, Fragment } from "react";
+import { useEffect, useState, useMemo, useCallback, Fragment, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useApiIsLoaded, Map, useMap, useMapsLibrary, Marker } from "@vis.gl/react-google-maps";
+import { useApiIsLoaded, Map as GoogleMap, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
+
 import MainDiv from "./MainDiv";
 import windowLogo from "../../public/assets/logo-badge.svg";
 import CustomPopup from "./CustomPopup";
 import { CgClose } from "react-icons/cg";
 
-const Maps = ({ markersList }) => {
+const Maps = ({ markersList = [] }) => {
   const overlayData = useMemo(
     () => ({
       mobile: {
         imageUrl: "/assets/map-mobile.webp",
-        sw: { lat: 48.15101962663997, lng: -14.624391892254629 }, // SW coordinates A
-        ne: { lat: 63.41423162171008, lng: 7.880460478192122 }, // NE coordinates A
+        sw: { lat: 48.15101962663997, lng: -14.624391892254629 },
+        ne: { lat: 63.41423162171008, lng: 7.880460478192122 },
       },
       desktop: {
         imageUrl: "/assets/map-desktop.webp",
-        sw: { lat: 48.16567701912835, lng: -25.34704814225463 }, // SW coordinates B
-        ne: { lat: 63.41423162170996, lng: 18.06478665006712 }, // NE coordinates B
+        sw: { lat: 48.16567701912835, lng: -25.34704814225463 },
+        ne: { lat: 63.41423162170996, lng: 18.06478665006712 },
       },
     }),
     []
   );
 
   const [currentOverlay, setCurrentOverlay] = useState(overlayData.mobile);
-  const [overlayLoaded, setOverlayLoaded] = useState(false);
   const [activeMarkerId, setActiveMarkerId] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -39,34 +39,12 @@ const Maps = ({ markersList }) => {
   const [mapCenter, setMapCenter] = useState({ lat: 55.97, lng: -3.699966 });
   const [markerIconScale, setMarkerIconScale] = useState(6);
 
-  //Overlay useEffect
-  useEffect(() => {
-    if (!apiIsLoaded || !map || !coreLibrary || !mapsLibrary || overlayLoaded) return;
+  // ✅ refs para manejar overlay y mapType sin duplicar
+  const overlayRef = useRef(null);
+  const solidMapTypeSetRef = useRef(false);
 
-    // Solid color map type to avoid showing map
-    const solidColorMapType = new mapsLibrary.ImageMapType({
-      getTileUrl: function (coord, zoom) {
-        // Return a solid color image
-        return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAYAAAD0In+KAAAACXBIWXMAAAsSAAALEgHS3X78AAAAEUlEQVQImWPcubS3gYGBgQEAECsCbWtkXRcAAAAASUVORK5CYII=";
-      },
-      tileSize: new coreLibrary.Size(256, 256),
-      maxZoom: 20,
-    });
-
-    // Set the custom map type to the map
-    map.mapTypes.set("solidColor", solidColorMapType);
-    map.setMapTypeId("solidColor");
-
-    const southWestLatLng = new coreLibrary.LatLng(currentOverlay.sw.lat, currentOverlay.sw.lng);
-    const northEastLatLng = new coreLibrary.LatLng(currentOverlay.ne.lat, currentOverlay.ne.lng);
-    const bounds = new coreLibrary.LatLngBounds(southWestLatLng, northEastLatLng);
-
-    const overlayOptions = { clickable: false };
-    const overlay = new mapsLibrary.GroundOverlay(currentOverlay.imageUrl, bounds, overlayOptions);
-    overlay.setMap(map);
-
-    setOverlayLoaded(true);
-  }, [apiIsLoaded, map, coreLibrary, mapsLibrary, currentOverlay, overlayLoaded]);
+  // ✅ overlays HTML (botones) para markers
+  const htmlMarkerOverlaysRef = useRef([]); // array de overlayviews
 
   const restrictions = useMemo(
     () => ({
@@ -83,194 +61,115 @@ const Maps = ({ markersList }) => {
 
   const breakpoints = useMemo(
     () => [
-      {
-        min: 0,
-        max: 374,
-        action: () => {
-          setMapCenter({ lat: 54.7, lng: -2.399966 });
-          setMarkerIconScale(4);
-        },
-      },
-      {
-        min: 375,
-        max: 379,
-        action: () => {
-          setMapCenter({ lat: 54.9, lng: -2.399966 });
-          setMarkerIconScale(4);
-        },
-      },
-      {
-        min: 380,
-        max: 383,
-        action: () => {
-          setMapCenter({ lat: 54.8, lng: -2.399966 });
-          setMarkerIconScale(4);
-        },
-      },
-      {
-        min: 384,
-        max: 389,
-        action: () => {
-          setMapCenter({ lat: 54.55, lng: -2.399966 });
-          setMarkerIconScale(4);
-        },
-      },
-      {
-        min: 390,
-        max: 392,
-        action: () => {
-          setMapCenter({ lat: 54.7, lng: -2.399966 });
-          setMarkerIconScale(5);
-        },
-      },
-      {
-        min: 393,
-        max: 399,
-        action: () => {
-          setMapCenter({ lat: 55, lng: -2.399966 });
-          setMarkerIconScale(5);
-        },
-      },
-      {
-        min: 400,
-        max: 413,
-        action: () => {
-          setMapCenter({ lat: 55.1, lng: -2.399966 });
-          setMarkerIconScale(5);
-        },
-      },
-      {
-        min: 414,
-        max: 419,
-        action: () => {
-          setMapCenter({ lat: 54.8, lng: -2.399966 });
-          setMarkerIconScale(5);
-        },
-      },
-      {
-        min: 420,
-        max: 559,
-        action: () => {
-          setMapCenter({ lat: 54.9, lng: -2.399966 });
-          setMarkerIconScale(5);
-        },
-      },
-      {
-        min: 600,
-        max: 767,
-        action: () => {
-          setMapCenter({ lat: 56.3, lng: -3.699966 });
-          setMarkerIconScale(5);
-        },
-      },
-      {
-        min: 768,
-        max: 819,
-        action: () => {
-          setMapCenter({ lat: 55.3, lng: -3.999966 });
-        },
-      },
-      {
-        min: 820,
-        max: 1023,
-        action: () => {
-          setMapCenter({ lat: 55, lng: -3.699966 });
-        },
-      },
-      {
-        min: 1024,
-        max: 1279,
-        action: () => {
-          setMapCenter({ lat: 55, lng: -3.699966 });
-          setMarkerIconScale(8);
-        },
-      },
-      {
-        min: 1280,
-        max: 1365,
-        action: () => {
-          setMapCenter({ lat: 54.7, lng: -3.799966 });
-          setMarkerIconScale(4);
-        },
-      },
-      {
-        min: 1366,
-        max: 1439,
-        action: () => {
-          setMapCenter({ lat: 54.8, lng: -3.799966 });
-          setMarkerIconScale(5);
-        },
-      },
-      {
-        min: 1440,
-        max: 1919,
-        action: () => {
-          setMapCenter({ lat: 54.5, lng: -3.799966 });
-          setMarkerIconScale(5);
-        },
-      },
-      {
-        min: 1920,
-        max: 1999,
-        action: () => {
-          setMapCenter({ lat: 54.8, lng: -3.799966 });
-        },
-      },
-      {
-        min: 2000,
-        max: 2999,
-        action: () => {
-          setMapCenter({ lat: 54.5, lng: -3.799966 });
-          setMarkerIconScale(8);
-        },
-      },
-      {
-        min: 3000,
-        max: Infinity,
-        action: () => {
-          setMapCenter({ lat: 54.85, lng: -3.799966 });
-          setMarkerIconScale(9);
-        },
-      },
-
-      // Add more breakpoints as needed
+      { min: 0, max: 374, action: () => { setMapCenter({ lat: 54.7, lng: -2.399966 }); setMarkerIconScale(4); } },
+      { min: 375, max: 379, action: () => { setMapCenter({ lat: 54.9, lng: -2.399966 }); setMarkerIconScale(4); } },
+      { min: 380, max: 383, action: () => { setMapCenter({ lat: 54.8, lng: -2.399966 }); setMarkerIconScale(4); } },
+      { min: 384, max: 389, action: () => { setMapCenter({ lat: 54.55, lng: -2.399966 }); setMarkerIconScale(4); } },
+      { min: 390, max: 392, action: () => { setMapCenter({ lat: 54.7, lng: -2.399966 }); setMarkerIconScale(5); } },
+      { min: 393, max: 399, action: () => { setMapCenter({ lat: 55, lng: -2.399966 }); setMarkerIconScale(5); } },
+      { min: 400, max: 413, action: () => { setMapCenter({ lat: 55.1, lng: -2.399966 }); setMarkerIconScale(5); } },
+      { min: 414, max: 419, action: () => { setMapCenter({ lat: 54.8, lng: -2.399966 }); setMarkerIconScale(5); } },
+      { min: 420, max: 559, action: () => { setMapCenter({ lat: 54.9, lng: -2.399966 }); setMarkerIconScale(5); } },
+      { min: 600, max: 767, action: () => { setMapCenter({ lat: 56.3, lng: -3.699966 }); setMarkerIconScale(5); } },
+      { min: 768, max: 819, action: () => { setMapCenter({ lat: 55.3, lng: -3.999966 }); } },
+      { min: 820, max: 1023, action: () => { setMapCenter({ lat: 55, lng: -3.699966 }); } },
+      { min: 1024, max: 1279, action: () => { setMapCenter({ lat: 55, lng: -3.699966 }); setMarkerIconScale(8); } },
+      { min: 1280, max: 1365, action: () => { setMapCenter({ lat: 54.7, lng: -3.799966 }); setMarkerIconScale(4); } },
+      { min: 1366, max: 1439, action: () => { setMapCenter({ lat: 54.8, lng: -3.799966 }); setMarkerIconScale(5); } },
+      { min: 1440, max: 1919, action: () => { setMapCenter({ lat: 54.5, lng: -3.799966 }); setMarkerIconScale(5); } },
+      { min: 1920, max: 1999, action: () => { setMapCenter({ lat: 54.8, lng: -3.799966 }); } },
+      { min: 2000, max: 2999, action: () => { setMapCenter({ lat: 54.5, lng: -3.799966 }); setMarkerIconScale(8); } },
+      { min: 3000, max: Infinity, action: () => { setMapCenter({ lat: 54.85, lng: -3.799966 }); setMarkerIconScale(9); } },
     ],
     []
   );
 
-  // Set up resize listener and initial settings
+  // ✅ resize: cambia overlay y aplica breakpoint
   useEffect(() => {
     const checkDeviceAndAdjustMap = () => {
       const width = window.innerWidth;
       const isMobile = window.matchMedia("(max-width: 1279px)").matches;
 
-      // Determine current overlay based on device type
-      const currentOverlay = isMobile ? overlayData.mobile : overlayData.desktop;
-      setCurrentOverlay(currentOverlay);
+      setCurrentOverlay(isMobile ? overlayData.mobile : overlayData.desktop);
 
-      // Find and apply the appropriate breakpoint action
-      const breakpoint = breakpoints.find((bp) => width >= bp.min && width <= bp.max);
-      if (breakpoint) breakpoint.action();
+      const bp = breakpoints.find((b) => width >= b.min && width <= b.max);
+      if (bp) bp.action();
     };
 
-    checkDeviceAndAdjustMap(); // Call once on mount
-    window.addEventListener("resize", checkDeviceAndAdjustMap); // Adjust on resize
-
-    // Cleanup
+    checkDeviceAndAdjustMap();
+    window.addEventListener("resize", checkDeviceAndAdjustMap);
     return () => window.removeEventListener("resize", checkDeviceAndAdjustMap);
-  }, []);
+  }, [overlayData, breakpoints]);
 
-  const handleMarkerClick = (id, markerPosition) => {
-    if (activeMarkerId && activeMarkerId !== id) {
-      setIsTransitioning(true);
-      setActiveMarkerId(id);
-      setTimeout(() => map.panTo(markerPosition), 200);
+  // ✅ asegura que veas el punto (centra al primer marker)
+  useEffect(() => {
+    if (!markersList?.length) return;
+    const first = markersList[0]?.markerPosition;
+    if (!first) return;
+
+    if (map) map.panTo(first);
+    else setMapCenter(first);
+  }, [markersList, map]);
+
+  // ✅ Overlay (imagen de fondo) + solidColor map
+  useEffect(() => {
+    if (!apiIsLoaded || !map || !coreLibrary || !mapsLibrary) return;
+
+    // 1) solidColor mapType solo una vez
+    if (!solidMapTypeSetRef.current) {
+      const solidColorMapType = new mapsLibrary.ImageMapType({
+        getTileUrl: () =>
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAYAAAD0In+KAAAACXBIWXMAAAsSAAALEgHS3X78AAAAEUlEQVQImWPcubS3gYGBgQEAECsCbWtkXRcAAAAASUVORK5CYII=",
+        tileSize: new coreLibrary.Size(256, 256),
+        maxZoom: 20,
+      });
+
+      map.mapTypes.set("solidColor", solidColorMapType);
+      map.setMapTypeId("solidColor");
+      solidMapTypeSetRef.current = true;
     } else {
-      setIsTransitioning(false);
-      setActiveMarkerId(id);
-      map.panTo(markerPosition);
+      map.setMapTypeId("solidColor");
     }
-  };
+
+    // 2) elimina overlay anterior
+    if (overlayRef.current) {
+      overlayRef.current.setMap(null);
+      overlayRef.current = null;
+    }
+
+    // 3) crea overlay nuevo
+    const sw = new coreLibrary.LatLng(currentOverlay.sw.lat, currentOverlay.sw.lng);
+    const ne = new coreLibrary.LatLng(currentOverlay.ne.lat, currentOverlay.ne.lng);
+    const bounds = new coreLibrary.LatLngBounds(sw, ne);
+
+    const overlay = new mapsLibrary.GroundOverlay(currentOverlay.imageUrl, bounds, { clickable: false });
+    overlay.setMap(map);
+    overlayRef.current = overlay;
+
+    return () => {
+      if (overlayRef.current) {
+        overlayRef.current.setMap(null);
+        overlayRef.current = null;
+      }
+    };
+  }, [apiIsLoaded, map, coreLibrary, mapsLibrary, currentOverlay]);
+
+  const handleMarkerClick = useCallback(
+    (id, markerPosition) => {
+      if (!map) return;
+
+      if (activeMarkerId && activeMarkerId !== id) {
+        setIsTransitioning(true);
+        setActiveMarkerId(id);
+        setTimeout(() => map.panTo(markerPosition), 200);
+      } else {
+        setIsTransitioning(false);
+        setActiveMarkerId(id);
+        map.panTo(markerPosition);
+      }
+    },
+    [map, activeMarkerId]
+  );
 
   const createPopupContent = useCallback(
     (markerData) => (
@@ -287,17 +186,24 @@ const Maps = ({ markersList }) => {
           <ul className="flex flex-col self-start max-xl:gap-1 -space-y-1">
             <li className="text-xl leading-5 md:text-3xl text-lightRed font-titles font-medium flex items-start max-xl:mb-0.5">
               event:
-              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">{markerData.event}</p>
+              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">
+                {markerData.event}
+              </p>
             </li>
             <li className="text-xl md:text-3xl text-lightRed font-titles font-medium flex items-start">
               location:
-              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">{markerData.location}</p>
+              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">
+                {markerData.location}
+              </p>
             </li>
             <li className="text-xl md:text-3xl text-lightRed font-titles font-medium flex items-start">
               date:
-              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">{markerData.date}</p>
+              <p className="max-xl:max-w-48 text-[19px] md:text-[28px] text-darkBlue font-txt pl-1 xl:whitespace-nowrap">
+                {markerData.date}
+              </p>
             </li>
           </ul>
+
           <Link
             className="octagon-tickets flex items-center justify-center bg-darkBlue"
             href={`/tickets/${markerData.event.replace(/\s+/g, "-").toLowerCase()}`}
@@ -310,31 +216,140 @@ const Maps = ({ markersList }) => {
     []
   );
 
+  /**
+   * ✅ HTML markers (botones) con OverlayView
+   *  - Son DOM real: click SIEMPRE funciona
+   *  - No necesitan MapID
+   */
+  useEffect(() => {
+    if (!apiIsLoaded || !map) return;
+    if (typeof window === "undefined" || !window.google?.maps) return;
+
+    const gmaps = window.google.maps;
+
+    // Limpia overlays anteriores
+    htmlMarkerOverlaysRef.current.forEach((ov) => ov?.setMap?.(null));
+    htmlMarkerOverlaysRef.current = [];
+
+    // Tamaño del botón (relacionado a tu escala)
+    const px = Math.max(18, markerIconScale * 4);
+
+    class HtmlButtonMarker extends gmaps.OverlayView {
+      constructor({ position, id, onClick }) {
+        super();
+        this.position = position;
+        this.id = id;
+        this.onClick = onClick;
+        this.div = null;
+        this.btn = null;
+        this._handle = null;
+      }
+
+      onAdd() {
+        const div = document.createElement("div");
+        div.style.position = "absolute";
+        div.style.transform = "translate(-50%, -50%)";
+        div.style.zIndex = "9999";
+        div.style.pointerEvents = "auto";
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.setAttribute("aria-label", `marker-${this.id}`);
+        btn.style.width = `${px}px`;
+        btn.style.height = `${px}px`;
+        btn.style.borderRadius = "9999px";
+        btn.style.background = "#dd3254";
+        btn.style.border = "2px solid #dd3254";
+        btn.style.cursor = "pointer";
+        btn.style.pointerEvents = "auto";
+        btn.style.boxShadow = "0 0 0 0 rgba(0,0,0,0)";
+        btn.onmouseenter = () => (btn.style.transform = "scale(1.08)");
+        btn.onmouseleave = () => (btn.style.transform = "scale(1)");
+
+        // IMPORTANTÍSIMO: evita que el mapa “se coma” el evento
+        this._handle = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.onClick?.();
+        };
+        btn.addEventListener("click", this._handle, { passive: false });
+
+        div.appendChild(btn);
+
+        // Pega al panel correcto
+        const panes = this.getPanes();
+        panes?.overlayMouseTarget?.appendChild(div);
+
+        this.div = div;
+        this.btn = btn;
+      }
+
+      draw() {
+        if (!this.div) return;
+        const projection = this.getProjection();
+        if (!projection) return;
+
+        const point = projection.fromLatLngToDivPixel(new gmaps.LatLng(this.position.lat, this.position.lng));
+        if (!point) return;
+
+        this.div.style.left = `${point.x}px`;
+        this.div.style.top = `${point.y}px`;
+      }
+
+      onRemove() {
+        if (this.btn && this._handle) {
+          this.btn.removeEventListener("click", this._handle);
+        }
+        if (this.div?.parentNode) {
+          this.div.parentNode.removeChild(this.div);
+        }
+        this.div = null;
+        this.btn = null;
+        this._handle = null;
+      }
+    }
+
+    // Crea overlays nuevos
+    const overlays = markersList
+      .filter((m) => m?.markerPosition)
+      .map((m) => {
+        const ov = new HtmlButtonMarker({
+          position: m.markerPosition,
+          id: m.id,
+          onClick: () => handleMarkerClick(m.id, m.markerPosition),
+        });
+        ov.setMap(map);
+        return ov;
+      });
+
+    htmlMarkerOverlaysRef.current = overlays;
+
+    return () => {
+      overlays.forEach((ov) => ov?.setMap?.(null));
+    };
+  }, [apiIsLoaded, map, markersList, markerIconScale, handleMarkerClick]);
+
   return (
     <MainDiv className={"h-dvh"}>
-      <Map zoom={5} maxZoom={9} center={mapCenter} gestureHandling={"greedy"} disableDefaultUI={true} id={"MapOTS"} restriction={restrictions}>
-        {coreLibrary &&
-          markersList.map((m) => (
-            <Fragment key={m.id}>
-              <Marker
-                position={m.markerPosition}
-                onClick={() => handleMarkerClick(m.id, m.markerPosition)}
-                icon={{
-                  path: coreLibrary.SymbolPath.CIRCLE,
-                  fillColor: "#dd3254",
-                  fillOpacity: 1.0,
-                  scale: markerIconScale,
-                  strokeColor: "#dd3254",
-                  strokeWeight: 0.5,
-                }}
-              />
+      <GoogleMap
+        zoom={5}
+        maxZoom={9}
+        center={mapCenter}
+        gestureHandling={"greedy"}
+        disableDefaultUI={true}
+        id={"MapOTS"}
+        restriction={restrictions}
+      >
+        {/* ✅ Los puntos ya son botones HTML via OverlayView */}
 
-              <CustomPopup position={m.markerPosition} isVisible={activeMarkerId === m.id} isTransitioning={isTransitioning}>
-                {createPopupContent(m)}
-              </CustomPopup>
-            </Fragment>
-          ))}
-      </Map>
+        {markersList.map((m) => (
+          <Fragment key={m.id}>
+            <CustomPopup position={m.markerPosition} isVisible={activeMarkerId === m.id} isTransitioning={isTransitioning}>
+              {createPopupContent(m)}
+            </CustomPopup>
+          </Fragment>
+        ))}
+      </GoogleMap>
     </MainDiv>
   );
 };

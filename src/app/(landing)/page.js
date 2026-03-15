@@ -1,113 +1,209 @@
 import Image from "next/image";
-import logo from "../../../public/assets/logo.svg";
-import dynamic from "next/dynamic";
-import LandingDynamicBg from "@/components/LandingDynamicBg";
-import MainDiv from "@/components/MainDiv";
-import { formatLandingImages } from "@/helpers/formatApiResponses";
-const LandingDisplay = dynamic(() => import("@/components/LandingDisplay"), {
-  ssr: false,
-  loading: () => (
-    <div className="md1:px-3 md:px-14 md2:px-14 lg:px-28 xl:p-0 1xl:mt-4 1xxl:mt-14 2xl:mt-20 3xl:mt-24 fullHD:mt-48 2k:mt-64 4k:mt-96">
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-[5px] xl:gap-4">
-        {/* Four placeholders for images */}
-        <div className="bg-transparent aspect-w-1 aspect-h-1 w-full h-full"></div>
-        <div className="bg-transparent aspect-w-1 aspect-h-1 w-full h-full"></div>
-        <div className="bg-transparent aspect-w-1 aspect-h-1 w-full h-full"></div>
-        <div className="bg-transparent aspect-w-1 aspect-h-1 w-full h-full"></div>
-      </div>
-    </div>
-  ),
-});
-const LandingLeftSide = dynamic(() => import("@/components/LandingLeftSide"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex justify-between">
-      <div className="flex flex-col items-center justify-center ">
-        {/* Placeholder for the description image */}
-        <div className="mt-32 ml-0.5 bg-transparent rounded-md w-24 h-16 md1:w-36 md1:h-10 lg:w-36 lg:h-16"></div>
+import Link from "next/link";
+import Social from "@/components/Social";
 
-        {/* Placeholder for the blurb button*/}
-        <div className="mt-4 bg-transparent rounded-md w-12 h-5 lg:w-14 lg:h-6"></div>
 
-        {/* Placeholders for social media icons*/}
-        <div className="grid grid-cols-2 gap-2 mt-10 xl:mt-8">
-          <div className="bg-transparent rounded-full w-9 h-9 md1:w-16 md1:h-16 xl:w-11 xl:h-11"></div>
-          <div className="bg-transparent rounded-full w-9 h-9 md1:w-16 md1:h-16 xl:w-11 xl:h-11"></div>
-          <div className="bg-transparent rounded-full w-9 h-9 md1:w-16 md1:h-16 xl:w-11 xl:h-11"></div>
-          <div className="bg-transparent rounded-full w-9 h-9 md1:w-16 md1:h-16 xl:w-11 xl:h-11"></div>
-        </div>
-      </div>
 
-      <div
-        className="flex flex-col gap-1 xs:gap-1 md1:gap-3 xl:gap-1.5 2k:gap-3
-       mt-1 min-[375px]:max-xs:mt-2 md1:mt-8 min-[820px]:mt-10 lg:mt-11 xl:mt-1.5 1xxl:mt-3 fullHD:mt-5 4k:mt-7
-        mr-4 min-[375px]:max-xs:mr-8 xs:mr-6 iphone-1:max-[393px]:mr-7 iphone-2:max-[415px]mr-9 iphone-3:mr-9 md1:mr-6 min-[820px]:mr-10 lg:mr-11 xl:mr-12 fullHD:mr-20 2k:mr-28 4k:mr-36"
-      >
-        {/* Skeleton for each Link*/}
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-      </div>
-    </div>
-  ),
-});
 
-const fetchLandingImages = async () => {
+const FOLDER = "Images/ImageLandingDesktop";
+
+const ASSET_KEYS = {
+  landingDesktop: ["landingdesktop", "landing_desktop", "landing-desktop", "desktop", "landing"],
+  border: ["border", "frame", "marco"],
+  logo: ["logo"],
+  memberships: ["memberships", "membership"],
+  description: ["description", "descripcion", "descripción"],
+  corner: ["corner", "corners", "corner-detail", "corner_detail", "esquina", "esquinas"],
+
+  //  Social icons (Cloudinary)
+  instagram: ["instagram", "ig", "insta", "instagram-icon", "instagram_icon"],
+  facebook: ["facebook", "fb", "facebook-icon", "facebook_icon"],
+  youtube: ["youtube", "yt", "youtube-icon", "youtube_icon"],
+  whatsapp: ["whatsapp", "wa", "wsp", "whatsapp-icon", "whatsapp_icon"],
+  mail: ["mail", "email", "correo", "envelope", "mail-icon", "email-icon"],
+  spotify: ["spotify", "sp", "spotify-icon", "spotify_icon"],
+};
+
+const fetchLandingAssets = async () => {
   try {
-    const res = await fetch(
-      `${process.env.BACKEND_API}/landing-image?populate=*`,
-    );
-    if (!res.ok) {
-      throw new Error(
-        `Failed to fetch landing images: ${res.status} ${res.statusText}`,
-      );
-    }
-    const landingImages = await res.json();
-    const formattedLandingImages = await formatLandingImages(landingImages);
+    const cloudinary = require("cloudinary").v2;
 
-    return formattedLandingImages;
+  cloudinary.config(process.env.CLOUDINARY_URL);
+
+    const res = await cloudinary.api.resources_by_asset_folder(FOLDER, {
+      resource_type: "image",
+      max_results: 200,
+    });
+
+    const resources = res?.resources ?? [];
+
+    const findByAnyName = (nameList) => {
+      const lowerNames = nameList.map((n) => n.toLowerCase());
+      return (
+        resources.find((r) => {
+          const filename = (r.public_id.split("/").pop() || "").toLowerCase();
+          return lowerNames.some((n) => filename === n);
+        }) ||
+        resources.find((r) => {
+          const filename = (r.public_id.split("/").pop() || "").toLowerCase();
+          return lowerNames.some((n) => filename.includes(n));
+        }) ||
+        null
+      );
+    };
+
+    return {
+      landingDesktop: findByAnyName(ASSET_KEYS.landingDesktop)?.secure_url ?? null,
+      border: findByAnyName(ASSET_KEYS.border)?.secure_url ?? null,
+      logo: findByAnyName(ASSET_KEYS.logo)?.secure_url ?? null,
+      memberships: findByAnyName(ASSET_KEYS.memberships)?.secure_url ?? null,
+      description: findByAnyName(ASSET_KEYS.description)?.secure_url ?? null,
+      corner: findByAnyName(ASSET_KEYS.corner)?.secure_url ?? null,
+
+      //  social icons
+      instagram: findByAnyName(ASSET_KEYS.instagram)?.secure_url ?? null,
+      facebook: findByAnyName(ASSET_KEYS.facebook)?.secure_url ?? null,
+      youtube: findByAnyName(ASSET_KEYS.youtube)?.secure_url ?? null,
+      whatsapp: findByAnyName(ASSET_KEYS.whatsapp)?.secure_url ?? null,
+      mail: findByAnyName(ASSET_KEYS.mail)?.secure_url ?? null,
+      spotify: findByAnyName(ASSET_KEYS.spotify)?.secure_url ?? null,
+    };
   } catch (error) {
-    console.error("Error fetching landing images:", error);
-    throw error;
+    console.error("Error fetching landing assets (Cloudinary):", error);
+    return {
+      landingDesktop: null,
+      border: null,
+      logo: null,
+      memberships: null,
+      description: null,
+      corner: null,
+
+      instagram: null,
+      facebook: null,
+      youtube: null,
+      whatsapp: null,
+      mail: null,
+      spotify: null,
+    };
   }
 };
 
-const Home = async () => {
-  const formattedLandingImages = await fetchLandingImages();
+export default async function Home() {
+  const assets = await fetchLandingAssets();
+
+  const FRAME_PAD = "56px";
+  const LOGO_TOP = "14px";
+
+  const LOGO_SIZE = 520;
+  const MEMBERSHIPS_SIZE = 170;
+
+  const cornerStyle = assets.corner ? { "--corner-url": `url('${assets.corner}')` } : undefined;
 
   return (
-    <MainDiv className="w-full min-h-screen flex flex-col relative">
-      <LandingDynamicBg />
-      <div className="w-full h-full px-[17.5px] pt-[17.5px] xl:px-[28px] xl:pt-[28px] 2k:px-[52px] 2k:pt-[52px] 4k:px-[64px] 4k:pt-[64px] relative">
-        <div className="w-full h-full flex flex-col gap-3 md1:justify-between xl:gap-0 relative">
-          <div className="absolute image-border pointer-events-none" />
-          <Image
-            src={logo}
-            width={135}
-            height={135}
-            priority={true}
-            alt="OTS Logo"
-            className="absolute -top-3.5 -left-3.5 xs2:-top-4 md1:-left-3.5  xl:-top-7 xl:-left-6   2k:-top-12 2k:-left-11 4k:-top-14 4k:-left-14 
-                 xs:w-[145px] xs:h-[145px] xs2:w-[155px] xs2:h-[155px]
-                  md1:w-[150px] md1:h-[150px] md:w-[170px] md:h-[170px]  min-[820px]:w-[200px]  min-[820px]:h-[200px] lg:w-[230px] lg:h-[230px]
-                   xl:w-[190px] xl:h-[190px] 1xxl:w-[210px] 1xxl:h-[210px] 4xl:w-[230px] 4xl:h-[230px]  fullHD:w-[290px] fullHD:h-[290px] 2k:w-[420px] 2k:h-[420px] 4k:w-[580px] 4k:h-[580px]"
-          />
-
-          <LandingLeftSide />
-
-          <LandingDisplay images={formattedLandingImages} />
+    <div className="relative w-screen h-screen overflow-hidden bg-[#1d344a]">
+      {/* ÁREA INTERNA */}
+      <div className="absolute inset-0" style={{ padding: FRAME_PAD }}>
+        <div className="relative w-full h-full overflow-hidden">
+          {assets.landingDesktop ? (
+            <Image
+              src={assets.landingDesktop}
+              alt="Landing Desktop"
+              fill
+              priority
+              className="object-cover"
+              style={{ objectPosition: "center 55%" }}
+              sizes="100vw"
+            />
+          ) : null}
         </div>
       </div>
-      <footer className="w-full z-[105] flex justify-center items-center py-1 xl:p-1 2k:py-2">
-        <p className="text-beige font-txt text-[9px] md1:text-lg md:text-xl xl:text-base 2k:text-3xl 4k:text-5xl uppercase">
-          OLD TIME SAILORS LLC.®
-        </p>
-      </footer>
-    </MainDiv>
-  );
-};
 
-export default Home;
+      {/* MARCO BLANCO + ESQUINAS */}
+      <div className="white-frame pointer-events-none z-20" style={cornerStyle}>
+        <span className="white-corner tl" />
+        <span className="white-corner tr" />
+        <span className="white-corner br" />
+        <span className="white-corner bl" />
+      </div>
+
+      {/* LOGO */}
+      {assets.logo ? (
+        <div className="absolute left-1/2 -translate-x-1/2 z-30" style={{ top: LOGO_TOP }}>
+          <Image src={assets.logo} alt="Logo" width={LOGO_SIZE} height={LOGO_SIZE} priority />
+        </div>
+      ) : null}
+
+      {/* DESCRIPTION */}
+      {assets.description ? (
+        <div
+          className="absolute z-30"
+          style={{ top: `calc(${FRAME_PAD} + 8%)`, left: `calc(${FRAME_PAD} + 2%)` }}
+        >
+          <Image src={assets.description} alt="Description" width={180} height={180} priority />
+        </div>
+      ) : null}
+
+      {/* MEMBERSHIPS */}
+      {assets.memberships ? (
+        <div
+          className="absolute z-30"
+          style={{ top: `calc(${FRAME_PAD} + 22%)`, left: `calc(${FRAME_PAD} + 2%)` }}
+        >
+          <Link href="/memberships" className="inline-block">
+            <Image
+              src={assets.memberships}
+              alt="Memberships"
+              width={MEMBERSHIPS_SIZE}
+              height={MEMBERSHIPS_SIZE}
+              priority
+            />
+          </Link>
+        </div>
+      ) : null}
+
+      {/* MENÚ */}
+      <div
+        className="absolute z-30 flex flex-col items-end"
+        style={{ top: `calc(${FRAME_PAD} + 6%)`, right: `calc(${FRAME_PAD} + 2%)` }}
+      >
+        {[
+          { href: "/media", label: "media", bg: "bg-cream", text: "txt-darkBlue" },
+          { href: "/tickets/calendar-view", label: "tickets", bg: "bg-darkBlue", text: "txt-red" },
+          { href: "https://oldtimesailors.co.uk", label: "merch", bg: "bg-red", text: "txt-cream" },
+          { href: "/reviews", label: "reviews", bg: "bg-darkBlue", text: "txt-cream" },
+          { href: "/our-clients", label: "our clients", bg: "bg-cream", text: "txt-red" },
+          { href: "/services", label: "services", bg: "bg-red", text: "txt-cream" },
+        ].map(({ href, label, bg, text }) => (
+          <Link
+            key={href}
+            href={href}
+            className={`octagon my-1 font-titles md:text-2xl flex items-center justify-center ${bg} ${text} w-44 md:w-36 h-10`}
+          >
+            {label}
+          </Link>
+        ))}
+      </div>
+
+      <div
+        className="absolute left-1/2 -translate-x-1/2 z-30"
+        style={{ bottom: `calc(${FRAME_PAD} - 6px)` }}
+      >
+        <div style={{ transform: "translateY(10px)" }}>
+          <Social
+            className="landing-social"
+            icons={{
+              instagram: assets.instagram,
+              facebook: assets.facebook,
+              youtube: assets.youtube,
+              whatsapp: assets.whatsapp,
+              mail: assets.mail,
+              spotify: assets.spotify,
+            }}
+            iconSize={{ w: 53, h: 12 }}
+          />
+        </div>
+      </div>
+
+    </div>
+  );
+}

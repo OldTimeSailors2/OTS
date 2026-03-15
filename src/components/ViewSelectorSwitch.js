@@ -1,5 +1,4 @@
 import Link from "next/link";
-// import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 const ViewSwitch = () => {
@@ -7,6 +6,12 @@ const ViewSwitch = () => {
 
   return (
     <div className="flex flex-row w-full justify-end pr-3">
+
+      {/*
+      🔴 TEMPORALMENTE OCULTO
+      Tab MAP oculto solo por ahora.
+      Se volverá a utilizar más adelante.
+      
       <div
         className={`octagon-tickets ${
           pathname === "/tickets/map-view" ? "bg-darkBlue" : "bg-darkBeige"
@@ -17,13 +22,15 @@ const ViewSwitch = () => {
             <p
               className={`text-center text-l md:text-xl font-txt font-bold uppercase ${
                 pathname === "/tickets/map-view" ? "text-lightRed" : "text-beige"
-              }  `}
+              }`}
             >
               Map
             </p>
           </div>
         </Link>
       </div>
+      */}
+
       <div
         className={`octagon-tickets ${
           pathname === "/tickets/calendar-view" ? "bg-darkBlue" : "bg-darkBeige"
@@ -32,7 +39,7 @@ const ViewSwitch = () => {
         <Link href="/tickets/calendar-view">
           <div>
             <p
-              className={`text-center text-l md:text-xl font-txt font-bold uppercase  ${
+              className={`text-center text-l md:text-xl font-txt font-bold uppercase ${
                 pathname === "/tickets/calendar-view" ? "text-lightRed" : "text-beige"
               }`}
             >
@@ -41,6 +48,7 @@ const ViewSwitch = () => {
           </div>
         </Link>
       </div>
+
     </div>
   );
 };

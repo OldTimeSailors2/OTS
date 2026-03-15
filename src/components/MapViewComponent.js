@@ -9,7 +9,7 @@ const MapViewComponent = ({ markersList }) => {
 
   useEffect(() => {
     setNavbarColor("dark");
-  }, []);
+  }, [setNavbarColor]);
 
   return (
     <MapsWrapper>

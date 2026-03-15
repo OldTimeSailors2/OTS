@@ -6,50 +6,60 @@ export const metadata = {
   openGraph: {
     title: "Tickets",
     description: "Find out where are we playing next",
-    images: [
-      {
-        url: "/assets/opengraph-image.png",
-        alt: "Old Time Sailors",
-      },
-    ],
+    images: [{ url: "/assets/opengraph-image.png", alt: "Old Time Sailors" }],
   },
 };
 
-const formatMarkers = (markersApiResponse) => {
-  return markersApiResponse.data.map((marker) => ({
-    id: marker.id,
-    markerPosition: marker.attributes.markerPosition,
-    event: marker.attributes.event,
-    location: marker.attributes.location,
-    date: marker.attributes.date,
-    ticketsURL: marker.attributes.ticketsURL,
-    venueInfo: marker.attributes.venueInfo,
-    gigStartTime: marker.attributes.gigStartTime,
-    gigFinishTime: marker.attributes.gigFinishTime,
-    typeOfShow: marker.attributes.typeOfShow,
-  }));
+const normalizeMarkers = (markers) => {
+  if (!Array.isArray(markers)) return [];
+
+  return markers
+    .map((m, idx) => ({
+      id: m.id ?? String(idx),
+
+      // ✅ lo importante: convertir lat/lon -> markerPosition(lat/lng)
+      markerPosition:
+        m.lat != null && m.lon != null
+          ? { lat: Number(m.lat), lng: Number(m.lon) }
+          : null,
+
+      // ✅ compatibilidad con tu popup (Maps usa event/location/date)
+      event: m.eventName ?? "",
+      location: m.venueName ?? "",
+      date: m.date ?? "",
+
+      // opcional: para que no pierdas info
+      gigStartTime: m.from ?? "",
+      gigFinishTime: m.to ?? "",
+      ...m,
+    }))
+    .filter((m) => m.markerPosition); // quita los que no tienen coords
 };
 
 const fetchMarkers = async () => {
   try {
-    const res = await fetch(`${process.env.BACKEND_API}/markers?populate=*`);
-    if (!res.ok) {
-      throw new Error(`Failed to fetch markers: ${res.status} ${res.statusText}`);
-    }
-    const markers = await res.json();
-    const formattedMarkers = formatMarkers(markers);
+    // ✅ usa TU env real
+    const jsonUrl = process.env.NEXT_PUBLIC_MARKERS_JSON_URL;
+    if (!jsonUrl) return [];
 
-    return formattedMarkers;
+    const res = await fetch(jsonUrl, { cache: "no-store" });
+    if (!res.ok) return [];
+
+    const markers = await res.json();
+    return normalizeMarkers(markers);
   } catch (error) {
     console.error("Error fetching markers:", error);
-    throw error;
+    return [];
   }
 };
 
 const MapView = async () => {
   const markersList = await fetchMarkers();
+  console.log("markersList:", markersList);
 
   return <MapViewComponent markersList={markersList} />;
+  
 };
+
 
 export default MapView;

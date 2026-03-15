@@ -3,11 +3,6 @@ import Image from "next/image";
 import DynamicDecoMedia from "@/components/DynamicDecoMedia";
 import MainDiv from "@/components/MainDiv";
 import dynamic from "next/dynamic";
-import {
-  formatPhotos,
-  formatVideos,
-  formatSongs,
-} from "@/helpers/formatApiResponses";
 
 export const metadata = {
   title: "Media",
@@ -46,35 +41,152 @@ const SplideCarousel = dynamic(() => import("@/components/SplideCarousel"), {
   ),
 });
 
-const fetchMediaData = async () => {
+
+const fetchYouTubeJson = async () => {
+  const jsonUrl = process.env.NEXT_PUBLIC_VIDEOS_JSON_URL;
+
+  if (!jsonUrl) return [];
+
+  // URL completa, o path relativo tipo "raw/upload/..../file.json"
+  const absoluteUrl = jsonUrl.startsWith("http")
+    ? jsonUrl
+    : `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/${jsonUrl.replace(
+      /^\//,
+      ""
+    )}`;
+
   try {
-    const [photosRes, videosRes, songsRes] = await Promise.all([
-      fetch(`${process.env.BACKEND_API}/media-photo?populate=*`),
-      fetch(`${process.env.BACKEND_API}/media-videos?populate=*`),
-      fetch(`${process.env.BACKEND_API}/media-songs?populate=*`),
+    const res = await fetch(absoluteUrl, { cache: "no-store" });
+    if (!res.ok) {
+      console.warn(
+        `YouTube JSON fetch failed: ${res.status} ${res.statusText} -> ${absoluteUrl}`
+      );
+      return [];
+    }
+
+    const data = await res.json();
+    if (!Array.isArray(data)) return [];
+
+    return data
+      .map((v) => ({
+        id: v?.id || v?.youtubeId || v?.youtube_id || v?.youtubeUrl,
+        title: v?.title || "video",
+        url: v?.youtubeUrl || v?.url || "",
+        youtubeUrl: v?.youtubeUrl || v?.url || "",
+        source: "youtube",
+        thumbnail:
+          v?.thumbnail ||
+          (v?.id
+            ? `https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`
+            : null),
+      }))
+      .filter((v) => v.youtubeUrl);
+  } catch (e) {
+    console.error("Error reading YouTube JSON:", e);
+    return [];
+  }
+};
+
+export const fetchMediaData = async () => {
+  try {
+    const cloudinary = require("cloudinary").v2;
+
+    cloudinary.config(process.env.CLOUDINARY_URL);
+
+    const getFolder = async (assetFolder, resource_type) => {
+      const res = await cloudinary.api.resources_by_asset_folder(assetFolder, {
+        resource_type,
+        max_results: 500,
+      });
+      return res?.resources ?? [];
+    };
+
+    const [photos, videos, songs, ytList] = await Promise.all([
+      getFolder("Images", "image"),
+      getFolder("Videos", "video"),
+      getFolder("Sounds", "video"), // audio -> video
+      fetchYouTubeJson(), // ✅ YT JSON desde Cloudinary
     ]);
 
-    [photosRes, videosRes, songsRes].forEach((res, index) => {
-      if (!res.ok) {
-        throw new Error(
-          `Failed to fetch ${["photos", "videos", "songs"][index]}: ${res.status} ${res.statusText}`,
-        );
+    const formattedPhotos = photos.map((r) => ({
+      id: r.asset_id,
+      public_id: r.public_id,
+      url: r.secure_url,
+      width: r.width,
+      height: r.height,
+    }));
+
+    const isRealVideo = (r) => {
+      const pid = (r?.public_id || "").toLowerCase();
+      const fmt = (r?.format || "").toLowerCase();
+
+      // evita que tu JSON se meta como "video"
+      if (pid.endsWith(".json")) return false;
+      if (fmt === "json") return false;
+
+      // opcional: lista blanca de formatos de video
+      const ok = ["mp4", "mov", "webm", "m4v", "avi", "mkv"];
+      if (fmt && !ok.includes(fmt)) return false;
+
+      return true;
+    };
+
+    const realVideos = (videos || []).filter(isRealVideo);
+
+    const formattedVideos = realVideos.map((r) => ({
+      id: r.asset_id,
+      public_id: r.public_id,
+      url: r.secure_url,
+      duration: r.duration,
+      source: "cloudinary",
+      thumbnail: cloudinary.url(r.public_id, {
+        resource_type: "video",
+        format: "jpg",
+        transformation: [{ width: 600, crop: "scale" }],
+        secure: true,
+      }),
+    }));
+
+
+    const formattedSongs = songs.map((r) => ({
+      id: r.asset_id,
+      title: r.display_name || r.filename || r.original_filename || r.public_id,
+      public_id: r.public_id,
+      url: r.secure_url,
+      duration: r.duration,
+    }));
+    console.log(
+      "Cloudinary songs mapped:",
+      songs.map((r) => ({
+        display_name: r.display_name,
+        filename: r.filename,
+        original_filename: r.original_filename,
+        public_id: r.public_id,
+      }))
+    );
+    // ✅ Unimos Cloudinary videos + YouTube videos
+    //    (sin duplicar si por casualidad hubiera mismo url)
+    const mergedVideos = [...formattedVideos, ...(ytList || [])].filter(
+      (v, idx, arr) => {
+        const key = v.youtubeUrl || v.url;
+        return arr.findIndex((x) => (x.youtubeUrl || x.url) === key) === idx;
       }
-    });
+    );
 
-    const photos = await photosRes.json();
-    const videos = await videosRes.json();
-    const songs = await songsRes.json();
+    console.log("Cloudinary photos:", formattedPhotos.length);
+    console.log("Cloudinary videos:", formattedVideos.length);
+    console.log("YouTube videos (JSON):", ytList?.length || 0);
+    console.log("Merged videos:", mergedVideos.length);
+    console.log("Cloudinary songs:", formattedSongs.length);
 
-    const formattedVideos = await formatVideos(videos);
-    const formattedPhotos = await formatPhotos(photos);
-    const formattedSongs = formatSongs(songs);
-
-    return { formattedSongs, formattedVideos, formattedPhotos };
+    return {
+      formattedSongs,
+      formattedVideos: mergedVideos, // ✅ importante: devolvemos los merged
+      formattedPhotos,
+    };
   } catch (error) {
-    console.error("Error fetching media data:", error);
-
-    throw new Error(`Data fetching error: ${error.message}`);
+    console.error("Error fetching media data (Cloudinary):", error);
+    return { formattedSongs: [], formattedVideos: [], formattedPhotos: [] };
   }
 };
 
@@ -94,7 +206,7 @@ const Media = async () => {
           photos={formattedPhotos}
         >
           <section className="w-full flex flex-col 1xl:mt-3 1xxl:mt-5 2k:mt-0">
-            <div className="flex items-center px-2 sm:px-6 mb-1 2k:mb-3">
+            <div className="flex items-center px-2 sm:px-6 mt-4 mb-1 2k:mt-6 2k:mb-3">
               <Image
                 src="/assets/media-deco-1.svg"
                 width={35}
@@ -112,7 +224,7 @@ const Media = async () => {
           </section>
 
           <section className="w-full flex flex-col">
-            <div className="flex items-center px-2 sm:px-6 mb-2 2k:mb-5">
+            <div className="flex items-center px-2 sm:px-6 mt-4 mb-2 2k:mt-6 2k:mb-5">
               <Image
                 src="/assets/media-deco-1.svg"
                 width={35}

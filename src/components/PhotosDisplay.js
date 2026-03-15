@@ -1,15 +1,23 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import useMedia from "@/hooks/useMedia";
+
+const DEBUG = process.env.NEXT_PUBLIC_DEBUG_MEDIA === "1";
+
+const getCloudinarySrc = (photo) => {
+  if (!photo) return "";
+  if (typeof photo === "string") return photo;
+  return String(photo.url || photo.secure_url || "").trim();
+};
 
 const PhotosDisplay = () => {
   const {
     isPhotoModalOpen,
     closePhotoModal,
     deselectPhoto,
-    photoList,
+    photoList = [],
     clickedPhotoIndex,
   } = useMedia();
 
@@ -19,7 +27,6 @@ const PhotosDisplay = () => {
   const Modal = useRef(null);
   const ModalContent = useRef(null);
 
-  //Dynamically import Carousel and Modal when isPhotoModalOpen is true
   useEffect(() => {
     if (isPhotoModalOpen && !loaded) {
       Promise.all([
@@ -38,6 +45,14 @@ const PhotosDisplay = () => {
     }
   }, [isPhotoModalOpen, loaded]);
 
+  useEffect(() => {
+    if (!DEBUG) return;
+    console.log("[PhotosDisplay] open:", isPhotoModalOpen);
+    console.log("[PhotosDisplay] clickedPhotoIndex:", clickedPhotoIndex);
+    console.log("[PhotosDisplay] photoList length:", photoList?.length || 0);
+    if (photoList?.length) console.log("[PhotosDisplay] first photo:", photoList[0]);
+  }, [isPhotoModalOpen, clickedPhotoIndex, photoList]);
+
   const handleClose = () => {
     closePhotoModal();
     deselectPhoto();
@@ -47,30 +62,23 @@ const PhotosDisplay = () => {
     type: "fade",
     mediaQuery: "min",
     perPage: 1,
-    start: clickedPhotoIndex,
+    start: clickedPhotoIndex ?? 0,
     arrows: true,
     pagination: false,
     breakpoints: {
-      1280: {
-        drag: false,
-        keyboard: "global",
-      },
-      0: {
-        drag: true,
-        keyboard: false,
-      },
+      1280: { drag: false, keyboard: "global" },
+      0: { drag: true, keyboard: false },
     },
-
     classes: {
       arrows: "splide__arrows arrows_modal",
       arrow: "splide__arrow modal_arrow",
     },
   };
 
-  //Component will not render if isn't loaded
-  if (!loaded) return null;
+  if (!loaded || !Splide || !SplideSlide || !Modal.current || !ModalContent.current) {
+    return null;
+  }
 
-  //Ref for the dynamically imported components
   const DynamicModal = Modal.current;
   const DynamicModalContent = ModalContent.current;
 
@@ -90,25 +98,32 @@ const PhotosDisplay = () => {
     >
       <DynamicModalContent>
         <Splide options={options}>
-          {photoList.map((photo) => (
-            <SplideSlide key={photo.id}>
-              <Image
-                src={
-                  photo.attributes.formats.xl
-                    ? photo.attributes.formats.xl.url
-                    : photo.attributes.url
-                }
-                alt={`Slide ${photo.id}`}
-                width={500}
-                height={500}
-                className="w-[98vw] h-[98vw] xl:h-[95dvh]"
-                sizes="(max-width: 1280px) 95vw, 95dvh"
-                style={{ objectFit: "contain" }}
-                placeholder="blur"
-                blurDataURL={photo.blurDataURL}
-              />
-            </SplideSlide>
-          ))}
+          {(photoList || []).map((photo, idx) => {
+            const src = getCloudinarySrc(photo);
+
+            if (DEBUG) console.log("[PhotosDisplay] slide", idx, "src:", src);
+
+            return (
+              <SplideSlide key={photo?.id ?? photo?.public_id ?? src ?? idx}>
+                {src ? (
+                  <Image
+                    src={src}
+                    alt={photo?.public_id ? `Slide ${photo.public_id}` : `Slide ${idx}`}
+                    width={1200}
+                    height={1200}
+                    className="w-[98vw] h-[98vw] xl:h-[95dvh]"
+                    sizes="(max-width: 1280px) 95vw, 95dvh"
+                    style={{ objectFit: "contain" }}
+                    unoptimized
+                    onError={() => console.error("[PhotosDisplay] Image failed:", src, photo)}
+                    onLoadingComplete={() => DEBUG && console.log("[PhotosDisplay] loaded:", src)}
+                  />
+                ) : (
+                  <div className="w-[98vw] h-[98vw] xl:h-[95dvh] bg-black" />
+                )}
+              </SplideSlide>
+            );
+          })}
         </Splide>
       </DynamicModalContent>
     </DynamicModal>

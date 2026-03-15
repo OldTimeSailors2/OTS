@@ -1,49 +1,36 @@
-import { FamilyMobileS } from "./FamilyMobileS"; //ok
-import { FamilyMobileM } from "./FamilyMobileM"; //ok
-import { FamilyMobileL } from "./FamilyMobileL"; // ok
-import FamilyTablet from "./FamilyTablet"; // ok
-import FamilyLaptop from "./FamilyLaptop"; //
-import FamilyLaptopL from "./FamilyLaptopL"; //
-import FamilyDesktop from "./FamilyDesktop"; // 
-import FamilyDesktopL from "./FamilyDesktopL"; // 
+"use client";
+import { useState, useEffect } from "react";
+import FamilyMobile from "./FamilyMobile";
+import FamilyLaptop from "./FamilyLaptop";
+
+const BREAKPOINTS = [
+  { minWidth: 0,    maxWidth: 374,      Component: FamilyMobile,  variant: "s"       },
+  { minWidth: 375,  maxWidth: 424,      Component: FamilyMobile,  variant: "m"       },
+  { minWidth: 425,  maxWidth: 767,      Component: FamilyMobile,  variant: "l"       },
+  { minWidth: 768,  maxWidth: 1023,     Component: FamilyMobile,  variant: "tablet"  },
+  { minWidth: 1024, maxWidth: 1439,     Component: FamilyLaptop,  variant: null      },
+  { minWidth: 1440, maxWidth: Infinity, Component: FamilyLaptop,  variant: "laptopL" },
+];
+
+function useBreakpoint() {
+  const [width, setWidth] = useState(null);
+  useEffect(() => {
+    const update = () => setWidth(window.innerWidth);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  return width;
+}
+
 export const FamilyLanding = ({ data }) => {
-  return (
-    <div className="">
+  const width = useBreakpoint();
+  if (width === null) return null;
 
-      {/* Mobile S - 320px ok*/}
-      <div className="block min-[375px]:hidden">
-        <div className="w-full min-h-screen relative mx-auto pb-[25px] overflow-x-auto">
-          <FamilyMobileS data={data} />
-        </div>
-      </div>
+  const match = BREAKPOINTS.find(({ minWidth, maxWidth }) => width >= minWidth && width <= maxWidth);
+  if (!match) return null;
 
-      {/* Mobile M - 375px ok*/}
-      <div className="hidden min-[375px]:block min-[425px]:hidden">
-        <div className="w-[375px] relative mx-auto pb-[60px]">
-          <FamilyMobileM data={data} />
-        </div>
-      </div>
-
-      {/* Mobile L - 425px ok*/}
-      <div className="hidden min-[425px]:block min-[768px]:hidden">
-        <div className="w-[425px] min-h-screen relative mx-auto pb-[45px]">
-          <FamilyMobileL data={data} />
-        </div>
-      </div>
-      {/* FamiliTablet - 768px ok*/}
-      <div className="hidden min-[768px]:block min-[1024px]:hidden">
-        <div className="w-[768px] min-h-screen relative mx-auto">
-          <FamilyTablet data={data} />
-        </div>
-      </div>
-      {/* Laptop - 1024px */}
-      <div className="hidden min-[1024px]:block overflow-auto">
-        <div className="w-full min-h-screen relative mx-auto ">
-          <FamilyLaptop data={data} />
-        </div>
-      </div>
- 
-    </div>
-  );
+  const { Component, variant } = match;
+  return <Component data={data} {...(variant ? { variant } : {})} />;
 };
 export default FamilyLanding;
