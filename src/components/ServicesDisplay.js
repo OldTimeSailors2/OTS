@@ -357,15 +357,10 @@ const ServicesDisplay = ({ services }) => {
             {activeServiceData.images.map((image, index) => (
               <div key={index} className="services-images-grid">
                 <Image
-                  src={
-                    image.attributes.formats.medium
-                      ? image.attributes.formats.medium.url
-                      : image.attributes.formats.small.url
-                  }
-                  width={220}
-                  height={220}
+                  src={resolveImageUrl(image, "thumb")}
+                  width={220} height={220}
                   alt={`Image ${index + 1}`}
-                  className="rounded-sm cursor-pointer  1xxl:w-[240px] 1xxl:h-[240px] 4xl:w-[265px] 4xl:h-[265px] fullHD:w-[330px] fullHD:h-[330px] 2k:w-[440px] 2k:h-[440px] 4k:w-[630px] 4k:h-[630px]"
+                  className="rounded-sm cursor-pointer 1xxl:w-[240px] 1xxl:h-[240px] 4xl:w-[265px] 4xl:h-[265px] fullHD:w-[330px] fullHD:h-[330px] 2k:w-[440px] 2k:h-[440px] 4k:w-[630px] 4k:h-[630px]"
                   onClick={() => handleClick(index)}
                   {...blurProps(image)}
                 />
@@ -374,7 +369,7 @@ const ServicesDisplay = ({ services }) => {
           </div>
         )}
 
-        {/* Modal */}
+        {/* Lightbox modal */}
         {Modal && ModalContent && (
           <Modal
             isOpen={isModalOpen}
@@ -384,24 +379,18 @@ const ServicesDisplay = ({ services }) => {
               base: "flex items-center justify-center w-full bg-black max-w-[98vw] xl:max-w-[95dvh]",
               wrapper: "z-[110] overflow-y-hidden",
               backdrop: "z-[109]",
-              closeButton:
-                "z-[108] text-musicColor hover:bg-[#BFA98C] active:bg-[#B69E7C]",
+              closeButton: "z-[108] text-musicColor hover:bg-[#BFA98C] active:bg-[#B69E7C]",
             }}
             backdrop="blur"
           >
             <ModalContent>
-              <Splide options={options2}>
+              <Splide options={modalSplideOptions}>
                 {activeServiceData.images.map((photo) => (
                   <SplideSlide key={photo.id}>
                     <Image
-                      src={
-                        photo.attributes.formats.xl
-                          ? photo.attributes.formats.xl.url
-                          : photo.attributes.url
-                      }
+                      src={resolveImageUrl(photo, "full")}
                       alt={`Slide ${photo.id}`}
-                      width={500}
-                      height={500}
+                      width={500} height={500}
                       className="w-[98vw] h-[98vw] xl:h-[95dvh]"
                       sizes="(max-width: 1280px) 95vw, 95dvh"
                       style={{ objectFit: "contain" }}
