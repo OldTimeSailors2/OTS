@@ -3,6 +3,137 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import Image from "next/image";
 
+// ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
+
+/**
+ * Base pixel dimensions for hexagon and octagon CSS variables, per device tier.
+ * Each entry: [width, height, before-width, before-height].
+ */
+const DEVICE_SIZES = {
+  mobile: {
+    hex:  [105,   70.5, 103,   69  ],
+    hex2: [105,   70.5, 103,   69  ],
+    hex3: [105,   70.5, 103,   69  ],
+    oct:  [250,   450               ],
+  },
+  tablet: {
+    hex:  [140,   80,   138.5, 78  ],
+    hex2: [140,   80,   138.5, 78  ],
+    hex3: [140,   80,   138.5, 78  ],
+    oct:  [435,   550               ],
+  },
+  desktop: {
+    hex:  [126,   69.3, 124,   68.3],
+    hex2: [235.2, 69.3, 233.2, 68.3],
+    hex3: [168,   69.3, 166,   68.3],
+    oct:  [1240,  300               ],
+  },
+};
+
+/**
+ * Config for the six service selector buttons.
+ * `shapeCls` maps to the CSS class that defines the hexagon shape.
+ * `extraCls` holds any per-button spacing overrides.
+ * `textCls`  holds responsive text-size / line-height classes.
+ */
+const SERVICE_BUTTONS = [
+  {
+    id: "our-show",
+    label: "our show",
+    shapeCls: "services-hexagon",
+    extraCls: "xl:max-1xl:mr-3 1xxl:max-2xl:ml-0.5 4xl:max-fullHD:ml-0.5 fullHD:max-2k:ml-[1px]",
+    textCls: "text-lg leading-4 xs2:text-xl xs2:leading-5 md1:text-[22px] md:text-3xl lg:text-4xl xl:text-[27px] 1xxl:text-3xl 4xl:text-4xl 4xl:leading-9 fullHD:text-4xl 2k:text-5xl 4k:text-7xl",
+  },
+  {
+    id: "festival-and-event-organization",
+    label: "festival and event organization",
+    shapeCls: "services-hexagon-2",
+    extraCls: "",
+    textCls: "text-lg leading-4 xs:leading-5 xs2:text-xl xs2:leading-5 md1:text-[22px] md1:leading-5 md:text-3xl md:leading-[25px] md3:leading-7 lg:text-4xl xl:leading-7 xl:text-[27px] 1xxl:text-3xl 4xl:text-4xl 4xl:leading-9 fullHD:text-4xl 2k:text-5xl 4k:text-7xl",
+  },
+  {
+    id: "hms-warrior",
+    label: "hms warrior",
+    shapeCls: "services-hexagon",
+    extraCls: "",
+    textCls: "text-lg leading-4 xs2:text-xl xs2:leading-5 md1:text-[22px] md:text-3xl lg:text-4xl xl:text-[27px] xl:leading-7 1xxl:text-3xl 4xl:text-4xl 4xl:leading-9 fullHD:text-4xl 2k:text-5xl 4k:text-7xl",
+  },
+  {
+    id: "music-agency",
+    label: "music agency",
+    shapeCls: "services-hexagon",
+    extraCls: "",
+    textCls: "text-lg leading-4 xs2:text-xl xs2:leading-5 md1:text-[22px] md:text-3xl lg:text-4xl xl:text-[27px] xl:leading-7 1xxl:text-3xl 4xl:text-4xl 4xl:leading-9 fullHD:text-4xl 2k:text-5xl 4k:text-7xl 1xl:leading-7",
+  },
+  {
+    id: "festival-within-a-festival",
+    label: "festival within a festival",
+    shapeCls: "services-hexagon-2",
+    extraCls: "",
+    textCls: "text-lg leading-4 xs:leading-5 xs2:text-xl xs2:leading-5 md1:text-[22px] md1:leading-6 md:text-3xl md:leading-[25px] md3:leading-7 lg:text-4xl xl:text-[27px] xl:leading-7 1xxl:text-3xl 4xl:text-4xl 4xl:leading-9 fullHD:text-4xl 2k:text-5xl 4k:text-7xl 1xl:leading-7",
+  },
+  {
+    id: "pirate-props-and-games",
+    label: "pirate props and games",
+    shapeCls: "services-hexagon-3",
+    extraCls: "xl:mr-0.5 1xxl:max-2xl:mr-1 4xl:max-fullHD:mr-[5px] fullHD:max-2k:mr-0.5",
+    textCls: "text-lg leading-4 xs:leading-5 xs2:text-xl xs2:leading-5 md1:text-[22px] md:text-3xl md:leading-[25px] md3:leading-7 lg:text-4xl xl:text-[27px] xl:leading-7 1xxl:text-3xl 4xl:text-4xl 4xl:leading-9 fullHD:text-4xl 2k:text-5xl 4k:text-7xl 1xl:leading-7",
+  },
+];
+
+/** Splide options for the mobile/tablet image carousel (never changes). */
+const SPLIDE_OPTIONS = {
+  perPage: 2,
+  gap: 2,
+  arrows: false,
+  drag: true,
+  pagination: false,
+  start: 0,
+  classes: "splide-services",
+  padding: { right: "5%" },
+  mediaQuery: "min",
+  breakpoints: {
+    428: { padding: { right: "6%" } },
+    414: { padding: { right: "8%" } },
+    380: { padding: { right: "5%" } },
+    375: { padding: { right: "8%" } },
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * Returns Next.js blur props for an image if `blurDataURL` is available,
+ * otherwise falls back to `placeholder="empty"` to avoid console warnings.
+ *
+ * @param {{ blurDataURL?: string } | null} img
+ */
+const blurProps = (img) =>
+  img?.blurDataURL
+    ? { placeholder: "blur", blurDataURL: img.blurDataURL }
+    : { placeholder: "empty" };
+
+/**
+ * Resolves the best available URL from a Strapi image entry.
+ * Prefers `medium` over `small` for thumbnails, `xl` over original for modal.
+ *
+ * @param {{ attributes: { formats: object, url: string } }} image
+ * @param {"thumb"|"full"} size
+ */
+const resolveImageUrl = (image, size = "thumb") => {
+  const { formats, url } = image.attributes;
+  if (size === "full") return formats.xl?.url ?? url;
+  return formats.medium?.url ?? formats.small?.url;
+};
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
 const ServicesDisplay = ({ services }) => {
   const [scaleFactor, setScaleFactor] = useState(1);
   const [isDevice, setIsDevice] = useState();
