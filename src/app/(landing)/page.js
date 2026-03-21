@@ -191,15 +191,8 @@ export default async function Home() {
         <div style={{ transform: "translateY(10px)" }}>
           <Social
             className="landing-social"
-            icons={{
-              instagram: assets.instagram,
-              facebook: assets.facebook,
-              youtube: assets.youtube,
-              whatsapp: assets.whatsapp,
-              mail: assets.mail,
-              spotify: assets.spotify,
-            }}
-            iconSize={{ w: 53, h: 12 }}
+            size={40}
+            color="#F5F0E1"
           />
         </div>
       </div>
