@@ -95,14 +95,20 @@ export default async function Home() {
   const LOGO_TOP = "14px";
 
   const LOGO_SIZE = 520;
-  const MEMBERSHIPS_SIZE = 170;
+  const MEMBERSHIPS_SIZE = 123;
 
-  const cornerStyle = assets.corner ? { "--corner-url": `url('${assets.corner}')` } : undefined;
+  const cornerStyle = {
+    ...(assets.corner ? { "--corner-url": `url('${assets.corner}')` } : {}),
+    "--frame-pad": `clamp(16px, 4vw, ${FRAME_PAD})`,
+  };
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-[#1d344a]">
       {/* ÁREA INTERNA */}
-      <div className="absolute inset-0" style={{ padding: FRAME_PAD }}>
+      <div
+        className="absolute inset-0"
+        style={{ padding: `clamp(16px, 4vw, ${FRAME_PAD})` }}
+      >
         <div className="relative w-full h-full overflow-hidden">
           {assets.landingDesktop ? (
             <Image
@@ -137,9 +143,9 @@ export default async function Home() {
       {assets.description ? (
         <div
           className="absolute z-30"
-          style={{ top: `calc(${FRAME_PAD} + 8%)`, left: `calc(${FRAME_PAD} + 2%)` }}
+          style={{ top: `calc(${FRAME_PAD} + 8%)`, left: `calc(clamp(16px, 4vw, ${FRAME_PAD}) + 2%)` }}
         >
-          <Image src={assets.description} alt="Description" width={180} height={180} priority />
+          <Image src={assets.description} alt="Description" width={123} height={123} priority />
         </div>
       ) : null}
 
@@ -147,7 +153,7 @@ export default async function Home() {
       {assets.memberships ? (
         <div
           className="absolute z-30"
-          style={{ top: `calc(${FRAME_PAD} + 22%)`, left: `calc(${FRAME_PAD} + 2%)` }}
+          style={{ top: `calc(${FRAME_PAD} + 25%)`, left: `calc(clamp(16px, 4vw, ${FRAME_PAD}) + 2%)` }}
         >
           <Link href="/memberships" className="inline-block">
             <Image
@@ -164,7 +170,7 @@ export default async function Home() {
       {/* MENÚ */}
       <div
         className="absolute z-30 flex flex-col items-end"
-        style={{ top: `calc(${FRAME_PAD} + 6%)`, right: `calc(${FRAME_PAD} + 2%)` }}
+        style={{ top: `calc(${FRAME_PAD} + 6%)`, right: `calc(clamp(16px, 4vw, ${FRAME_PAD}) + 2%)` }}
       >
         {[
           { href: "/media", label: "media", bg: "bg-cream", text: "txt-darkBlue" },
