@@ -117,15 +117,16 @@ export default async function Home() {
               fill
               priority
               className="object-cover"
-              style={{ objectPosition: "center 55%" }}
+              style={{ objectPosition: "center" }}
               sizes="100vw"
             />
           ) : null}
         </div>
+      
       </div>
 
-      {/* MARCO BLANCO + ESQUINAS */}
       <div className="white-frame pointer-events-none z-20" style={cornerStyle}>
+      {/* MARCO BLANCO + ESQUINAS */}
         <span className="white-corner tl" />
         <span className="white-corner tr" />
         <span className="white-corner br" />
