@@ -95,14 +95,20 @@ export default async function Home() {
   const LOGO_TOP = "14px";
 
   const LOGO_SIZE = 520;
-  const MEMBERSHIPS_SIZE = 170;
+  const MEMBERSHIPS_SIZE = 123;
 
-  const cornerStyle = assets.corner ? { "--corner-url": `url('${assets.corner}')` } : undefined;
+  const cornerStyle = {
+    ...(assets.corner ? { "--corner-url": `url('${assets.corner}')` } : {}),
+    "--frame-pad": `clamp(16px, 4vw, ${FRAME_PAD})`,
+  };
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-[#1d344a]">
       {/* ÁREA INTERNA */}
-      <div className="absolute inset-0" style={{ padding: FRAME_PAD }}>
+      <div
+        className="absolute inset-0"
+        style={{ padding: `clamp(16px, 4vw, ${FRAME_PAD})` }}
+      >
         <div className="relative w-full h-full overflow-hidden">
           {assets.landingDesktop ? (
             <Image
@@ -111,15 +117,16 @@ export default async function Home() {
               fill
               priority
               className="object-cover"
-              style={{ objectPosition: "center 55%" }}
+              style={{ objectPosition: "center" }}
               sizes="100vw"
             />
           ) : null}
         </div>
+      
       </div>
 
-      {/* MARCO BLANCO + ESQUINAS */}
       <div className="white-frame pointer-events-none z-20" style={cornerStyle}>
+      {/* MARCO BLANCO + ESQUINAS */}
         <span className="white-corner tl" />
         <span className="white-corner tr" />
         <span className="white-corner br" />
@@ -137,9 +144,9 @@ export default async function Home() {
       {assets.description ? (
         <div
           className="absolute z-30"
-          style={{ top: `calc(${FRAME_PAD} + 8%)`, left: `calc(${FRAME_PAD} + 2%)` }}
+          style={{ top: `calc(${FRAME_PAD} + 8%)`, left: `calc(clamp(16px, 4vw, ${FRAME_PAD}) + 2%)` }}
         >
-          <Image src={assets.description} alt="Description" width={180} height={180} priority />
+          <Image src={assets.description} alt="Description" width={123} height={123} priority />
         </div>
       ) : null}
 
@@ -147,7 +154,7 @@ export default async function Home() {
       {assets.memberships ? (
         <div
           className="absolute z-30"
-          style={{ top: `calc(${FRAME_PAD} + 22%)`, left: `calc(${FRAME_PAD} + 2%)` }}
+          style={{ top: `calc(${FRAME_PAD} + 25%)`, left: `calc(clamp(16px, 4vw, ${FRAME_PAD}) + 2%)` }}
         >
           <Link href="/memberships" className="inline-block">
             <Image
@@ -164,7 +171,7 @@ export default async function Home() {
       {/* MENÚ */}
       <div
         className="absolute z-30 flex flex-col items-end"
-        style={{ top: `calc(${FRAME_PAD} + 6%)`, right: `calc(${FRAME_PAD} + 2%)` }}
+        style={{ top: `calc(${FRAME_PAD} + 6%)`, right: `calc(clamp(16px, 4vw, ${FRAME_PAD}) + 2%)` }}
       >
         {[
           { href: "/media", label: "media", bg: "bg-cream", text: "txt-darkBlue" },
@@ -172,7 +179,7 @@ export default async function Home() {
           { href: "https://oldtimesailors.co.uk", label: "merch", bg: "bg-red", text: "txt-cream" },
           { href: "/reviews", label: "reviews", bg: "bg-darkBlue", text: "txt-cream" },
           { href: "/our-clients", label: "our clients", bg: "bg-cream", text: "txt-red" },
-          // { href: "/services", label: "services", bg: "bg-red", text: "txt-cream" },
+          { href: "/services", label: "services", bg: "bg-red", text: "txt-cream" },
         ].map(({ href, label, bg, text }) => (
           <Link
             key={href}
@@ -191,15 +198,8 @@ export default async function Home() {
         <div style={{ transform: "translateY(10px)" }}>
           <Social
             className="landing-social"
-            icons={{
-              instagram: assets.instagram,
-              facebook: assets.facebook,
-              youtube: assets.youtube,
-              whatsapp: assets.whatsapp,
-              mail: assets.mail,
-              spotify: assets.spotify,
-            }}
-            iconSize={{ w: 53, h: 12 }}
+            size={40}
+            color="#F5F0E1"
           />
         </div>
       </div>
