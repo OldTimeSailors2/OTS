@@ -147,15 +147,15 @@ main {
   position: absolute;
   z-index: 30;
   right: 5.2%;
-  top: 7.35%;
+  top: 4.35%;
   width: 12.15%;
   display: flex;
   flex-direction: column;
-  gap: 0.9%;
+  gap: 9px;
 }
 
 .landing-menu-item-v2 {
-  height: clamp(26px, 3.15vw, 50px);
+  height: clamp(26px, 3.15vw, 34px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,20 +190,19 @@ main {
 }
 
 .landing-social-wrap-v2 {
-  position: absolute;
-  z-index: 30;
-  left: 50%;
-  bottom: 2.75%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(6px, 0.75vw, 14px);
-  width: auto;
-  max-width: 90%;
-  flex-wrap: nowrap;
+    position: absolute !important;
+    z-index: 9999; /* súbelo bastante */
+    left: 50%;
+    bottom: 0.8%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(6px, 0.75vw, 14px);
+    width: auto;
+    max-width: 90%;
+    flex-wrap: nowrap;
 }
-
 .landing-social-pill {
   position: relative;
   width: clamp(28px, 3.25vw, 52px);
