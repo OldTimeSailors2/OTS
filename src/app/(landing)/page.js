@@ -1,21 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
-import Social from "@/components/Social";
 
+export const dynamic = "force-dynamic";
 
-
-
-const FOLDER = "Images/ImageLandingDesktop";
+const DESKTOP_FOLDER = "Images/ImageLandingDesktop";
+const MOBILE_FOLDER = "Images/ImageLandingMovile";
 
 const ASSET_KEYS = {
   landingDesktop: ["landingdesktop", "landing_desktop", "landing-desktop", "desktop", "landing"],
+  landingMobile: ["landingmobile", "landing_mobile", "landing-mobile", "mobile", "landing"],
+
   border: ["border", "frame", "marco"],
   logo: ["logo"],
   memberships: ["memberships", "membership"],
   description: ["description", "descripcion", "descripción"],
   corner: ["corner", "corners", "corner-detail", "corner_detail", "esquina", "esquinas"],
 
-  //  Social icons (Cloudinary)
   instagram: ["instagram", "ig", "insta", "instagram-icon", "instagram_icon"],
   facebook: ["facebook", "fb", "facebook-icon", "facebook_icon"],
   youtube: ["youtube", "yt", "youtube-icon", "youtube_icon"],
@@ -24,60 +24,83 @@ const ASSET_KEYS = {
   spotify: ["spotify", "sp", "spotify-icon", "spotify_icon"],
 };
 
-const fetchLandingAssets = async () => {
+async function getFolderResources(folder) {
   try {
-    const cloudinary = require("cloudinary").v2;
+    const cloudinary = (await import("cloudinary")).v2;
+    cloudinary.config(process.env.CLOUDINARY_URL);
 
-  cloudinary.config(process.env.CLOUDINARY_URL);
-
-    const res = await cloudinary.api.resources_by_asset_folder(FOLDER, {
+    const res = await cloudinary.api.resources_by_asset_folder(folder, {
       resource_type: "image",
       max_results: 200,
     });
 
-    const resources = res?.resources ?? [];
+    return res?.resources ?? [];
+  } catch (error) {
+    console.error(`Error fetching Cloudinary folder "${folder}":`, error);
+    return [];
+  }
+}
 
-    const findByAnyName = (nameList) => {
-      const lowerNames = nameList.map((n) => n.toLowerCase());
-      return (
-        resources.find((r) => {
-          const filename = (r.public_id.split("/").pop() || "").toLowerCase();
-          return lowerNames.some((n) => filename === n);
-        }) ||
-        resources.find((r) => {
-          const filename = (r.public_id.split("/").pop() || "").toLowerCase();
-          return lowerNames.some((n) => filename.includes(n));
-        }) ||
-        null
-      );
-    };
+function findByAnyName(resources, nameList) {
+  const lowerNames = nameList.map((n) => n.toLowerCase());
+
+  return (
+    resources.find((r) => {
+      const filename = (r.public_id.split("/").pop() || "").toLowerCase();
+      return lowerNames.some((n) => filename === n);
+    }) ||
+    resources.find((r) => {
+      const filename = (r.public_id.split("/").pop() || "").toLowerCase();
+      return lowerNames.some((n) => filename.includes(n));
+    }) ||
+    null
+  );
+}
+
+async function fetchLandingAssets() {
+  try {
+    const [desktopResources, mobileResources] = await Promise.all([
+      getFolderResources(DESKTOP_FOLDER),
+      getFolderResources(MOBILE_FOLDER),
+    ]);
+
+    const desktopImage =
+      findByAnyName(desktopResources, ASSET_KEYS.landingDesktop)?.secure_url ||
+      desktopResources[0]?.secure_url ||
+      null;
+
+    const mobileImage =
+      findByAnyName(mobileResources, ASSET_KEYS.landingMobile)?.secure_url ||
+      mobileResources[0]?.secure_url ||
+      null;
 
     return {
-      landingDesktop: findByAnyName(ASSET_KEYS.landingDesktop)?.secure_url ?? null,
-      border: findByAnyName(ASSET_KEYS.border)?.secure_url ?? null,
-      logo: findByAnyName(ASSET_KEYS.logo)?.secure_url ?? null,
-      memberships: findByAnyName(ASSET_KEYS.memberships)?.secure_url ?? null,
-      description: findByAnyName(ASSET_KEYS.description)?.secure_url ?? null,
-      corner: findByAnyName(ASSET_KEYS.corner)?.secure_url ?? null,
+      landingDesktop: desktopImage,
+      landingMobile: mobileImage,
 
-      //  social icons
-      instagram: findByAnyName(ASSET_KEYS.instagram)?.secure_url ?? null,
-      facebook: findByAnyName(ASSET_KEYS.facebook)?.secure_url ?? null,
-      youtube: findByAnyName(ASSET_KEYS.youtube)?.secure_url ?? null,
-      whatsapp: findByAnyName(ASSET_KEYS.whatsapp)?.secure_url ?? null,
-      mail: findByAnyName(ASSET_KEYS.mail)?.secure_url ?? null,
-      spotify: findByAnyName(ASSET_KEYS.spotify)?.secure_url ?? null,
+      border: findByAnyName(desktopResources, ASSET_KEYS.border)?.secure_url ?? null,
+      logo: findByAnyName(desktopResources, ASSET_KEYS.logo)?.secure_url ?? null,
+      memberships: findByAnyName(desktopResources, ASSET_KEYS.memberships)?.secure_url ?? null,
+      description: findByAnyName(desktopResources, ASSET_KEYS.description)?.secure_url ?? null,
+      corner: findByAnyName(desktopResources, ASSET_KEYS.corner)?.secure_url ?? null,
+
+      instagram: findByAnyName(desktopResources, ASSET_KEYS.instagram)?.secure_url ?? null,
+      facebook: findByAnyName(desktopResources, ASSET_KEYS.facebook)?.secure_url ?? null,
+      youtube: findByAnyName(desktopResources, ASSET_KEYS.youtube)?.secure_url ?? null,
+      whatsapp: findByAnyName(desktopResources, ASSET_KEYS.whatsapp)?.secure_url ?? null,
+      mail: findByAnyName(desktopResources, ASSET_KEYS.mail)?.secure_url ?? null,
+      spotify: findByAnyName(desktopResources, ASSET_KEYS.spotify)?.secure_url ?? null,
     };
   } catch (error) {
     console.error("Error fetching landing assets (Cloudinary):", error);
     return {
       landingDesktop: null,
+      landingMobile: null,
       border: null,
       logo: null,
       memberships: null,
       description: null,
       corner: null,
-
       instagram: null,
       facebook: null,
       youtube: null,
@@ -86,124 +109,192 @@ const fetchLandingAssets = async () => {
       spotify: null,
     };
   }
-};
+}
+
+function SocialIcon({ href, src, alt }) {
+  if (!src) return null;
+
+  const isExternal = href.startsWith("http") || href.startsWith("mailto:");
+
+  return (
+    <Link
+      href={href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      className="landing-social-pill"
+      aria-label={alt}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 768px) 27px, (max-width: 1200px) 48px, 64px"
+        className="object-contain"
+      />
+    </Link>
+  );
+}
 
 export default async function Home() {
   const assets = await fetchLandingAssets();
 
-  const FRAME_PAD = "56px";
-  const LOGO_TOP = "14px";
+  const menuItems = [
+    {
+      href: "/media",
+      label: "MEDIA",
+      className: "menu-cream menu-blue-text",
+    },
+    {
+      href: "/tickets/calendar-view",
+      label: "TICKETS",
+      className: "menu-blue menu-pink-text",
+    },
+    {
+      href: "https://oldtimesailors.co.uk",
+      label: "MERCH",
+      className: "menu-pink menu-cream-text",
+    },
+    {
+      href: "/reviews",
+      label: "REVIEWS",
+      className: "menu-blue menu-cream-text",
+    },
+    {
+      href: "/our-clients",
+      label: "OUR CLIENTS",
+      className: "menu-cream menu-pink-text",
+    },
+    {
+      href: "/services",
+      label: "SERVICES",
+      className: "menu-pink menu-cream-text",
+    },
+  ];
 
-  const LOGO_SIZE = 520;
-  const MEMBERSHIPS_SIZE = 123;
-
-  const cornerStyle = {
-    ...(assets.corner ? { "--corner-url": `url('${assets.corner}')` } : {}),
-    "--frame-pad": `clamp(16px, 4vw, ${FRAME_PAD})`,
-  };
+  const socialItems = [
+    { href: "https://instagram.com", src: assets.instagram, alt: "Instagram" },
+    { href: "https://facebook.com", src: assets.facebook, alt: "Facebook" },
+    { href: "https://youtube.com", src: assets.youtube, alt: "YouTube" },
+    { href: "https://wa.me", src: assets.whatsapp, alt: "WhatsApp" },
+    { href: "mailto:info@oldtimesailors.com", src: assets.mail, alt: "Email" },
+    { href: "https://spotify.com", src: assets.spotify, alt: "Spotify" },
+  ].filter((item) => item.src);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#1d344a]">
-      {/* ÁREA INTERNA */}
-      <div
-        className="absolute inset-0"
-        style={{ padding: `clamp(16px, 4vw, ${FRAME_PAD})` }}
-      >
-        <div className="relative w-full h-full overflow-hidden">
-          {assets.landingDesktop ? (
-            <Image
-              src={assets.landingDesktop}
-              alt="Landing Desktop"
-              fill
-              priority
-              className="object-cover"
-              style={{ objectPosition: "center" }}
-              sizes="100vw"
-            />
+    <main className="landing-page-v2">
+      <div className="landing-stage-v2">
+        <section className="landing-artboard-v2">
+          {/* Desktop image */}
+          <div className="landing-bg-v2 landing-bg-desktop-v2">
+            {assets.landingDesktop ? (
+              <Image
+                src={assets.landingDesktop}
+                alt="Old Time Sailors Landing Desktop"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+              />
+            ) : null}
+          </div>
+
+          {/* Mobile image */}
+          <div className="landing-bg-v2 landing-bg-mobile-v2">
+            {assets.landingMobile ? (
+              <Image
+                src={assets.landingMobile}
+                alt="Old Time Sailors Landing Mobile"
+                fill={false}
+                priority
+                width={430}
+                height={932}
+                sizes="100vw"
+                className="landing-mobile-image-tag"
+              />
+            ) : null}
+          </div>
+
+          {/* Overlay/frame only for desktop */}
+          <div className="landing-overlay-v2" />
+
+          <div className="landing-white-frame-v2" />
+
+          {/* Desktop-only decorative assets */}
+          {assets.description ? (
+            <div className="landing-description-wrap-v2">
+              <Image
+                src={assets.description}
+                alt="Description"
+                fill
+                priority
+                sizes="(max-width: 768px) 120px, (max-width: 1200px) 180px, 260px"
+                className="object-contain"
+              />
+            </div>
           ) : null}
-        </div>
-      
+
+          {assets.memberships ? (
+            <Link
+              href="/memberships"
+              className="landing-membership-wrap-v2"
+              aria-label="Memberships"
+            >
+              <Image
+                src={assets.memberships}
+                alt="Memberships"
+                fill
+                priority
+                sizes="(max-width: 768px) 90px, (max-width: 1200px) 130px, 180px"
+                className="object-contain"
+              />
+            </Link>
+          ) : null}
+
+          {assets.logo ? (
+            <div className="landing-logo-wrap-v2">
+              <Image
+                src={assets.logo}
+                alt="Old Time Sailors"
+                fill
+                priority
+                sizes="(max-width: 768px) 180px, (max-width: 1200px) 260px, 420px"
+                className="object-contain"
+              />
+            </div>
+          ) : null}
+
+          {/* Menu: desktop + mobile overlay */}
+          <nav className="landing-menu-wrap-v2" aria-label="Main navigation">
+            {menuItems.map((item) => {
+              const isExternal = item.href.startsWith("http");
+
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
+                  className={`landing-menu-item-v2 ${item.className}`}
+                >
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Social icons: desktop + mobile overlay */}
+          <div className="landing-social-wrap-v2">
+            {socialItems.map((item) => (
+              <SocialIcon
+                key={item.alt}
+                href={item.href}
+                src={item.src}
+                alt={item.alt}
+              />
+            ))}
+          </div>
+        </section>
       </div>
-
-      <div className="white-frame pointer-events-none z-20" style={cornerStyle}>
-      {/* MARCO BLANCO + ESQUINAS */}
-        <span className="white-corner tl" />
-        <span className="white-corner tr" />
-        <span className="white-corner br" />
-        <span className="white-corner bl" />
-      </div>
-
-      {/* LOGO */}
-      {assets.logo ? (
-        <div className="absolute left-1/2 -translate-x-1/2 z-30" style={{ top: LOGO_TOP }}>
-          <Image src={assets.logo} alt="Logo" width={LOGO_SIZE} height={LOGO_SIZE} priority />
-        </div>
-      ) : null}
-
-      {/* DESCRIPTION */}
-      {assets.description ? (
-        <div
-          className="absolute z-30"
-          style={{ top: `calc(${FRAME_PAD} + 8%)`, left: `calc(clamp(16px, 4vw, ${FRAME_PAD}) + 2%)` }}
-        >
-          <Image src={assets.description} alt="Description" width={123} height={123} priority />
-        </div>
-      ) : null}
-
-      {/* MEMBERSHIPS */}
-      {assets.memberships ? (
-        <div
-          className="absolute z-30"
-          style={{ top: `calc(${FRAME_PAD} + 25%)`, left: `calc(clamp(16px, 4vw, ${FRAME_PAD}) + 2%)` }}
-        >
-          <Link href="/memberships" className="inline-block">
-            <Image
-              src={assets.memberships}
-              alt="Memberships"
-              width={MEMBERSHIPS_SIZE}
-              height={MEMBERSHIPS_SIZE}
-              priority
-            />
-          </Link>
-        </div>
-      ) : null}
-
-      {/* MENÚ */}
-      <div
-        className="absolute z-30 flex flex-col items-end"
-        style={{ top: `calc(${FRAME_PAD} + 6%)`, right: `calc(clamp(16px, 4vw, ${FRAME_PAD}) + 2%)` }}
-      >
-        {[
-          { href: "/media", label: "media", bg: "bg-cream", text: "txt-darkBlue" },
-          { href: "/tickets/calendar-view", label: "tickets", bg: "bg-darkBlue", text: "txt-red" },
-          { href: "https://oldtimesailors.co.uk", label: "merch", bg: "bg-red", text: "txt-cream" },
-          { href: "/reviews", label: "reviews", bg: "bg-darkBlue", text: "txt-cream" },
-          { href: "/our-clients", label: "our clients", bg: "bg-cream", text: "txt-red" },
-          { href: "/services", label: "services", bg: "bg-red", text: "txt-cream" },
-        ].map(({ href, label, bg, text }) => (
-          <Link
-            key={href}
-            href={href}
-            className={`octagon my-1 font-titles md:text-2xl flex items-center justify-center ${bg} ${text} w-44 md:w-36 h-10`}
-          >
-            {label}
-          </Link>
-        ))}
-      </div>
-
-      <div
-        className="absolute left-1/2 -translate-x-1/2 z-30"
-        style={{ bottom: `calc(${FRAME_PAD} - 6px)` }}
-      >
-        <div style={{ transform: "translateY(10px)" }}>
-          <Social
-            className="landing-social"
-            size={40}
-            color="#F5F0E1"
-          />
-        </div>
-      </div>
-
-    </div>
+    </main>
   );
 }
