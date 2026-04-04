@@ -249,7 +249,7 @@ const Navbar = () => {
         </div>
 
         {config.viewSelector && (
-          <div className="w-full px-3 py-2 bg-[#384855]">
+          <div className="w-full px-3 py-2 bg-transparent">
             <ViewSwitch />
           </div>
         )}
