@@ -181,10 +181,9 @@ const Media = async () => {
 
   return (
     <>
-      <MainDiv
-        className="bg-bluePatternMobile max-xl:fixed md1:bg-bluePatternTablet xl:bg-bluePattern  bg-contain  w-screen h-dvh flex flex-col pt-[77px] xs:pt-[92px] sm:pt-[140px] fullHD:pt-[172px] 2k:pt-[204px] 4k:pt-[268px]
-        pb-[17.5px] md1:pb-[44px] xl:pb-[40px] 2k:pb-[52px] 4k:pb-[64px]  justify-around xl:justify-evenly 1xl:justify-center 1xl:gap-1 1xxl:gap-2 2xl:gap-4 2k:gap-0 2k:justify-around"
-      >
+    <MainDiv
+  className="bg-bluePatternMobile md1:bg-bluePatternTablet xl:bg-bluePattern bg-contain w-screen min-h-dvh flex flex-col  pb-0 justify-around xl:justify-evenly 1xl:justify-center 1xl:gap-1 1xxl:gap-2 2xl:gap-4 2k:gap-0 2k:justify-around"
+>
         <MediaWrapper
           songs={formattedSongs}
           videos={formattedVideos}
