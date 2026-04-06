@@ -4,19 +4,18 @@ import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { fetchEvents } from "@/helpers/fetchData";
 import FamilyLanding from "@/components/FamilyLanding";
-import PowerLanding from "@/components/PowerLanding";
 import MainDiv from "@/components/MainDiv";
 import { useNavbarColor } from "@/context/NavbarColorProvider";
 
 const slugify = (value) =>
   String(value ?? "")
-    .normalize("NFD") 
+    .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9\s-]/g, "") 
-    .replace(/\s+/g, "-") 
-    .replace(/-+/g, "-"); 
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
 
 const GigLanding = () => {
   const params = useParams();
@@ -59,7 +58,6 @@ const GigLanding = () => {
 
         await import("react-facebook-pixel");
         if (!isMounted) return;
-
       } catch (e) {
         console.warn("Pixel init skipped:", e?.message || e);
       }
@@ -72,7 +70,6 @@ const GigLanding = () => {
     };
   }, []);
 
-  // Fetch + match
   useEffect(() => {
     let alive = true;
 
@@ -81,8 +78,8 @@ const GigLanding = () => {
         setIsLoading(true);
         setError(null);
 
-        const events = await fetchEvents(); // /api/event
-    
+        const events = await fetchEvents();
+
         if (!Array.isArray(events)) {
           throw new Error("fetchEvents() no devolvió un array.");
         }
@@ -119,41 +116,42 @@ const GigLanding = () => {
     return () => {
       alive = false;
     };
-  }, [params, eventParam, eventIdFromUrl, eventIdNormalized]);
+  }, [eventIdFromUrl, eventIdNormalized]);
 
-  //  Navbar color
   useEffect(() => {
     if (currentEvent) {
       setNavbarColor(currentEvent.typeOfShow === "Family" ? "dark" : "light");
     }
   }, [currentEvent, setNavbarColor]);
-  return(
-  <MainDiv>
-  {(isLoading || error || !currentEvent)?
-      <div className="p-6 text-center">
-        <p className="text-xl font-semibold">{
-          isLoading ? "Loading..." :
-          error ? "No se pudo cargar el evento" :
-          !currentEvent ? "No event found" :""
-        }</p>
-        {error && <p className="mt-2 opacity-80">{error}</p>}
-      </div>
-    :
-      <div className={`${
-        currentEvent.typeOfShow === "Family"
-        ? "bg-beigePattern bg-contain"
-        : "bg-contain"
-        } bg-repeat overscroll-none scroll-smooth`}
-        >
-        {currentEvent.typeOfShow === "Family" ? (
-          <FamilyLanding data={currentEvent} />
-        ) : (
-          <PowerLanding data={currentEvent} />
-        )}
-      </div>
-      }
-      </MainDiv>)
 
+  return (
+    <MainDiv>
+      {isLoading || error || !currentEvent ? (
+        <div className="p-6 text-center">
+          <p className="text-xl font-semibold">
+            {isLoading
+              ? "Loading..."
+              : error
+              ? "No se pudo cargar el evento"
+              : !currentEvent
+              ? "No event found"
+              : ""}
+          </p>
+          {error && <p className="mt-2 opacity-80">{error}</p>}
+        </div>
+      ) : (
+        <div
+          className={`${
+            currentEvent.typeOfShow === "Family"
+              ? "bg-beigePattern bg-contain"
+              : "bg-contain"
+          } bg-repeat overscroll-none scroll-smooth`}
+        >
+          <FamilyLanding data={currentEvent} />
+        </div>
+      )}
+    </MainDiv>
+  );
 };
 
 export default GigLanding;
