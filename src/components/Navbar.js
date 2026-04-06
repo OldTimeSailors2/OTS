@@ -21,10 +21,10 @@ const routeConfig = {
   "/tickets/map-view": { titleImg: "/assets/tickets.png", viewSelector: true, label: "tickets" },
   "/tickets/calendar-view": { titleImg: "/assets/tickets.png", viewSelector: true, label: "tickets" },
   "/reviews": { titleImg: "/assets/reviews.png", label: "reviews" },
-  "/media": { titleImg: "/assets/media.png", label: "media" },
-  "/our-clients": { titleImg: "/assets/clients.png", label: "our clients" },
-  "/services": { titleImg: "/assets/services.png", label: "services" },
-  "/memberships": { titleImg: "/assets/memberships.png", label: "memberships" },
+  "/media": { titleImg: "/assets/btnMedia.png", label: "media" },
+  "/our-clients": { titleImg: "/assets/btnClients.png", label: "our clients" },
+  "/services": { titleImg: "/assets/btnServices.png", label: "services" },
+  "/memberships": { titleImg: "/assets/btnMemberships.png", label: "memberships" },
 };
 
 const defaultConfig = {

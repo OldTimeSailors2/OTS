@@ -178,7 +178,7 @@ const ListItem = ({ event }) => {
             onClick={log("Link onClick (bubble)")}
           >
             <Image
-              src="/assets/+info.png"
+              src="/assets/info.png"
               width={108.12}
               height={31.52}
               alt="More info"

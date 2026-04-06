@@ -65,13 +65,13 @@ export default function FamilyResponsive({ data = {} }) {
               <div className="absolute inset-[0.8%] border border-[#9a8c72]/70" />
 
               {/* logo */}
-              <div className="absolute left-[-1.5%] top-[4.2%] z-20">
+              <div className="absolute left-[0.5%] top-[5.2%] z-20">
                 <Image
                   src={logo}
                   alt="Logo"
                   width={110}
                   height={110}
-                  className="w-[15vw] max-w-[78px] h-auto object-contain"
+                  className="w-[12vw] max-w-[78px] h-auto object-contain"
                   loading="lazy"
                 />
               </div>
@@ -223,7 +223,7 @@ export default function FamilyResponsive({ data = {} }) {
                   className="group relative block w-full"
                 >
                   <Image
-                    src="/assets/arrow2.webp"
+                    src="/assets/moreGigs.png"
                     alt="More gigs"
                     width={370}
                     height={95}
@@ -231,7 +231,6 @@ export default function FamilyResponsive({ data = {} }) {
                     loading="lazy"
                   />
                   <span className="pointer-events-none absolute inset-0 flex items-center justify-center font-txt text-white lowercase tracking-wide text-[clamp(0.78rem,2.2vw,1.2rem)]">
-                    more gigs
                   </span>
                 </button>
               </div>
@@ -261,7 +260,7 @@ export default function FamilyResponsive({ data = {} }) {
               </div>
 
               {/* bottom subtitle */}
-              <div className="absolute left-[58%] right-[6%] top-[95.0%] z-20">
+              <div className="absolute left-[48%] right-[6%] top-[95.0%] z-20">
                 <div className="font-txt font-bold lowercase leading-[1.02] tracking-[0.03em] text-lightRed text-[clamp(0.42rem,1.2vw,0.72rem)]">
                   <p>a traditional sailor show,</p>
                   <p>sing along and dance with us!</p>
@@ -420,11 +419,11 @@ export default function FamilyResponsive({ data = {} }) {
           <div className="absolute left-[18px] top-[580px] z-30">
             <div className="relative w-[520px]">
               <Image
-                src="/assets/videoBox.webp"
+                src="/assets/videoBox.png"
                 alt="Video frame"
                 width={650}
                 height={550}
-                className="h-[330px] w-[520px]"
+                className="h-[314px] w-[517px]"
                 priority
               />
               <div className="absolute left-[30px] top-[34px] w-[440px]">
