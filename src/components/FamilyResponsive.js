@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FaCalendar, FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { formatDate } from "@/utils/formatDate";
+import logo from "../../public/assets/logo.svg";
 
 export default function FamilyResponsive({ data = {} }) {
   const router = useRouter();
@@ -20,13 +21,13 @@ export default function FamilyResponsive({ data = {} }) {
     };
   }, []);
 
-  const title = data?.eventName ?? data?.event ?? "";
-  const venue = data?.venueName ?? data?.location ?? "";
+  const title = data?.eventName ?? data?.event ?? "newquay orchard";
+  const venue = data?.venueName ?? data?.location ?? "Newquay Orchard, Newquay";
   const date = data?.date ?? "";
-  const formattedDate = date ? formatDate(date) : "";
+  const formattedDate = date ? formatDate(date) : "Saturday, May 12, 2025";
 
-  const start = data?.gigStartTime ?? data?.from ?? "";
-  const end = data?.gigFinishTime ?? data?.to ?? "";
+  const start = data?.gigStartTime ?? data?.from ?? "7:30PM";
+  const end = data?.gigFinishTime ?? data?.to ?? "10:30PM";
   const timeText = start && end ? `${start} to ${end}` : start || end || "—";
 
   const rawBuyUrl = (data?.buyTickets ?? data?.ticketsURL ?? "").trim();
@@ -37,10 +38,13 @@ export default function FamilyResponsive({ data = {} }) {
         ? `https://${rawBuyUrl}`
         : "";
 
-  const venueInfo = data?.venueInfo ?? "";
+  const venueInfo =
+    data?.venueInfo ??
+    "A rural escape built by the community, for the community in the heart of Newquay. A venue for the whole family with seating options.";
+
   const description =
     data?.description ??
-    `You are invited to board the Sailorette and join the plentiful crew, 'The Old Time Sailors', for a night of footstomping, dancing and singing! You will be sailing back to the 19th century for an immersive experience of traditional seafaring music performed in a way you have never seen before. The Motley Crew and their plethora of traditional and eclectic instruments will take you back to the time of clashing tankards, and drunken debauchery. Sing and dance along like a drunken sailor as the band perform centuries old folk and shanty songs. Fancy dress is encouraged, so pull out your best seafaring garments me hearties and join the festivities.`;
+    `You are invited to board the Sailorette and join the plentiful crew, 'The Old Time Sailors', for a night of footstomping, dancing and singing! You will be sailing back to the 19th century for an immersive experience of traditional seafaring music performed in a way you have never seen before. The Motley Crew and their plethora of traditional and eclectic instruments will take you back to the time of clashing tankards, and drunken debauchery. Sing and dance along like a drunken sailor as the band perform centuries old folk and shanty songs. Fancy dress is encouraged, so pull out your best seafaring garments me hearties and join the festivities`;
 
   const infoItems = [
     { icon: FaLocationDot, text: venue || "—" },
@@ -50,128 +54,121 @@ export default function FamilyResponsive({ data = {} }) {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#E9DFCB] text-darkBlue">
-      <section className="relative mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8 xl:px-10 py-6 md:py-8 lg:py-10">
-        {/* MOBILE / TABLET */}
+      <section className="relative mx-auto w-full max-w-[1600px] px-0 xl:px-10 py-0 xl:py-10">
+        {/* MOBILE / TABLET POSTER */}
         <div className="block xl:hidden">
-          <div className="mx-auto max-w-[820px]">
-            <div className="border-[3px] border-[#b9a88d] bg-transparent p-4 sm:p-6">
-              <div>
+          <div className="mx-auto w-full max-w-[430px]">
+            <div
+              className="relative w-full overflow-hidden bg-[#E9DFCB]"
+              style={{ aspectRatio: "860 / 1736" }}
+            >
+              <div className="absolute inset-[0.8%] border border-[#9a8c72]/70" />
+
+              {/* logo */}
+              <div className="absolute left-[-1.5%] top-[4.2%] z-20">
+                <Image
+                  src={logo}
+                  alt="Logo"
+                  width={110}
+                  height={110}
+                  className="w-[15vw] max-w-[78px] h-auto object-contain"
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="absolute left-[2.5%] top-[8.9%] right-[2.3%] bottom-[1.8%] border border-[#9a8c72]/70" />
+
+              {/* title */}
+              <div className="absolute left-[10.3%] top-[10.6%] w-[49%] z-20">
                 <h1 className="font-titles lowercase leading-[0.9] tracking-tight">
-                  <span className="block text-darkBlue text-[38px] sm:text-[54px]">
-                    old time sailors
+                  <span className="block text-darkBlue ">
+                    old time sailors <span className="text-lightRed">at</span>
                   </span>
-                  <span className="text-lightRed text-[38px] sm:text-[54px]">at</span>
-                  <br />
-                  <span className="text-lightRed text-[38px] sm:text-[54px]">
+                  <span className="block text-lightRed  break-words">
                     {title}
                   </span>
                 </h1>
 
-                <p className="mt-2 font-txt lowercase text-darkBlue text-[20px] sm:text-[28px]">
+                <p className="mt-[1.6%] font-txt lowercase text-darkBlue tracking-wide leading-[1.05] text-[clamp(0.72rem,1.9vw,0.95rem)]">
                   {venue}
                 </p>
               </div>
 
-              <div className="my-5 border-t-[3px] border-dashed border-[#b9a88d]" />
+              <div className="absolute left-[10.2%] right-[10.3%] top-[17.3%] border-t-[2px] border-dashed border-[#9a8c72]" />
 
-              <div className="mb-6 rounded-[28px] bg-darkBlue px-5 py-5 shadow-[0_14px_24px_rgba(0,0,0,0.12)]">
-                <h3 className="font-titles lowercase leading-none text-lightRed text-[24px] sm:text-[30px]">
+              {/* venue card */}
+              <div className="absolute right-[4.4%] top-[10.7%] z-30 w-[36.8%] rounded-[24px] bg-darkBlue px-[3.2%] py-[3.1%] shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
+                <h3 className="font-titles lowercase leading-[0.9] text-lightRed text-[clamp(0.88rem,2.5vw,1.35rem)]">
                   more about
                   <br />
                   the venue
                 </h3>
 
-                <p className="mt-3 font-txt text-white text-[14px] sm:text-[16px] leading-snug">
-                  {venueInfo || "Venue information coming soon."}
+                <p className="mt-[4.5%] font-txt text-white leading-[1.08] text-[clamp(0.56rem,1.45vw,0.72rem)]">
+                  {venueInfo}
                 </p>
 
                 <a
                   href={buyUrl || "#"}
                   target="_blank"
                   rel="noreferrer"
-                  className={`mt-4 inline-block font-txt text-white underline lowercase text-[16px] sm:text-[18px] ${
+                  className={`mt-[5%] inline-block font-txt text-white underline lowercase tracking-[0.01em] leading-[1.05] text-[clamp(0.52rem,1.3vw,0.66rem)] ${
                     !buyUrl ? "pointer-events-none opacity-50" : ""
                   }`}
                 >
-                  contact the venue for + info
+                  contact de venue for + info
                 </a>
               </div>
 
-              <div className="flex flex-col gap-6">
-                <div className="space-y-3">
-                  {infoItems.map(({ icon: Icon, text }, index) => (
-                    <div
-                      key={`${index}-${text}`}
-                      className="flex items-center gap-3 font-txt leading-tight"
-                    >
-                      <Icon className="shrink-0 text-darkBlue text-[18px] sm:text-[22px]" />
-                      <span className="text-darkBlue text-[18px] sm:text-[24px]">
-                        {text}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="w-full max-w-[320px]">
-                  <a
-                    href={buyUrl || "#"}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-disabled={!buyUrl}
-                    onClick={(e) => {
-                      if (!buyUrl) e.preventDefault();
-                    }}
-                    className={`relative block w-full ${
-                      !buyUrl ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-                    }`}
+              {/* event info */}
+              <div className="absolute left-[10.2%] top-[22.0%] z-20 space-y-[1.4%] w-[46%]">
+                {infoItems.map(({ icon: Icon, text }, index) => (
+                  <div
+                    key={`${index}-${text}`}
+                    className="flex items-start gap-[3.5%] text-darkBlue"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 358.62 137.01"
-                      preserveAspectRatio="none"
-                      className="h-[78px] sm:h-[86px] w-full"
-                      style={{ pointerEvents: "none" }}
-                    >
-                      <path
-                        fill="#db3a57"
-                        d="M25.61,0H333.01c0,14.15,11.47,25.61,25.61,25.61V111.4c-14.15,0-25.61,11.47-25.61,25.61H25.61c0-14.15-11.47-25.61-25.61-25.61V25.61C14.15,25.61,25.61,14.15,25.61,0Z"
-                      />
-                    </svg>
-
-                    <span className="pointer-events-none absolute inset-0 flex items-center justify-center font-txt uppercase text-center text-[22px] sm:text-[28px] text-white tracking-wide">
-                      buy tickets
+                    <Icon className="mt-[0.22em] shrink-0 text-[clamp(0.68rem,1.85vw,0.9rem)]" />
+                    <span className="font-txt leading-[1.1] text-[clamp(0.62rem,1.75vw,0.82rem)]">
+                      {text}
                     </span>
-                  </a>
-                </div>
+                  </div>
+                ))}
               </div>
 
-              <div className="mt-7">
-                <p className="font-txt text-darkBlue text-[16px] sm:text-[20px] leading-7 sm:leading-9">
+              {/* buy tickets */}
+              <div className="absolute left-[10.2%] top-[29.2%] z-20 w-[45.5%]">
+                <a
+                  href={buyUrl || "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-disabled={!buyUrl}
+                  onClick={(e) => {
+                    if (!buyUrl) e.preventDefault();
+                  }}
+                  className={`block w-full ${
+                    !buyUrl ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                  }`}
+                >
+                  <Image
+                    src="/assets/buyTickets.png"
+                    alt="Buy tickets"
+                    width={420}
+                    height={120}
+                    className="w-full h-auto object-contain"
+                    loading="lazy"
+                  />
+                </a>
+              </div>
+
+              {/* description */}
+              <div className="absolute left-[10.2%] right-[11.3%] top-[33.8%] z-20">
+                <p className="font-txt text-darkBlue leading-[1.18] text-[clamp(0.56rem,1.6vw,0.78rem)]">
                   {description}
                 </p>
               </div>
-            </div>
 
-            <div className="mt-6 grid grid-cols-1 gap-4">
-              <Image
-                src="/assets/familyPhoto1.webp"
-                alt="Performance"
-                width={900}
-                height={900}
-                className="w-full h-auto object-cover shadow-[0_16px_30px_rgba(0,0,0,0.16)]"
-                loading="lazy"
-              />
-
-              <Image
-                src="/assets/familyPhoto2.webp"
-                alt="Musicians"
-                width={900}
-                height={600}
-                className="w-full h-auto object-cover shadow-[0_16px_30px_rgba(0,0,0,0.16)]"
-                loading="lazy"
-              />
-
-              <div className="border-[8px] border-darkBlue shadow-[0_16px_30px_rgba(0,0,0,0.16)]">
+              {/* video */}
+              <div className="absolute left-[7.2%] top-[45.1%] z-30 w-[51.8%] border-[6px] border-darkBlue bg-[#d8d4ca] shadow-[0_16px_30px_rgba(0,0,0,0.18)]">
                 <video
                   controls
                   preload="none"
@@ -182,47 +179,105 @@ export default function FamilyResponsive({ data = {} }) {
                 </video>
               </div>
 
-              <Image
-                src="/assets/familyPhoto3.webp"
-                alt="Crowd"
-                width={900}
-                height={900}
-                className="w-full h-auto object-cover shadow-[0_16px_30px_rgba(0,0,0,0.16)]"
-                loading="lazy"
-              />
-            </div>
-
-            <div className="mt-8">
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="group relative inline-block"
-              >
+              {/* image right top */}
+              <div className="absolute right-[5.3%] top-[44.3%] z-20 w-[39%] shadow-[0_16px_28px_rgba(0,0,0,0.16)]">
                 <Image
-                  src="/assets/arrow2.webp"
-                  alt="More gigs"
-                  width={470}
-                  height={110}
-                  className="h-auto w-[280px] sm:w-[360px] transition-transform duration-200 group-hover:scale-[1.02]"
+                  src="/assets/familyPhoto2.webp"
+                  alt="Musicians"
+                  width={400}
+                  height={400}
+                  className="w-full h-auto object-cover"
                   loading="lazy"
                 />
-                <span className="pointer-events-none absolute inset-0 flex items-center justify-center font-txt text-white lowercase text-[28px] sm:text-[42px] tracking-wide">
-                  more gigs
-                </span>
-              </button>
-
-              <div className="mt-6 leading-[0.88]">
-                <p className="font-titles lowercase text-darkBlue text-[76px] sm:text-[118px]">
-                  family
-                </p>
-                <p className="font-titles lowercase text-darkBlue text-[76px] sm:text-[118px]">
-                  show
-                </p>
               </div>
 
-              <div className="mt-3 font-txt font-bold uppercase tracking-[0.14em] leading-tight text-lightRed text-[16px] sm:text-[22px]">
-                <p>a traditional sailor show,</p>
-                <p>sing along and dance with us!</p>
+              {/* image left bottom */}
+              <div className="absolute left-[5.3%] top-[60.5%] z-20 w-[39.5%] shadow-[0_16px_28px_rgba(0,0,0,0.16)]">
+                <Image
+                  src="/assets/familyPhoto1.webp"
+                  alt="Performance"
+                  width={400}
+                  height={400}
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                />
+              </div>
+
+              {/* image right bottom framed */}
+              <div className="absolute right-[5.1%] top-[63.7%] z-20 w-[45.6%] border-[4px] border-[#ef637b] p-[1.2%] shadow-[0_16px_28px_rgba(0,0,0,0.14)]">
+                <Image
+                  src="/assets/familyPhoto3.webp"
+                  alt="Crowd"
+                  width={500}
+                  height={680}
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                />
+              </div>
+
+              {/* more gigs */}
+              <div className="absolute left-[3.3%] top-[81.8%] z-20 w-[42%]">
+                <button
+                  type="button"
+                  onClick={() => router.back()}
+                  className="group relative block w-full"
+                >
+                  <Image
+                    src="/assets/arrow2.webp"
+                    alt="More gigs"
+                    width={370}
+                    height={95}
+                    className="w-full h-auto transition-transform duration-200 group-hover:scale-[1.02]"
+                    loading="lazy"
+                  />
+                  <span className="pointer-events-none absolute inset-0 flex items-center justify-center font-txt text-white lowercase tracking-wide text-[clamp(0.78rem,2.2vw,1.2rem)]">
+                    more gigs
+                  </span>
+                </button>
+              </div>
+
+              {/* family show */}
+              <div className="absolute left-[5.4%] top-[88.2%] z-20">
+                <div className="leading-[0.85]">
+                  <p className="font-titles lowercase text-darkBlue text-[clamp(2rem,6vw,3.8rem)]">
+                    family
+                  </p>
+                  <p className="font-titles lowercase text-darkBlue text-[clamp(2rem,6vw,3.8rem)]">
+                    show
+                  </p>
+                </div>
+              </div>
+
+              {/* anchor */}
+              <div className="absolute left-[40.2%] top-[89.5%] z-20">
+                <Image
+                  src="/assets/anchor.webp"
+                  alt="Anchor"
+                  width={56}
+                  height={76}
+                  className="w-[7vw] max-w-[40px] h-auto object-contain"
+                  loading="lazy"
+                />
+              </div>
+
+              {/* bottom subtitle */}
+              <div className="absolute left-[58%] right-[6%] top-[95.0%] z-20">
+                <div className="font-txt font-bold lowercase leading-[1.02] tracking-[0.03em] text-lightRed text-[clamp(0.42rem,1.2vw,0.72rem)]">
+                  <p>a traditional sailor show,</p>
+                  <p>sing along and dance with us!</p>
+                </div>
+              </div>
+
+              {/* drawing */}
+              <div className="absolute right-[3.3%] bottom-[2.6%] z-0 opacity-[0.42]">
+                <Image
+                  src="/assets/drawing2.webp"
+                  alt="Background drawing"
+                  width={230}
+                  height={180}
+                  className="w-[24vw] max-w-[130px] h-auto object-contain mix-blend-multiply brightness-[72%] contrast-[128%]"
+                  loading="lazy"
+                />
               </div>
             </div>
           </div>
@@ -230,13 +285,11 @@ export default function FamilyResponsive({ data = {} }) {
 
         {/* DESKTOP POSTER */}
         <div className="relative hidden xl:block h-[1480px]">
-          {/* marco grande */}
           <div className="absolute left-[55px] top-[38px] w-[900px] h-[605px] border-[3px] border-[#b9a88d]">
-            {/* logo */}
             <div className="absolute -left-[78px] -top-[24px] z-20">
               <Image
-                src="/assets/oldTimeSailorsLogo.webp"
-                alt="Old Time Sailors"
+                src={logo}
+                alt="Logo"
                 width={135}
                 height={135}
                 className="h-[128px] w-[128px] object-contain"
@@ -244,7 +297,6 @@ export default function FamilyResponsive({ data = {} }) {
               />
             </div>
 
-            {/* titulo */}
             <div className="absolute left-[92px] top-[8px] max-w-[650px]">
               <h1 className="font-titles lowercase leading-[0.93] tracking-tight">
                 <span className="text-darkBlue text-[38px]">old time sailors </span>
@@ -258,10 +310,8 @@ export default function FamilyResponsive({ data = {} }) {
               </p>
             </div>
 
-            {/* linea punteada */}
             <div className="absolute left-[72px] right-[52px] top-[185px] border-t-[3px] border-dashed border-[#b9a88d]" />
 
-            {/* info */}
             <div className="absolute left-[92px] top-[220px]">
               <div className="space-y-3">
                 {infoItems.map(({ icon: Icon, text }, index) => (
@@ -278,8 +328,7 @@ export default function FamilyResponsive({ data = {} }) {
               </div>
             </div>
 
-            {/* buy tickets */}
-            <div className="absolute left-[510px] top-[215px] h-[36px] w-[240px]">
+            <div className="absolute left-[510px] top-[245px] w-[240px]">
               <a
                 href={buyUrl || "#"}
                 target="_blank"
@@ -288,30 +337,21 @@ export default function FamilyResponsive({ data = {} }) {
                 onClick={(e) => {
                   if (!buyUrl) e.preventDefault();
                 }}
-                className={`relative block w-full ${
+                className={`block w-full ${
                   !buyUrl ? "cursor-not-allowed opacity-50" : "cursor-pointer"
                 }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 358.62 137.01"
-                  preserveAspectRatio="none"
-                  className="h-full w-full"
-                  style={{ pointerEvents: "none" }}
-                >
-                  <path
-                    fill="#db3a57"
-                    d="M25.61,0H333.01c0,14.15,11.47,25.61,25.61,25.61V111.4c-14.15,0-25.61,11.47-25.61,25.61H25.61c0-14.15-11.47-25.61-25.61-25.61V25.61C14.15,25.61,25.61,14.15,25.61,0Z"
-                  />
-                </svg>
-
-                <span className="pointer-events-none absolute inset-0 flex items-center justify-center font-txt uppercase text-[24px] text-white tracking-wide">
-                  buy tickets
-                </span>
+                <Image
+                  src="/assets/buyTickets.png"
+                  alt="Buy tickets"
+                  width={300}
+                  height={100}
+                  className="w-full h-auto object-contain"
+                  loading="lazy"
+                />
               </a>
             </div>
 
-            {/* descripcion */}
             <div className="absolute left-[92px] top-[330px] max-w-[690px]">
               <p className="font-txt text-darkBlue text-[18px] leading-[1.48]">
                 {description}
@@ -319,7 +359,6 @@ export default function FamilyResponsive({ data = {} }) {
             </div>
           </div>
 
-          {/* tarjeta azul */}
           <div className="absolute left-[790px] top-[58px] z-30 w-[300px]">
             <div className="rounded-[32px] bg-darkBlue px-8 py-7 shadow-[0_18px_30px_rgba(0,0,0,0.14)]">
               <h3 className="font-titles lowercase leading-[0.92] text-lightRed text-[34px]">
@@ -345,9 +384,6 @@ export default function FamilyResponsive({ data = {} }) {
             </div>
           </div>
 
-        
-
-          {/* foto superior derecha */}
           <div className="absolute right-[40px] top-[90px] z-10">
             <Image
               src="/assets/familyPhoto1.webp"
@@ -359,7 +395,6 @@ export default function FamilyResponsive({ data = {} }) {
             />
           </div>
 
-          {/* ancla */}
           <div className="absolute left-[1000px] top-[270px] z-20">
             <Image
               src="/assets/anchor.webp"
@@ -371,7 +406,6 @@ export default function FamilyResponsive({ data = {} }) {
             />
           </div>
 
-          {/* foto grande derecha */}
           <div className="absolute right-[70px] top-[380px] z-20">
             <Image
               src="/assets/familyPhoto2.webp"
@@ -383,7 +417,6 @@ export default function FamilyResponsive({ data = {} }) {
             />
           </div>
 
-          {/* video abajo izquierda */}
           <div className="absolute left-[18px] top-[580px] z-30">
             <div className="relative w-[520px]">
               <Image
@@ -407,7 +440,6 @@ export default function FamilyResponsive({ data = {} }) {
             </div>
           </div>
 
-          {/* foto inferior central */}
           <div className="absolute left-[460px] top-[685px] z-20">
             <Image
               src="/assets/familyPhoto3.webp"
@@ -419,7 +451,6 @@ export default function FamilyResponsive({ data = {} }) {
             />
           </div>
 
-          {/* dibujo abajo derecha */}
           <div className="absolute right-[100px] top-[800px] z-0 opacity-[0.72]">
             <Image
               src="/assets/drawing2.webp"
@@ -431,7 +462,6 @@ export default function FamilyResponsive({ data = {} }) {
             />
           </div>
 
-          {/* more gigs */}
           <div className="absolute left-[25px] top-[880px] z-20">
             <button
               type="button"
@@ -452,7 +482,6 @@ export default function FamilyResponsive({ data = {} }) {
             </button>
           </div>
 
-          {/* family show */}
           <div className="absolute left-[40px] top-[1000px] z-10">
             <div className="leading-[0.83]">
               <p className="font-titles lowercase text-darkBlue text-[128px]">
@@ -464,7 +493,7 @@ export default function FamilyResponsive({ data = {} }) {
             </div>
 
             <div className="absolute left-[285px] top-[165px] w-[700px]">
-              <div className="font-txt font-bold uppercase tracking-[0.08em] leading-[1.08] text-lightRed text-[24px]">
+              <div className="font-txt font-bold lowercase tracking-[0.08em] leading-[1.08] text-lightRed text-[24px]">
                 <p>a traditional sailor show,</p>
                 <p>sing along and dance with us!</p>
               </div>
