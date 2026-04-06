@@ -190,7 +190,7 @@ const Media = async () => {
           photos={formattedPhotos}
         >
           <section className="w-full flex flex-col 1xl:mt-3 1xxl:mt-5 2k:mt-0">
-            <div className="flex items-center px-2 sm:px-6 mt-4 mb-1 2k:mt-6 2k:mb-3">
+            <div className="flex items-center px-2 sm:px-6 mt-12 mb-1 2k:mt-6 2k:mb-3">
               <Image
                 src="/assets/media-deco-1.svg"
                 width={35}

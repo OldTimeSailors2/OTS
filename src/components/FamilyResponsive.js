@@ -97,7 +97,8 @@ export default function FamilyResponsive({ data = {} }) {
               <div className="absolute left-[10.2%] right-[10.3%] top-[17.3%] border-t-[2px] border-dashed border-[#9a8c72]" />
 
               {/* venue card */}
-              <div className="absolute right-[4.4%] top-[10.7%] z-30 w-[36.8%] rounded-[24px] bg-darkBlue px-[3.2%] py-[3.1%] shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
+              <div className="absolute right-[2%] top-[10.7%] z-30 w-[30%] rounded-[24px] bg-darkBlue px-[2.4%] py-[3.1%] shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
+            
                 <h3 className="font-titles lowercase leading-[0.9] text-lightRed text-[clamp(0.88rem,2.5vw,1.35rem)]">
                   more about
                   <br />
