@@ -20,7 +20,7 @@ const routeConfig = {
   "/tickets": { titleImg: "/assets/tickets.png", viewSelector: false, label: "tickets" },
   "/tickets/map-view": { titleImg: "/assets/tickets.png", viewSelector: true, label: "tickets" },
   "/tickets/calendar-view": { titleImg: "/assets/tickets.png", viewSelector: true, label: "tickets" },
-  "/reviews": { titleImg: "/assets/reviews.png", label: "reviews" },
+  "/reviews": { titleImg: "/assets/btnReviews.png", label: "reviews" },
   "/media": { titleImg: "/assets/btnMedia.png", label: "media" },
   "/our-clients": { titleImg: "/assets/btnClients.png", label: "our clients" },
   "/services": { titleImg: "/assets/btnServices.png", label: "services" },
@@ -35,7 +35,7 @@ const defaultConfig = {
 const menuItems = [
   { href: "/media", titleImg: "/assets/media.png" },
   { href: "/tickets/calendar-view", titleImg: "/assets/tickets.png" },
-  { href: "/reviews", titleImg: "/assets/reviews.png" },
+  { href: "/reviews", titleImg: "/assets/btnReviews.png" },
   { href: "/our-clients", titleImg: "/assets/clients.png" },
   { href: "/services", titleImg: "/assets/services.png" },
   { href: "/memberships", titleImg: "/assets/memberships.png" },
