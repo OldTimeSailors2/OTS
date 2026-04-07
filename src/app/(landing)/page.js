@@ -7,14 +7,33 @@ const DESKTOP_FOLDER = "Images/ImageLandingDesktop";
 const MOBILE_FOLDER = "Images/ImageLandingMovile";
 
 const ASSET_KEYS = {
-  landingDesktop: ["landingdesktop", "landing_desktop", "landing-desktop", "desktop", "landing"],
-  landingMobile: ["landingmobile", "landing_mobile", "landing-mobile", "mobile", "landing"],
+  landingDesktop: [
+    "landingdesktop",
+    "landing_desktop",
+    "landing-desktop",
+    "desktop",
+    "landing",
+  ],
+  landingMobile: [
+    "landingmobile",
+    "landing_mobile",
+    "landing-mobile",
+    "mobile",
+    "landing",
+  ],
 
   border: ["border", "frame", "marco"],
   logo: ["logo"],
   memberships: ["memberships", "membership"],
   description: ["description", "descripcion", "descripción"],
-  corner: ["corner", "corners", "corner-detail", "corner_detail", "esquina", "esquinas"],
+  corner: [
+    "corner",
+    "corners",
+    "corner-detail",
+    "corner_detail",
+    "esquina",
+    "esquinas",
+  ],
 
   instagram: ["instagram", "ig", "insta", "instagram-icon", "instagram_icon"],
   facebook: ["facebook", "fb", "facebook-icon", "facebook_icon"],
@@ -78,18 +97,32 @@ async function fetchLandingAssets() {
       landingDesktop: desktopImage,
       landingMobile: mobileImage,
 
-      border: findByAnyName(desktopResources, ASSET_KEYS.border)?.secure_url ?? null,
+      border:
+        findByAnyName(desktopResources, ASSET_KEYS.border)?.secure_url ?? null,
       logo: findByAnyName(desktopResources, ASSET_KEYS.logo)?.secure_url ?? null,
-      memberships: findByAnyName(desktopResources, ASSET_KEYS.memberships)?.secure_url ?? null,
-      description: findByAnyName(desktopResources, ASSET_KEYS.description)?.secure_url ?? null,
-      corner: findByAnyName(desktopResources, ASSET_KEYS.corner)?.secure_url ?? null,
+      memberships:
+        findByAnyName(desktopResources, ASSET_KEYS.memberships)?.secure_url ??
+        null,
+      description:
+        findByAnyName(desktopResources, ASSET_KEYS.description)?.secure_url ??
+        null,
+      corner:
+        findByAnyName(desktopResources, ASSET_KEYS.corner)?.secure_url ?? null,
 
-      instagram: findByAnyName(desktopResources, ASSET_KEYS.instagram)?.secure_url ?? null,
-      facebook: findByAnyName(desktopResources, ASSET_KEYS.facebook)?.secure_url ?? null,
-      youtube: findByAnyName(desktopResources, ASSET_KEYS.youtube)?.secure_url ?? null,
-      whatsapp: findByAnyName(desktopResources, ASSET_KEYS.whatsapp)?.secure_url ?? null,
+      instagram:
+        findByAnyName(desktopResources, ASSET_KEYS.instagram)?.secure_url ??
+        null,
+      facebook:
+        findByAnyName(desktopResources, ASSET_KEYS.facebook)?.secure_url ??
+        null,
+      youtube:
+        findByAnyName(desktopResources, ASSET_KEYS.youtube)?.secure_url ?? null,
+      whatsapp:
+        findByAnyName(desktopResources, ASSET_KEYS.whatsapp)?.secure_url ??
+        null,
       mail: findByAnyName(desktopResources, ASSET_KEYS.mail)?.secure_url ?? null,
-      spotify: findByAnyName(desktopResources, ASSET_KEYS.spotify)?.secure_url ?? null,
+      spotify:
+        findByAnyName(desktopResources, ASSET_KEYS.spotify)?.secure_url ?? null,
     };
   } catch (error) {
     console.error("Error fetching landing assets (Cloudinary):", error);
@@ -214,12 +247,9 @@ export default async function Home() {
             ) : null}
           </div>
 
-          {/* Overlay/frame only for desktop */}
           <div className="landing-overlay-v2" />
-
           <div className="landing-white-frame-v2" />
 
-          {/* Desktop-only decorative assets */}
           {assets.description ? (
             <div className="landing-description-wrap-v2">
               <Image
@@ -236,12 +266,19 @@ export default async function Home() {
           {assets.memberships ? (
             <Link
               href="/memberships"
-              className="landing-membership-wrap-v2"
               aria-label="Memberships"
+              className="
+                landing-membership-wrap-v2
+                max-md:!left-[1.2rem]
+                max-md:!top-[10.5rem]
+                max-md:!w-[6.2rem]
+                max-md:!h-[6.2rem]
+                max-md:z-20
+              "
             >
               <Image
                 src={assets.memberships}
-                alt="Memberships"
+                alt="btnMemberships"
                 fill
                 priority
                 sizes="(max-width: 768px) 90px, (max-width: 1200px) 130px, 180px"
@@ -263,7 +300,6 @@ export default async function Home() {
             </div>
           ) : null}
 
-          {/* Menu: desktop + mobile overlay */}
           <nav className="landing-menu-wrap-v2" aria-label="Main navigation">
             {menuItems.map((item) => {
               const isExternal = item.href.startsWith("http");
@@ -282,8 +318,16 @@ export default async function Home() {
             })}
           </nav>
 
-          {/* Social icons: desktop + mobile overlay */}
-          <div className="landing-social-wrap-v2">
+          <div
+            className="
+              landing-social-wrap-v2
+              max-md:!left-1/2
+              max-md:!-translate-x-1/2
+              max-md:!top-[29.2rem]
+              max-md:!bottom-auto
+              max-md:z-20
+            "
+          >
             {socialItems.map((item) => (
               <SocialIcon
                 key={item.alt}
