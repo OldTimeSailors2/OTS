@@ -192,6 +192,7 @@ function MenuImageButton({
         hover:scale-[1.01]
       "
       aria-label={alt}
+      style={{ marginInline: "-1px" }}
     >
       <Image
         src={src}
@@ -252,10 +253,47 @@ export default async function Home() {
   ].filter((item) => item.src);
 
   return (
-    <main className="landing-page-v2">
-      <div className="landing-stage-v2">
-        <section className="landing-artboard-v2">
-          <div className="landing-bg-v2 landing-bg-desktop-v2">
+    <main
+      className="landing-page-v2"
+      style={{
+        width: "100%",
+        minHeight: "100vh",
+        overflowX: "hidden",
+      }}
+    >
+      <div
+        className="landing-stage-v2"
+        style={{
+          width: "100%",
+          maxWidth: "100%",
+          display: "flex",
+          justifyContent: "center",
+          paddingLeft: "8px",
+          paddingRight: "8px",
+          paddingTop: "0",
+          paddingBottom: "0",
+          margin: "0 auto",
+          boxSizing: "border-box",
+        }}
+      >
+        <section
+          className="landing-artboard-v2"
+          style={{
+            position: "relative",
+            width: "min(100vw - 16px, 1780px)",
+            maxWidth: "1780px",
+            aspectRatio: "1920 / 1080",
+            margin: "0 auto",
+          }}
+        >
+          <div
+            className="landing-bg-v2 landing-bg-desktop-v2"
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "block",
+            }}
+          >
             {assets.landingDesktop ? (
               <Image
                 src={assets.landingDesktop}
@@ -263,12 +301,16 @@ export default async function Home() {
                 fill
                 priority
                 sizes="100vw"
-                className="object-cover"
+                className="object-contain"
+                style={{
+                  objectFit: "contain",
+                  objectPosition: "center",
+                }}
               />
             ) : null}
           </div>
 
-          <div className="landing-bg-v2 landing-bg-mobile-v2">
+          <div className="landing-bg-v2 landing-bg-mobile-v2 md:hidden">
             {assets.landingMobile ? (
               <Image
                 src={assets.landingMobile}
@@ -337,13 +379,16 @@ export default async function Home() {
           ) : null}
 
           <nav
-            className="
-              landing-menu-wrap-v2
-              flex flex-wrap items-center justify-center
-              gap-x-[0.2rem] gap-y-[0.12rem]
-              max-md:gap-x-[0.1rem] max-md:gap-y-[0.05rem]
-            "
+            className="landing-menu-wrap-v2"
             aria-label="Main navigation"
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "center",
+              columnGap: "0.08rem",
+              rowGap: "0.04rem",
+            }}
           >
             {menuItems.map((item, index) => (
               <MenuImageButton
