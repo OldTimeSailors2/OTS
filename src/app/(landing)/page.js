@@ -323,7 +323,7 @@ export default async function Home() {
               landing-social-wrap-v2
               max-md:!left-1/2
               max-md:!-translate-x-1/2
-              max-md:!top-[29.2rem]
+              max-md:!top-[24.2rem]
               max-md:!bottom-auto
               max-md:z-20
             "
