@@ -168,39 +168,77 @@ function SocialIcon({ href, src, alt }) {
   );
 }
 
+function MenuImageButton({
+  href,
+  src,
+  alt,
+  external = false,
+  priority = false,
+}) {
+  return (
+    <Link
+      href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+      className="
+        landing-menu-image-item-v2
+        relative block
+        w-[5rem] h-[1.45rem]
+        sm:w-[5.8rem] sm:h-[1.65rem]
+        md:w-[6.6rem] md:h-[1.85rem]
+        lg:w-[7.2rem] lg:h-[2rem]
+        xl:w-[7.8rem] xl:h-[2.15rem]
+        transition-transform duration-150
+        hover:scale-[1.01]
+      "
+      aria-label={alt}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        sizes="(max-width: 640px) 80px, (max-width: 768px) 93px, (max-width: 1024px) 106px, 125px"
+        className="object-contain"
+      />
+    </Link>
+  );
+}
+
 export default async function Home() {
   const assets = await fetchLandingAssets();
 
   const menuItems = [
     {
       href: "/media",
-      label: "MEDIA",
-      className: "menu-cream menu-blue-text",
+      titleImg: "/assets/media.png",
+      alt: "Media",
     },
     {
       href: "/tickets/calendar-view",
-      label: "TICKETS",
-      className: "menu-blue menu-pink-text",
+      titleImg: "/assets/tickets.png",
+      alt: "Tickets",
     },
     {
       href: "https://oldtimesailors.co.uk",
-      label: "MERCH",
-      className: "menu-pink menu-cream-text",
+      titleImg: "/assets/merch.png",
+      alt: "Merch",
+      external: true,
     },
     {
       href: "/reviews",
-      label: "REVIEWS",
-      className: "menu-blue menu-cream-text",
+      titleImg: "/assets/btnReviews.png",
+      alt: "Reviews",
     },
     {
       href: "/our-clients",
-      label: "OUR CLIENTS",
-      className: "menu-cream menu-pink-text",
+      titleImg: "/assets/clients.png",
+      alt: "Our Clients",
     },
     {
       href: "/services",
-      label: "SERVICES",
-      className: "menu-pink menu-cream-text",
+      titleImg: "/assets/services.png",
+      alt: "Services",
     },
   ];
 
@@ -217,7 +255,6 @@ export default async function Home() {
     <main className="landing-page-v2">
       <div className="landing-stage-v2">
         <section className="landing-artboard-v2">
-          {/* Desktop image */}
           <div className="landing-bg-v2 landing-bg-desktop-v2">
             {assets.landingDesktop ? (
               <Image
@@ -231,7 +268,6 @@ export default async function Home() {
             ) : null}
           </div>
 
-          {/* Mobile image */}
           <div className="landing-bg-v2 landing-bg-mobile-v2">
             {assets.landingMobile ? (
               <Image
@@ -300,22 +336,25 @@ export default async function Home() {
             </div>
           ) : null}
 
-          <nav className="landing-menu-wrap-v2" aria-label="Main navigation">
-            {menuItems.map((item) => {
-              const isExternal = item.href.startsWith("http");
-
-              return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  target={isExternal ? "_blank" : undefined}
-                  rel={isExternal ? "noopener noreferrer" : undefined}
-                  className={`landing-menu-item-v2 ${item.className}`}
-                >
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
+          <nav
+            className="
+              landing-menu-wrap-v2
+              flex flex-wrap items-center justify-center
+              gap-x-[0.2rem] gap-y-[0.12rem]
+              max-md:gap-x-[0.1rem] max-md:gap-y-[0.05rem]
+            "
+            aria-label="Main navigation"
+          >
+            {menuItems.map((item, index) => (
+              <MenuImageButton
+                key={item.alt}
+                href={item.href}
+                src={item.titleImg}
+                alt={item.alt}
+                external={item.external}
+                priority={index < 3}
+              />
+            ))}
           </nav>
 
           <div
