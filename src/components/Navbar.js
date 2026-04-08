@@ -22,9 +22,9 @@ const routeConfig = {
   "/tickets/calendar-view": { titleImg: "/assets/tickets.png", viewSelector: true, label: "tickets" },
   "/reviews": { titleImg: "/assets/btnReviews.png", label: "reviews" },
   "/media": { titleImg: "/assets/btnMedia.png", label: "media" },
-  "/our-clients": { titleImg: "/assets/btnClients.png", label: "our clients" },
+  "/our-clients": { titleImg: "/assets/btnClientspng.png", label: "our clients" },
   "/services": { titleImg: "/assets/btnServices.png", label: "services" },
-  "/memberships": { titleImg: "/assets/btnMemberships.png", label: "memberships" },
+  "/memberships": { titleImg: "/assets/memberships.png", label: "memberships" },
 };
 
 const defaultConfig = {
