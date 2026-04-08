@@ -346,13 +346,16 @@ export default async function Home() {
               href="/memberships"
               aria-label="Memberships"
               className="
-                landing-membership-wrap-v2
-                max-md:!left-[1.2rem]
-                max-md:!top-[10.5rem]
-                max-md:!w-[6.2rem]
-                max-md:!h-[6.2rem]
-                max-md:z-20
-              "
+      landing-membership-wrap-v2
+      lg:translate-x-[4.5rem]
+      xl:translate-x-[6rem]
+      2xl:translate-x-[7rem]
+      max-md:!left-[1.2rem]
+      max-md:!top-[10.5rem]
+      max-md:!w-[6.2rem]
+      max-md:!h-[6.2rem]
+      max-md:z-20
+    "
             >
               <Image
                 src={assets.memberships}
@@ -378,18 +381,23 @@ export default async function Home() {
             </div>
           ) : null}
 
-          <nav
-            className="landing-menu-wrap-v2"
-            aria-label="Main navigation"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              justifyContent: "center",
-              columnGap: "0.08rem",
-              rowGap: "0.04rem",
-            }}
-          >
+  <nav
+  className="
+    landing-menu-wrap-v2
+    lg:-translate-x-[2.5rem]
+    xl:-translate-x-[4rem]
+    2xl:-translate-x-[5rem]
+  "
+  aria-label="Main navigation"
+  style={{
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "center",
+    columnGap: "0.08rem",
+    rowGap: "0.04rem",
+  }}
+>
             {menuItems.map((item, index) => (
               <MenuImageButton
                 key={item.alt}

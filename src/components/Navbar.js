@@ -222,7 +222,6 @@ const Navbar = () => {
               className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1"
               style={{
                 opacity: settings.loader,
-                pointerEvents: settings.photos ? "auto" : "none",
               }}
             >
               <Image
@@ -230,7 +229,8 @@ const Navbar = () => {
                 width={logoSize}
                 height={logoSize}
                 alt="logo"
-                className="object-contain shrink-0"
+                className="object-contain shrink-0 cursor-pointer"
+                onClick={() => router.push("/")}
               />
 
               <Image
