@@ -1,5 +1,6 @@
 // app/(pages)/tickets/calendar-view/page.js
 import CalendarViewComponent from "@/components/CalendarViewComponent";
+import cache, { CACHE_CONFIG } from "@/lib/cache";
 
 export const metadata = {
   title: "Tickets",
@@ -38,6 +39,14 @@ const normalizeMarkers = (markers) => {
 // ✅ IMPORTANTE: en build/prerender NO debemos hacer throw.
 // Si Cloudinary falla o la env var no existe -> devolvemos []
 const fetchMarkers = async () => {
+  // Check if data is already cached
+  if (cache.has("calendar_markers")) {
+    console.log("🎯 Cache HIT: calendar_markers");
+    return cache.get("calendar_markers");
+  }
+
+  console.log("🚀 Cache MISS: calendar_markers - fetching fresh data...");
+
   try {
     const jsonUrl = process.env.NEXT_PUBLIC_MARKERS_JSON_URL; // URL completa (Cloudinary raw)
     if (!jsonUrl) return [];
@@ -49,7 +58,12 @@ const fetchMarkers = async () => {
     }
 
     const markers = await res.json();
-    return normalizeMarkers(markers);
+    const result = normalizeMarkers(markers);
+
+    // Store in cache for 1 hour
+    cache.set("calendar_markers", result, CACHE_CONFIG.EVENTS_MARKERS);
+
+    return result;
   } catch (error) {
     console.warn("Error fetching markers (Cloudinary URL):", error);
     return [];

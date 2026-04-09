@@ -1,4 +1,5 @@
 import MapViewComponent from "@/components/MapViewComponent";
+import cache, { CACHE_CONFIG } from "@/lib/cache";
 
 export const metadata = {
   title: "Tickets",
@@ -37,6 +38,14 @@ const normalizeMarkers = (markers) => {
 };
 
 const fetchMarkers = async () => {
+  // Check if data is already cached
+  if (cache.has("map_markers")) {
+    console.log("🎯 Cache HIT: map_markers");
+    return cache.get("map_markers");
+  }
+
+  console.log("🚀 Cache MISS: map_markers - fetching fresh data...");
+
   try {
     // ✅ usa TU env real
     const jsonUrl = process.env.NEXT_PUBLIC_MARKERS_JSON_URL;
@@ -46,7 +55,12 @@ const fetchMarkers = async () => {
     if (!res.ok) return [];
 
     const markers = await res.json();
-    return normalizeMarkers(markers);
+    const result = normalizeMarkers(markers);
+
+    // Store in cache for 1 hour
+    cache.set("map_markers", result, CACHE_CONFIG.EVENTS_MARKERS);
+
+    return result;
   } catch (error) {
     console.error("Error fetching markers:", error);
     return [];
