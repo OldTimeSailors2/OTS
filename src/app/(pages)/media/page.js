@@ -3,6 +3,7 @@ import Image from "next/image";
 import DynamicDecoMedia from "@/components/DynamicDecoMedia";
 import MainDiv from "@/components/MainDiv";
 import dynamic from "next/dynamic";
+import cache, { CACHE_CONFIG } from "@/lib/cache";
 
 export const metadata = {
   title: "Media",
@@ -88,6 +89,14 @@ const fetchYouTubeJson = async () => {
 };
 
 export const fetchMediaData = async () => {
+  // Check if data is already cached
+  if (cache.has("media_data")) {
+    console.log("🎯 Cache HIT: media_data");
+    return cache.get("media_data");
+  }
+
+  console.log("🚀 Cache MISS: media_data - fetching fresh data...");
+
   try {
     const cloudinary = require("cloudinary").v2;
 
@@ -105,7 +114,7 @@ export const fetchMediaData = async () => {
       getFolder("Images", "image"),
       getFolder("Videos", "video"),
       getFolder("Sounds", "video"), // audio -> video
-      fetchYouTubeJson(), // ✅ YT JSON desde Cloudinary
+      fetchYouTubeJson(), // ✅ YT JSON depuis Cloudinary
     ]);
 
     const formattedPhotos = photos.map((r) => ({
@@ -164,11 +173,16 @@ export const fetchMediaData = async () => {
         return arr.findIndex((x) => (x.youtubeUrl || x.url) === key) === idx;
       }
     );
-    return {
+
+    const result = {
       formattedSongs,
       formattedVideos: mergedVideos, // ✅ importante: devolvemos los merged
       formattedPhotos,
     };
+
+    // Store in cache for 24 hours
+    cache.set("media_data", result, CACHE_CONFIG.MEDIA_DATA);
+    return result;
   } catch (error) {
     console.error("Error fetching media data (Cloudinary):", error);
     return { formattedSongs: [], formattedVideos: [], formattedPhotos: [] };
