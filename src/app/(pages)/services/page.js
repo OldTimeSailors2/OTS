@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import ServicesDeco from "@/components/ServicesDeco";
 import MainDiv from "@/components/MainDiv";
+import cache, { CACHE_CONFIG } from "@/lib/cache";
 
 // ---------------------------------------------------------------------------
 // Metadata — SEO & Open Graph
@@ -83,7 +84,7 @@ const normalizeService = (raw, idx) => ({
  * Always resolves — returns `[]` on any network or parse error so the page
  * degrades gracefully instead of throwing.
  *
- * Uses `cache: "no-store"` so each request gets fresh data (no stale cache).
+ * Caches results for 24 hours to reduce API calls.
  *
  * @param {string} [url] - Override the env URL (useful for testing).
  * @returns {Promise<Array<{ id: string, title: string, description: string, icon: string }>>}
@@ -91,12 +92,25 @@ const normalizeService = (raw, idx) => ({
 const fetchServices = async (url = process.env.NEXT_PUBLIC_SERVICES_JSON_URL) => {
   if (!url) return [];
 
+  // Check if data is already cached
+  if (cache.has("services_data")) {
+    console.log("🎯 Cache HIT: services_data");
+    return cache.get("services_data");
+  }
+
+  console.log("🚀 Cache MISS: services_data - fetching fresh data...");
+
   try {
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) return [];
 
     const data = await res.json();
-    return Array.isArray(data) ? data.map(normalizeService) : [];
+    const result = Array.isArray(data) ? data.map(normalizeService) : [];
+
+    // Store in cache for 24 hours
+    cache.set("services_data", result, CACHE_CONFIG.SERVICES);
+
+    return result;
   } catch {
     return [];
   }
