@@ -1,5 +1,6 @@
 import MainDiv from "@/components/MainDiv";
 import ResponsiveImage from "@/components/ResponsiveImage";
+import cache, { CACHE_CONFIG } from "@/lib/cache";
 
 export const metadata = {
   title: "Our Clients",
@@ -14,6 +15,14 @@ export const metadata = {
 const FOLDER = "Images/OurClients";
 
 const fetchClientsImages = async () => {
+  // Check if data is already cached
+  if (cache.has("clients_images")) {
+    console.log("🎯 Cache HIT: clients_images");
+    return cache.get("clients_images");
+  }
+
+  console.log("🚀 Cache MISS: clients_images - fetching fresh data...");
+
   try {
     const cloudinary = require("cloudinary").v2;
     cloudinary.config(process.env.CLOUDINARY_URL);
@@ -25,11 +34,16 @@ const fetchClientsImages = async () => {
 
     const resources = res?.resources ?? [];
 
-    return resources.map((r) => ({
+    const result = resources.map((r) => ({
       id: r.public_id,
       url: r.secure_url,
       alt: (r.display_name || r.public_id || "client").replace(/[-_]/g, " "),
     }));
+
+    // Store in cache for 24 hours
+    cache.set("clients_images", result, CACHE_CONFIG.CLIENTS_DATA);
+
+    return result;
   } catch (e) {
     console.error("Cloudinary OurClients error:", e);
     return [];
