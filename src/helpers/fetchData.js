@@ -1,4 +1,14 @@
+import cache, { CACHE_CONFIG } from "@/lib/cache";
+
 export const fetchEvents = async () => {
+  // Check if data is already cached
+  if (cache.has("events_data")) {
+    console.log("🎯 Cache HIT: events_data");
+    return cache.get("events_data");
+  }
+
+  console.log("🚀 Cache MISS: events_data - fetching fresh data...");
+
   const res = await fetch("/api/event", { cache: "no-store" });
 
   if (!res.ok) {
@@ -8,14 +18,15 @@ export const fetchEvents = async () => {
   const data = await res.json();
 
   //  Si la API devuelve array directo
-  if (Array.isArray(data)) return data;
-
+  let result = [];
+  if (Array.isArray(data)) result = data;
   // Si la API devuelve { events: [...] }
-  if (Array.isArray(data?.events)) return data.events;
+  else if (Array.isArray(data?.events)) result = data.events;
+  // Si la API devuelve { markers: [...] }
+  else if (Array.isArray(data?.markers)) result = data.markers;
 
-  // Si la API devuelve { markers: [...] } 
-  if (Array.isArray(data?.markers)) return data.markers;
+  // Store in cache for 1 hour
+  cache.set("events_data", result, CACHE_CONFIG.EVENTS_MARKERS);
 
-  // fallback
-  return [];
+  return result;
 };
