@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import cache, { CACHE_CONFIG } from "@/lib/cache";
 
 const normalizeMarkers = (markers) => {
   if (!Array.isArray(markers)) return [];
@@ -54,10 +55,18 @@ const normalizeMarkers = (markers) => {
 
 export async function GET() {
   try {
+    // Check if data is already cached
+    if (cache.has("event_markers")) {
+      console.log("🎯 Cache HIT: event_markers");
+      return NextResponse.json(cache.get("event_markers"), { status: 200 });
+    }
+
+    console.log("🚀 Cache MISS: event_markers - fetching fresh data...");
+
     const jsonUrl =
       process.env.NEXT_PUBLIC_MARKERS_JSON_URL ||
       process.env.NEXT_PUBLIC_TICKETS_JSON_URL ||
-      process.env.NEXT_PUBLIC_TICKETS_JSON_URL; 
+      process.env.NEXT_PUBLIC_TICKETS_JSON_URL;
 
     if (!jsonUrl) {
       return NextResponse.json([], { status: 200 });
@@ -70,6 +79,9 @@ export async function GET() {
 
     const markers = await res.json();
     const normalized = normalizeMarkers(markers);
+
+    // Store in cache for 1 hour
+    cache.set("event_markers", normalized, CACHE_CONFIG.EVENTS_MARKERS);
 
     return NextResponse.json(normalized, { status: 200 });
   } catch (error) {
