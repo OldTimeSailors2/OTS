@@ -122,7 +122,8 @@ async function fetchLandingAssets() {
         null,
       mail: findByAnyName(desktopResources, ASSET_KEYS.mail)?.secure_url ?? null,
       spotify:
-        findByAnyName(desktopResources, ASSET_KEYS.spotify)?.secure_url ?? null,
+        findByAnyName(desktopResources, ASSET_KEYS.spotify)?.secure_url ??
+        null,
     };
   } catch (error) {
     console.error("Error fetching landing assets (Cloudinary):", error);
@@ -154,15 +155,24 @@ function SocialIcon({ href, src, alt }) {
       href={href}
       target={isExternal ? "_blank" : undefined}
       rel={isExternal ? "noopener noreferrer" : undefined}
-      className="landing-social-pill"
       aria-label={alt}
+      className="
+        relative flex items-center justify-center
+        w-[2rem] h-[2rem]
+        lg:w-[2.9rem] lg:h-[2.9rem]
+        rounded-full
+        bg-[#f5f1e8]/95
+        shadow-[0_8px_20px_rgba(0,0,0,0.18)]
+        transition-transform duration-150
+        hover:scale-[1.05]
+      "
     >
       <Image
         src={src}
         alt={alt}
         fill
-        sizes="(max-width: 768px) 27px, (max-width: 1200px) 48px, 64px"
-        className="object-contain"
+        sizes="70px"
+        className="object-contain p-[0.25rem]"
       />
     </Link>
   );
@@ -180,26 +190,22 @@ function MenuImageButton({
       href={href}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
-      className="
-        landing-menu-image-item-v2
-        relative block
-        w-[5rem] h-[1.45rem]
-        sm:w-[5.8rem] sm:h-[1.65rem]
-        md:w-[6.6rem] md:h-[1.85rem]
-        lg:w-[7.2rem] lg:h-[2rem]
-        xl:w-[7.8rem] xl:h-[2.15rem]
-        transition-transform duration-150
-        hover:scale-[1.01]
-      "
       aria-label={alt}
-      style={{ marginInline: "-1px" }}
+      className="
+        relative block
+        w-[8rem] h-[2.15rem]
+        lg:w-[8.8rem] lg:h-[2.35rem]
+        xl:w-[9.4rem] xl:h-[2.5rem]
+        transition-transform duration-150
+        hover:translate-x-[-2px]
+      "
     >
       <Image
         src={src}
         alt={alt}
         fill
         priority={priority}
-        sizes="(max-width: 640px) 80px, (max-width: 768px) 93px, (max-width: 1024px) 106px, 125px"
+        sizes="160px"
         className="object-contain"
       />
     </Link>
@@ -253,184 +259,240 @@ export default async function Home() {
   ].filter((item) => item.src);
 
   return (
-    <main
-      className="landing-page-v2"
-      style={{
-        width: "100%",
-        minHeight: "100vh",
-        overflowX: "hidden",
-      }}
-    >
-      <div
-        className="landing-stage-v2"
-        style={{
-          width: "100%",
-          maxWidth: "100%",
-          display: "flex",
-          justifyContent: "center",
-          paddingLeft: "8px",
-          paddingRight: "8px",
-          paddingTop: "0",
-          paddingBottom: "0",
-          margin: "0 auto",
-          boxSizing: "border-box",
-        }}
-      >
-        <section
-          className="landing-artboard-v2"
+    <main className="w-full overflow-x-hidden bg-[#18324a]">
+      {/* DESKTOP / TABLET */}
+      <section className="relative hidden md:flex min-h-screen w-full items-center justify-center bg-[#18324a] px-4 py-4 lg:px-5 lg:py-5">
+        <div
+          className="relative w-full max-w-[1600px]"
           style={{
-            position: "relative",
-            width: "min(100vw - 16px, 1780px)",
-            maxWidth: "1780px",
             aspectRatio: "1920 / 1080",
-            margin: "0 auto",
           }}
         >
+          {/* Fondo real */}
           <div
-            className="landing-bg-v2 landing-bg-desktop-v2"
+            className="absolute inset-0"
             style={{
-              position: "absolute",
-              inset: 0,
-              display: "block",
+              backgroundImage: assets.landingDesktop
+                ? `url(${assets.landingDesktop})`
+                : "none",
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
             }}
-          >
-            {assets.landingDesktop ? (
-              <Image
-                src={assets.landingDesktop}
-                alt="Old Time Sailors Landing Desktop"
-                fill
-                priority
-                sizes="100vw"
-                className="object-contain"
-                style={{
-                  objectFit: "contain",
-                  objectPosition: "center",
-                }}
-              />
-            ) : null}
-          </div>
+          />
 
-          <div className="landing-bg-v2 landing-bg-mobile-v2 md:hidden">
-            {assets.landingMobile ? (
-              <Image
-                src={assets.landingMobile}
-                alt="Old Time Sailors Landing Mobile"
-                fill={false}
-                priority
-                width={430}
-                height={932}
-                sizes="100vw"
-                className="landing-mobile-image-tag"
-              />
-            ) : null}
-          </div>
+          <div className="absolute inset-0 bg-[rgba(8,19,31,0.04)]" />
 
-          <div className="landing-overlay-v2" />
-          <div className="landing-white-frame-v2" />
+          {/* Layout principal del canvas */}
+          <div className="absolute inset-0 z-10 px-[4.5%] py-[3.2%]">
+            {/* Zona superior principal */}
+            <div className="grid h-full grid-cols-[1fr_1fr] items-start">
+              {/* IZQUIERDA */}
+              <div className="flex h-full flex-col items-start justify-start gap-[1.2vw] pt-[0.3vw]">
+                {assets.description ? (
+                  <div className="relative w-[12vw] max-w-[215px] min-w-[120px] aspect-[1.7/1]">
+                    <Image
+                      src={assets.description}
+                      alt="Description"
+                      fill
+                      priority
+                      sizes="220px"
+                      className="object-contain object-left-top"
+                    />
+                  </div>
+                ) : (
+                  <div className="h-[6vw]" />
+                )}
+              </div>
 
-          {assets.description ? (
-            <div className="landing-description-wrap-v2">
-              <Image
-                src={assets.description}
-                alt="Description"
-                fill
-                priority
-                sizes="(max-width: 768px) 120px, (max-width: 1200px) 180px, 260px"
-                className="object-contain"
-              />
+              {/* CENTRO / LOGO */}
+              <div className="flex h-full items-start justify-center pt-0">
+                {assets.logo ? (
+                  <div className="relative w-[18vw] max-w-[310px] min-w-[170px] aspect-square">
+                    <Image
+                      src={assets.logo}
+                      alt="Old Time Sailors"
+                      fill
+                      priority
+                      sizes="320px"
+                      className="object-contain"
+                    />
+                  </div>
+                ) : null}
+              </div>
             </div>
-          ) : null}
 
-          {assets.memberships ? (
-            <Link
-              href="/memberships"
-              aria-label="Memberships"
+            {/* MEMBERSHIPS DESKTOP ABSOLUTO */}
+            {assets.memberships ? (
+              <Link
+                href="/memberships"
+                aria-label="Memberships"
+                className="absolute z-20 block left-[8%] top-[21.5%]"
+              >
+                <div className="relative w-[15vw] h-[15vw] max-w-[500px] max-h-[500px]transition-transform duration-150 hover:scale-[1.02]">
+                  <Image
+                    src={assets.memberships}
+                    alt="Memberships"
+                    fill
+                    priority
+                    sizes="500px"
+                    className="object-contain"
+                  />
+                </div>
+              </Link>
+            ) : null}
+            {/* MENÚ DESKTOP ABSOLUTO */}
+            <div className="absolute right-[4.2%] top-[9.3%] z-20">
+              <nav
+                aria-label="Main navigation"
+                className="flex flex-col items-end gap-[0.2vw] -translate-x-[5vw]"
+              >
+                {menuItems.map((item, index) => (
+                  <MenuImageButton
+                    key={item.alt}
+                    href={item.href}
+                    src={item.titleImg}
+                    alt={item.alt}
+                    external={item.external}
+                    priority={index < 3}
+                  />
+                ))}
+              </nav>
+            </div>
+
+            {/* REDES DESKTOP ABSOLUTAS */}
+            <div className="absolute left-1/2 bottom-[2.2%] z-20 -translate-x-1/2 translate-y-[18%]">
+              <div className="mt-[9vw] flex w-fit items-center justify-center gap-[0.9vw]">
+                {socialItems.map((item) => (
+                  <SocialIcon
+                    key={item.alt}
+                    href={item.href}
+                    src={item.src}
+                    alt={item.alt}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MOBILE */}
+      <section className="relative md:hidden w-full min-h-screen bg-[#18324a]">
+        {assets.landingMobile ? (
+          <div className="absolute inset-0">
+            <Image
+              src={assets.landingMobile}
+              alt="Old Time Sailors Landing Mobile"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-top"
+            />
+          </div>
+        ) : null}
+
+        <div className="absolute inset-0 bg-[rgba(8,19,31,0.08)]" />
+
+        <div className="relative z-10 min-h-screen flex flex-col justify-between px-4 pt-4 pb-5">
+          <div className="flex flex-col gap-3">
+            {assets.description ? (
+              <div className="relative w-[7.4rem] h-[4.7rem]">
+                <Image
+                  src={assets.description}
+                  alt="Description"
+                  fill
+                  priority
+                  sizes="120px"
+                  className="object-contain object-left-top"
+                />
+              </div>
+            ) : null}
+
+            <div className="flex justify-between items-start gap-2">
+              {assets.memberships ? (
+                <Link
+                  href="/memberships"
+                  aria-label="Memberships"
+                  className="absolute z-20 block left-[6%] top-[21%]"
+                >
+                  <div className="relative w-[25vw] h-[25vw] max-w-[500px] max-h-[500px] min-w-[64px] min-h-[64px] transition-transform duration-150 hover:scale-[1.02]">
+                    <Image
+                      src={assets.memberships}
+                      alt="Memberships"
+                      fill
+                      priority
+                      sizes="500px"
+                      className="object-contain"
+                    />
+                  </div>
+                </Link>
+              ) : null}
+
+              {assets.logo ? (
+                <div className="relative w-[9.7rem] h-[9.7rem] shrink-0 -mt-2">
+                  <Image
+                    src={assets.logo}
+                    alt="Old Time Sailors"
+                    fill
+                    priority
+                    sizes="155px"
+                    className="object-contain"
+                  />
+                </div>
+              ) : null}
+
+              <div className="w-[6.3rem]" />
+            </div>
+
+            <nav
+              aria-label="Main navigation mobile"
               className="
-      landing-membership-wrap-v2
-      lg:translate-x-[4.5rem]
-      xl:translate-x-[6rem]
-      2xl:translate-x-[7rem]
-      max-md:!left-[1.2rem]
-      max-md:!top-[10.5rem]
-      max-md:!w-[6.2rem]
-      max-md:!h-[6.2rem]
-      max-md:z-20
-    "
+                absolute
+                right-[0.6rem]
+                top-[5.2rem]
+                flex flex-col items-end
+                gap-[0.08rem]
+                scale-[0.82]
+                z-20
+              "
             >
-              <Image
-                src={assets.memberships}
-                alt="btnMemberships"
-                fill
-                priority
-                sizes="(max-width: 768px) 90px, (max-width: 1200px) 130px, 180px"
-                className="object-contain"
-              />
-            </Link>
-          ) : null}
-
-          {assets.logo ? (
-            <div className="landing-logo-wrap-v2">
-              <Image
-                src={assets.logo}
-                alt="Old Time Sailors"
-                fill
-                priority
-                sizes="(max-width: 768px) 180px, (max-width: 1200px) 260px, 420px"
-                className="object-contain"
-              />
-            </div>
-          ) : null}
-
-  <nav
-  className="
-    landing-menu-wrap-v2
-    lg:-translate-x-[2.5rem]
-    xl:-translate-x-[4rem]
-    2xl:-translate-x-[5rem]
-  "
-  aria-label="Main navigation"
-  style={{
-    display: "flex",
-    flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "center",
-    columnGap: "0.08rem",
-    rowGap: "0.04rem",
-  }}
->
-            {menuItems.map((item, index) => (
-              <MenuImageButton
-                key={item.alt}
-                href={item.href}
-                src={item.titleImg}
-                alt={item.alt}
-                external={item.external}
-                priority={index < 3}
-              />
-            ))}
-          </nav>
-
-          <div
-            className="
-              landing-social-wrap-v2
-              max-md:!left-1/2
-              max-md:!-translate-x-1/2
-              max-md:!top-[24.2rem]
-              max-md:!bottom-auto
-              max-md:z-20
-            "
-          >
-            {socialItems.map((item) => (
-              <SocialIcon
-                key={item.alt}
-                href={item.href}
-                src={item.src}
-                alt={item.alt}
-              />
-            ))}
+              {menuItems.map((item, index) => (
+                <Link
+                  key={item.alt}
+                  href={item.href}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
+                  aria-label={item.alt}
+                  className="relative block w-[7.1rem] h-[1.95rem]"
+                >
+                  <Image
+                    src={item.titleImg}
+                    alt={item.alt}
+                    fill
+                    priority={index < 3}
+                    sizes="114px"
+                    className="object-contain"
+                  />
+                </Link>
+              ))}
+            </nav>
           </div>
-        </section>
-      </div>
+          <div className="absolute left-1/2 -translate-x-1/2 top-[26.5rem] z-20">
+            <div className="flex items-center justify-center gap-[0.6rem] scale-[0.78]">
+              {socialItems.map((item) => (
+                <SocialIcon
+                  key={item.alt}
+                  href={item.href}
+                  src={item.src}
+                  alt={item.alt}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
+
