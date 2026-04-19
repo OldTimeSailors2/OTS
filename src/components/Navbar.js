@@ -198,11 +198,14 @@ const Navbar = () => {
           className="w-full px-3 sm:px-4 py-2 flex items-center justify-between"
         >
           <button
-            onClick={onBack}
-            className="px-2.5 sm:px-3 py-1 bg-[#e6d8bd] text-[#0f2536] rounded-md text-xs sm:text-sm whitespace-nowrap"
-          >
-            <FontAwesomeIcon icon={faArrowLeft} /> back
-          </button>
+    onClick={onBack}
+    className="px-2.5 sm:px-3 py-1 bg-[#e6d8bd] text-[#0f2536] rounded-md text-xs sm:text-sm whitespace-nowrap flex items-center gap-2"
+  >
+    <FontAwesomeIcon icon={faArrowLeft} />
+   <span className="mx-2 font-titles text-[14px] ">
+      back
+    </span>
+  </button>
 
           <div />
 
