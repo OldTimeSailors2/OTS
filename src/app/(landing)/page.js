@@ -158,7 +158,7 @@ function SocialIcon({ href, src, alt }) {
       aria-label={alt}
       className="
         relative flex items-center justify-center
-        w-[2rem] h-[2rem]
+        w-[1rem] h-[1rem]
         lg:w-[2.9rem] lg:h-[2.9rem]
         rounded-full
         bg-[#f5f1e8]/95
@@ -261,30 +261,31 @@ export default async function Home() {
   return (
     <main className="w-full overflow-x-hidden bg-[#18324a]">
       {/* DESKTOP / TABLET */}
-      <section className="relative hidden md:flex min-h-screen w-full items-center justify-center bg-[#18324a] px-4 py-4 lg:px-5 lg:py-5">
+      <section className="relative hidden md:flex min-h-screen w-full items-center justify-center bg-[#18324a]  py-4 lg: lg:py-5">
         <div
-          className="relative w-full max-w-[1600px]"
+          className="relative w-full max-w-[1350px] border-[2px] border-black "
           style={{
-            aspectRatio: "1920 / 1080",
+            aspectRatio: "1552 / 900"
           }}
         >
           {/* Fondo real */}
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: assets.landingDesktop
-                ? `url(${assets.landingDesktop})`
-                : "none",
-              backgroundSize: "contain",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
-          />
+          <div className="absolute inset-x-[0%] top-[0%] bottom-[2%]">
+            {assets.landingDesktop ? (
+              <Image
+                src={assets.landingDesktop}
+                alt="Old Time Sailors Landing Desktop"
+                fill
+                priority
+                sizes="100vw"
+                className="object-contain"
+              />
+            ) : null}
+          </div>
 
           <div className="absolute inset-0 bg-[rgba(8,19,31,0.04)]" />
 
           {/* Layout principal del canvas */}
-          <div className="absolute inset-0 z-10 px-[4.5%] py-[3.2%]">
+          <div className="absolute inset-0 z-10 px-[4.5%] pt-[3.2%]">
             {/* Zona superior principal */}
             <div className="grid h-full grid-cols-[1fr_1fr] items-start">
               {/* IZQUIERDA */}
@@ -327,9 +328,8 @@ export default async function Home() {
               <Link
                 href="/memberships"
                 aria-label="Memberships"
-                className="absolute z-20 block left-[8%] top-[21.5%]"
-              >
-                <div className="relative w-[15vw] h-[15vw] max-w-[500px] max-h-[500px]transition-transform duration-150 hover:scale-[1.02]">
+                className="absolute z-20 block left-[9%] top-[21.5%]"
+              ><div className="relative w-[182px] h-[182px] transition-transform duration-150 hover:scale-[1.02]">
                   <Image
                     src={assets.memberships}
                     alt="Memberships"
@@ -342,7 +342,7 @@ export default async function Home() {
               </Link>
             ) : null}
             {/* MENÚ DESKTOP ABSOLUTO */}
-            <div className="absolute right-[4.2%] top-[9.3%] z-20">
+            <div className="absolute right-[4.2%] top-[3.5%] z-20">
               <nav
                 aria-label="Main navigation"
                 className="flex flex-col items-end gap-[0.2vw] -translate-x-[5vw]"
@@ -361,7 +361,7 @@ export default async function Home() {
             </div>
 
             {/* REDES DESKTOP ABSOLUTAS */}
-            <div className="absolute left-1/2 bottom-[2.2%] z-20 -translate-x-1/2 translate-y-[18%]">
+            <div className="absolute left-1/2 bottom-[4.2%] z-20 -translate-x-1/2 translate-y-[18%]">
               <div className="mt-[9vw] flex w-fit items-center justify-center gap-[0.9vw]">
                 {socialItems.map((item) => (
                   <SocialIcon
@@ -495,4 +495,6 @@ export default async function Home() {
     </main>
   );
 }
+
+
 
