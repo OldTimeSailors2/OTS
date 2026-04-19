@@ -158,7 +158,8 @@ function SocialIcon({ href, src, alt }) {
       aria-label={alt}
       className="
         relative flex items-center justify-center
-        w-[1rem] h-[1rem]
+        w-[2rem] h-[2rem]
+        sm:w-[1.8rem] sm:h-[1.8rem]
         lg:w-[2.9rem] lg:h-[2.9rem]
         rounded-full
         bg-[#f5f1e8]/95
@@ -171,8 +172,8 @@ function SocialIcon({ href, src, alt }) {
         src={src}
         alt={alt}
         fill
-        sizes="70px"
-        className="object-contain p-[0.25rem]"
+        sizes="(max-width: 639px) 25px, (max-width: 1023px) 29px, 46px"
+        className="object-contain p-[0.26rem] sm:p-[0.3rem] lg:p-[0.25rem]"
       />
     </Link>
   );
@@ -478,8 +479,9 @@ export default async function Home() {
               ))}
             </nav>
           </div>
+
           <div className="absolute left-1/2 -translate-x-1/2 top-[26.5rem] z-20">
-            <div className="flex items-center justify-center gap-[0.6rem] scale-[0.78]">
+            <div className="flex items-center justify-center gap-[0.8rem]">
               {socialItems.map((item) => (
                 <SocialIcon
                   key={item.alt}
@@ -495,6 +497,3 @@ export default async function Home() {
     </main>
   );
 }
-
-
-
