@@ -58,17 +58,42 @@ export default async function OurClients() {
       <div className="mx-auto w-full max-w-6xl px-4">
         <div className="grid grid-cols-1 gap-6">
           {images.map((img) => (
-            <div
-              key={img.id}
-              className="relative w-full rounded-lg overflow-hidden bg-white/10"
-              style={{ aspectRatio: "16 / 9" }}
-            >
-              <ResponsiveImage
-                images={{
-                  desktop: { url: img.url },
-                  mobile: { url: img.url },
-                }}
-              />
+            <div key={img.id}>
+              {/* Mobile: vertical and complete */}
+              <div
+                className="relative w-full rounded-lg overflow-hidden bg-white/10 sm:hidden"
+                style={{ aspectRatio: "9 / 16" }}
+              >
+                <div
+                  className="absolute top-1/2 left-1/2"
+                  style={{
+                    width: "177.78%",
+                    height: "177.78%",
+                    transform: "translate(-50%, -50%) rotate(90deg)",
+                    transformOrigin: "center center",
+                  }}
+                >
+                  <ResponsiveImage
+                    images={{
+                      desktop: { url: img.url },
+                      mobile: { url: img.url },
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Desktop / Laptop: horizontal and complete */}
+              <div
+                className="relative hidden w-full rounded-lg overflow-hidden bg-white/10 sm:block"
+                style={{ aspectRatio: "16 / 9" }}
+              >
+                <ResponsiveImage
+                  images={{
+                    desktop: { url: img.url },
+                    mobile: { url: img.url },
+                  }}
+                />
+              </div>
             </div>
           ))}
         </div>
