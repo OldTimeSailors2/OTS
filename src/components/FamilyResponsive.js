@@ -96,26 +96,28 @@ export default function FamilyResponsive({ data = {} }) {
               <div className="absolute left-[10.2%] right-[10.3%] top-[21.3%] border-t-[2px] border-dashed border-[#9a8c72] z-20" />
 
               {/* venue card */}
-              <div className="absolute right-[2%] top-[10.7%] z-30 w-[30%] rounded-[10px] bg-darkBlue px-[2.4%] py-[3.1%] shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
-                <h3 className="font-titles lowercase leading-[0.9] text-lightRed text-[clamp(0.88rem,2.5vw,1.35rem)]">
-                  more about
+              <div className="absolute right-[2%] top-[10.7%] z-30 w-[34%] rounded-[18px] bg-darkBlue px-[4%] py-[4%] shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
+                <h3 className="font-titles lowercase leading-[0.86] text-lightRed text-[clamp(1rem,3vw,1.55rem)]">
+                  more ABOUT
                   <br />
-                  the venue
+                  THE VENUE
                 </h3>
 
-                <p className="mt-[4.5%] font-txt text-white leading-[1.08] text-[clamp(0.56rem,1.45vw,0.72rem)]">
-                  {venueInfo}
+                <p className="mt-[8%] font-txt text-white leading-[1.08] text-[clamp(0.5rem,1.2vw,0.68rem)]">
+                  A rural escape built by the community, for the community in the heart of
+                  Newquay.
+                  <br />
+                  A venue for the whole family with seating options.
                 </p>
 
                 <a
                   href={buyUrl || "#"}
                   target="_blank"
                   rel="noreferrer"
-                  className={`mt-[5%] inline-block font-txt text-white underline lowercase tracking-[0.01em] leading-[1.05] text-[clamp(0.52rem,1.3vw,0.66rem)] ${
-                    !buyUrl ? "pointer-events-none opacity-50" : ""
-                  }`}
+                  className={`mt-[8%] inline-block font-txt text-white underline uppercase tracking-[0.01em] leading-[1.05] text-[clamp(0.58rem,1.45vw,0.72rem)] ${!buyUrl ? "pointer-events-none opacity-50" : ""
+                    }`}
                 >
-                  contact de venue for + info
+                  CONTACT DE VENUE FOR + INFO
                 </a>
               </div>
 
@@ -144,9 +146,8 @@ export default function FamilyResponsive({ data = {} }) {
                   onClick={(e) => {
                     if (!buyUrl) e.preventDefault();
                   }}
-                  className={`block w-full ${
-                    !buyUrl ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-                  }`}
+                  className={`block w-full ${!buyUrl ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                    }`}
                 >
                   <Image
                     src="/assets/buyTickets.png"
@@ -258,10 +259,10 @@ export default function FamilyResponsive({ data = {} }) {
               </div>
 
               {/* bottom subtitle */}
-              <div className="absolute left-[48%] right-[6%] top-[94.6%] z-20">
-                <div className="font-txt font-bold lowercase leading-[1.02] tracking-[0.03em] text-lightRed text-[clamp(0.7rem,2vw,1rem)]">
-                  <p>a traditional sailor show,</p>
-                  <p>sing along and dance with us!</p>
+              <div className="absolute left-[40%] right-[4%] top-[94.6%] z-20">
+                <div className="font-serif font-extrabold uppercase leading-[1.08] tracking-[0.16em] text-lightRed text-[clamp(0.55rem,1.45vw,0.85rem)]">
+                  <p>A TRADITIONAL SAILOR SHOW,</p>
+                  <p>SING ALONG AND DANCE WITH US!</p>
                 </div>
               </div>
 
@@ -336,9 +337,8 @@ export default function FamilyResponsive({ data = {} }) {
                 onClick={(e) => {
                   if (!buyUrl) e.preventDefault();
                 }}
-                className={`block w-full ${
-                  !buyUrl ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-                }`}
+                className={`block w-full ${!buyUrl ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                  }`}
               >
                 <Image
                   src="/assets/buyTickets.png"
@@ -374,9 +374,8 @@ export default function FamilyResponsive({ data = {} }) {
                 href={buyUrl || "#"}
                 target="_blank"
                 rel="noreferrer"
-                className={`mt-3 inline-block font-txt text-white underline lowercase text-[16px] ${
-                  !buyUrl ? "pointer-events-none opacity-50" : ""
-                }`}
+                className={`mt-3 inline-block font-txt text-white underline lowercase text-[16px] ${!buyUrl ? "pointer-events-none opacity-50" : ""
+                  }`}
               >
                 contact the venue for + info
               </a>
@@ -492,9 +491,12 @@ export default function FamilyResponsive({ data = {} }) {
             </div>
 
             <div className="absolute left-[285px] top-[165px] w-[700px]">
-              <div className="font-txt font-bold lowercase tracking-[0.08em] leading-[1.08] text-lightRed text-[24px]">
-                <p>a traditional sailor show,</p>
-                <p>sing along and dance with us!</p>
+              <div
+                className="font-txt font-bold tracking-[0.08em] leading-[1.08] text-lightRed text-[24px]"
+                style={{ textTransform: "uppercase" }}
+              >
+                <p>A TRADITIONAL SAILOR SHOW,</p>
+                <p>SING ALONG AND DANCE WITH US!</p>
               </div>
             </div>
           </div>
