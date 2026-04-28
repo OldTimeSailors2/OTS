@@ -451,7 +451,7 @@ export default async function Home() {
               className="
                 absolute
                 right-[1.8rem]
-                top-[5.2rem]
+                top-[5rem]
                 flex flex-col items-end
                 gap-[0.08rem]
                 scale-[0.82]
