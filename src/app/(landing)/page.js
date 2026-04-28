@@ -251,12 +251,12 @@ export default async function Home() {
   ];
 
   const socialItems = [
-    { href: "https://instagram.com", src: assets.instagram, alt: "Instagram" },
-    { href: "https://facebook.com", src: assets.facebook, alt: "Facebook" },
-    { href: "https://youtube.com", src: assets.youtube, alt: "YouTube" },
-    { href: "https://wa.me", src: assets.whatsapp, alt: "WhatsApp" },
+    { href: "https://www.instagram.com/oldtimesailors", src: assets.instagram, alt: "Instagram" },
+    { href: "https://www.facebook.com/oldtimesailors", src: assets.facebook, alt: "Facebook" },
+    { href: "https://www.youtube.com/@oldtimesailors", src: assets.youtube, alt: "YouTube" },
+    { href: "https://api.whatsapp.com/send/?phone=447539045312&text&type=phone_number&app_absent=0", src: assets.whatsapp, alt: "WhatsApp" },
     { href: "mailto:info@oldtimesailors.com", src: assets.mail, alt: "Email" },
-    { href: "https://spotify.com", src: assets.spotify, alt: "Spotify" },
+    { href: "https://open.spotify.com/intl-es/artist/4w3YE6tXZDz1qnAzIVND4o?si=qqSIZ4BLSjWjr-WDIUr0wg&nd=1&dlsi=aab0a0bac71647c6", src: assets.spotify, alt: "Spotify" },
   ].filter((item) => item.src);
 
   return (
