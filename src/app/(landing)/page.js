@@ -379,7 +379,7 @@ export default async function Home() {
       </section>
 
       {/* MOBILE */}
-      <section className="relative md:hidden w-full min-h-screen bg-[#18324a]">
+      <section className="relative md:hidden w-full min-h-screen bg-[#18324a] overflow-hidden">
         {assets.landingMobile ? (
           <div className="absolute inset-0">
             <Image
@@ -388,7 +388,7 @@ export default async function Home() {
               fill
               priority
               sizes="100vw"
-              className="object-cover object-top"
+              className="object-contain object-top"
             />
           </div>
         ) : null}
