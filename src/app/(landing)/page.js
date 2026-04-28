@@ -450,7 +450,7 @@ export default async function Home() {
               aria-label="Main navigation mobile"
               className="
                 absolute
-                right-[0.6rem]
+                right-[1.8rem]
                 top-[5.2rem]
                 flex flex-col items-end
                 gap-[0.08rem]
