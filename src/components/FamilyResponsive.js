@@ -57,48 +57,46 @@ export default function FamilyResponsive({ data = {} }) {
       <section className="relative mx-auto w-full max-w-[1600px] px-0 xl:px-10 py-0 xl:py-10">
         {/* MOBILE / TABLET POSTER */}
         <div className="block xl:hidden">
-          <div className="mx-auto w-full max-w-[430px]">
+          <div className="mx-auto w-full max-w-[414px]">
             <div
               className="relative w-full overflow-hidden bg-[#E9DFCB]"
-              style={{ aspectRatio: "860 / 1736" }}
+              style={{ aspectRatio: "860 / 1800" }}
             >
-              <div className="absolute inset-[0.8%] border border-[#9a8c72]/70" />
+              {/* borde externo general */}
+              <div className=" " />
 
-              {/* logo */}
-              <div className="absolute left-[0.5%] top-[5.2%] z-20">
+              {/* borde solo para la info superior */}
+              <div className="absolute left-[8%] top-[8%] w-[84%] h-[42%] border border-[#9a8c72]/70 z-10" />
+
+              {/* logo más grande */}
+              <div className="absolute left-[0.5%] top-[4.7%] z-20">
                 <Image
                   src={logo}
                   alt="Logo"
-                  width={110}
-                  height={110}
-                  className="w-[12vw] max-w-[78px] h-auto object-contain"
+                  width={130}
+                  height={130}
+                  className="w-[16vw] max-w-[96px] h-auto object-contain"
                   loading="lazy"
                 />
               </div>
 
-              <div className="absolute left-[2.5%] top-[8.9%] right-[2.3%] bottom-[1.8%] border border-[#9a8c72]/70" />
-
               {/* title */}
-              <div className="absolute left-[10.3%] top-[10.6%] w-[49%] z-20">
+              <div className="absolute left-[10.3%] top-[12.6%] w-[49%] z-20">
                 <h1 className="font-titles lowercase leading-[0.9] tracking-tight">
-                  <span className="block text-darkBlue ">
+                  <span className="block text-darkBlue">
                     old time sailors <span className="text-lightRed">at</span>
                   </span>
-                  <span className="block text-lightRed  break-words">
+                  <span className="block text-lightRed break-words">
                     {title}
                   </span>
                 </h1>
 
-                <p className="mt-[1.6%] font-txt lowercase text-darkBlue tracking-wide leading-[1.05] text-[clamp(0.72rem,1.9vw,0.95rem)]">
-                  {venue}
-                </p>
               </div>
 
-              <div className="absolute left-[10.2%] right-[10.3%] top-[17.3%] border-t-[2px] border-dashed border-[#9a8c72]" />
+              <div className="absolute left-[10.2%] right-[10.3%] top-[21.3%] border-t-[2px] border-dashed border-[#9a8c72] z-20" />
 
               {/* venue card */}
-              <div className="absolute right-[2%] top-[10.7%] z-30 w-[30%] rounded-[24px] bg-darkBlue px-[2.4%] py-[3.1%] shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
-            
+              <div className="absolute right-[2%] top-[10.7%] z-30 w-[30%] rounded-[10px] bg-darkBlue px-[2.4%] py-[3.1%] shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
                 <h3 className="font-titles lowercase leading-[0.9] text-lightRed text-[clamp(0.88rem,2.5vw,1.35rem)]">
                   more about
                   <br />
@@ -231,25 +229,24 @@ export default function FamilyResponsive({ data = {} }) {
                     className="w-full h-auto transition-transform duration-200 group-hover:scale-[1.02]"
                     loading="lazy"
                   />
-                  <span className="pointer-events-none absolute inset-0 flex items-center justify-center font-txt text-white lowercase tracking-wide text-[clamp(0.78rem,2.2vw,1.2rem)]">
-                  </span>
+                  <span className="pointer-events-none absolute inset-0 flex items-center justify-center font-txt text-white lowercase tracking-wide text-[clamp(0.78rem,2.2vw,1.2rem)]" />
                 </button>
               </div>
 
-              {/* family show */}
-              <div className="absolute left-[5.4%] top-[88.2%] z-20">
-                <div className="leading-[0.85]">
-                  <p className="font-titles lowercase text-darkBlue text-[clamp(2rem,6vw,3.8rem)]">
+              {/* family show más grande */}
+              <div className="absolute left-[5.4%] top-[87.2%] z-20">
+                <div className="leading-[0.82]">
+                  <p className="font-titles lowercase text-darkBlue text-[clamp(3rem,9vw,5.5rem)]">
                     family
                   </p>
-                  <p className="font-titles lowercase text-darkBlue text-[clamp(2rem,6vw,3.8rem)]">
+                  <p className="font-titles lowercase text-darkBlue text-[clamp(3rem,9vw,5.5rem)]">
                     show
                   </p>
                 </div>
               </div>
 
               {/* anchor */}
-              <div className="absolute left-[40.2%] top-[89.5%] z-20">
+              <div className="absolute left-[41.5%] top-[89.3%] z-20">
                 <Image
                   src="/assets/anchor.webp"
                   alt="Anchor"
@@ -261,8 +258,8 @@ export default function FamilyResponsive({ data = {} }) {
               </div>
 
               {/* bottom subtitle */}
-              <div className="absolute left-[48%] right-[6%] top-[95.0%] z-20">
-                <div className="font-txt font-bold lowercase leading-[1.02] tracking-[0.03em] text-lightRed text-[clamp(0.42rem,1.2vw,0.72rem)]">
+              <div className="absolute left-[48%] right-[6%] top-[94.6%] z-20">
+                <div className="font-txt font-bold lowercase leading-[1.02] tracking-[0.03em] text-lightRed text-[clamp(0.7rem,2vw,1rem)]">
                   <p>a traditional sailor show,</p>
                   <p>sing along and dance with us!</p>
                 </div>
@@ -299,7 +296,9 @@ export default function FamilyResponsive({ data = {} }) {
 
             <div className="absolute left-[92px] top-[8px] max-w-[650px]">
               <h1 className="font-titles lowercase leading-[0.93] tracking-tight">
-                <span className="text-darkBlue text-[38px]">old time sailors </span>
+                <span className="text-darkBlue text-[38px]">
+                  old time sailors{" "}
+                </span>
                 <span className="text-lightRed text-[38px]">at</span>
                 <br />
                 <span className="text-lightRed text-[38px]">{title}</span>
