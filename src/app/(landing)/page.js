@@ -480,7 +480,7 @@ export default async function Home() {
             </nav>
           </div>
 
-          <div className="absolute left-1/2 -translate-x-1/2 top-[26.5rem] z-20">
+          <div className="absolute left-1/2 -translate-x-1/2 top-[25rem] z-20">
             <div className="flex items-center justify-center gap-[0.8rem]">
               {socialItems.map((item) => (
                 <SocialIcon
