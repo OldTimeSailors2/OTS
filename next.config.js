@@ -3,6 +3,10 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
 
+    // Quality values used by <Image quality={...}> across the app;
+    // explicit config is required starting in Next.js 16
+    qualities: [50, 75, 85, 100],
+
     // ✅ Esto va aquí (global), NO dentro de remotePatterns
     unoptimized: true,
 

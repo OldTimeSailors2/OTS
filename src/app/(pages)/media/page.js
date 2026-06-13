@@ -2,7 +2,12 @@ import MediaWrapper from "@/wrappers/MediaWrapper";
 import Image from "next/image";
 import DynamicDecoMedia from "@/components/DynamicDecoMedia";
 import MainDiv from "@/components/MainDiv";
-import dynamic from "next/dynamic";
+import {
+  PhotosDisplay,
+  VideoPlayer,
+  MusicPlayer,
+  SplideCarousel,
+} from "@/components/MediaLazy";
 import cache, { CACHE_CONFIG } from "@/lib/cache";
 
 export const metadata = {
@@ -19,29 +24,6 @@ export const metadata = {
     ],
   },
 };
-
-const PhotosDisplay = dynamic(() => import("@/components/PhotosDisplay"), {
-  ssr: false,
-});
-const VideoPlayer = dynamic(() => import("@/components/VideoPlayer"), {
-  ssr: false,
-});
-const MusicPlayer = dynamic(() => import("@/components/MusicPlayer"), {
-  ssr: false,
-});
-const SplideCarousel = dynamic(() => import("@/components/SplideCarousel"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-[12dvh] gap-2 flex ">
-      <div className="bg-transparent flex-shrink-0 w-1/4 h-full rounded-lg"></div>
-      <div className="bg-transparent flex-shrink-0 w-1/4 h-full rounded-lg"></div>
-      <div className="bg-transparent flex-shrink-0 w-1/4 h-full rounded-lg"></div>
-      <div className="bg-transparent flex-shrink-0 w-1/4 h-full rounded-lg"></div>
-      <div className="bg-transparent flex-shrink-0 w-1/4 h-full rounded-lg"></div>
-    </div>
-  ),
-});
-
 
 const fetchYouTubeJson = async () => {
   const jsonUrl = process.env.NEXT_PUBLIC_VIDEOS_JSON_URL;
