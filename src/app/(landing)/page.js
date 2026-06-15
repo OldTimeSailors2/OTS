@@ -1,113 +1,499 @@
 import Image from "next/image";
-import logo from "../../../public/assets/logo.svg";
-import dynamic from "next/dynamic";
-import LandingDynamicBg from "@/components/LandingDynamicBg";
-import MainDiv from "@/components/MainDiv";
-import { formatLandingImages } from "@/helpers/formatApiResponses";
-const LandingDisplay = dynamic(() => import("@/components/LandingDisplay"), {
-  ssr: false,
-  loading: () => (
-    <div className="md1:px-3 md:px-14 md2:px-14 lg:px-28 xl:p-0 1xl:mt-4 1xxl:mt-14 2xl:mt-20 3xl:mt-24 fullHD:mt-48 2k:mt-64 4k:mt-96">
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-[5px] xl:gap-4">
-        {/* Four placeholders for images */}
-        <div className="bg-transparent aspect-w-1 aspect-h-1 w-full h-full"></div>
-        <div className="bg-transparent aspect-w-1 aspect-h-1 w-full h-full"></div>
-        <div className="bg-transparent aspect-w-1 aspect-h-1 w-full h-full"></div>
-        <div className="bg-transparent aspect-w-1 aspect-h-1 w-full h-full"></div>
-      </div>
-    </div>
-  ),
-});
-const LandingLeftSide = dynamic(() => import("@/components/LandingLeftSide"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex justify-between">
-      <div className="flex flex-col items-center justify-center ">
-        {/* Placeholder for the description image */}
-        <div className="mt-32 ml-0.5 bg-transparent rounded-md w-24 h-16 md1:w-36 md1:h-10 lg:w-36 lg:h-16"></div>
+import Link from "next/link";
 
-        {/* Placeholder for the blurb button*/}
-        <div className="mt-4 bg-transparent rounded-md w-12 h-5 lg:w-14 lg:h-6"></div>
+export const dynamic = "force-dynamic";
 
-        {/* Placeholders for social media icons*/}
-        <div className="grid grid-cols-2 gap-2 mt-10 xl:mt-8">
-          <div className="bg-transparent rounded-full w-9 h-9 md1:w-16 md1:h-16 xl:w-11 xl:h-11"></div>
-          <div className="bg-transparent rounded-full w-9 h-9 md1:w-16 md1:h-16 xl:w-11 xl:h-11"></div>
-          <div className="bg-transparent rounded-full w-9 h-9 md1:w-16 md1:h-16 xl:w-11 xl:h-11"></div>
-          <div className="bg-transparent rounded-full w-9 h-9 md1:w-16 md1:h-16 xl:w-11 xl:h-11"></div>
-        </div>
-      </div>
+const DESKTOP_FOLDER = "Images/ImageLandingDesktop";
+const MOBILE_FOLDER = "Images/ImageLandingMovile";
 
-      <div
-        className="flex flex-col gap-1 xs:gap-1 md1:gap-3 xl:gap-1.5 2k:gap-3
-       mt-1 min-[375px]:max-xs:mt-2 md1:mt-8 min-[820px]:mt-10 lg:mt-11 xl:mt-1.5 1xxl:mt-3 fullHD:mt-5 4k:mt-7
-        mr-4 min-[375px]:max-xs:mr-8 xs:mr-6 iphone-1:max-[393px]:mr-7 iphone-2:max-[415px]mr-9 iphone-3:mr-9 md1:mr-6 min-[820px]:mr-10 lg:mr-11 xl:mr-12 fullHD:mr-20 2k:mr-28 4k:mr-36"
-      >
-        {/* Skeleton for each Link*/}
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-        <div className="octagon bg-transparent xl:w-40 xl:h-8 1xxl:w-48 1xxl:h-10"></div>
-      </div>
-    </div>
-  ),
-});
+const ASSET_KEYS = {
+  landingDesktop: [
+    "landingdesktop",
+    "landing_desktop",
+    "landing-desktop",
+    "desktop",
+    "landing",
+  ],
+  landingMobile: [
+    "landingmobile",
+    "landing_mobile",
+    "landing-mobile",
+    "mobile",
+    "landing",
+  ],
 
-const fetchLandingImages = async () => {
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_API}/landing-image?populate=*`,
-    );
-    if (!res.ok) {
-      throw new Error(
-        `Failed to fetch landing images: ${res.status} ${res.statusText}`,
-      );
-    }
-    const landingImages = await res.json();
-    const formattedLandingImages = await formatLandingImages(landingImages);
+  border: ["border", "frame", "marco"],
+  logo: ["logo"],
+  memberships: ["memberships", "membership"],
+  description: ["description", "descripcion", "descripción"],
+  corner: [
+    "corner",
+    "corners",
+    "corner-detail",
+    "corner_detail",
+    "esquina",
+    "esquinas",
+  ],
 
-    return formattedLandingImages;
-  } catch (error) {
-    console.error("Error fetching landing images:", error);
-    throw error;
-  }
+  instagram: ["instagram", "ig", "insta", "instagram-icon", "instagram_icon"],
+  facebook: ["facebook", "fb", "facebook-icon", "facebook_icon"],
+  youtube: ["youtube", "yt", "youtube-icon", "youtube_icon"],
+  whatsapp: ["whatsapp", "wa", "wsp", "whatsapp-icon", "whatsapp_icon"],
+  mail: ["mail", "email", "correo", "envelope", "mail-icon", "email-icon"],
+  spotify: ["spotify", "sp", "spotify-icon", "spotify_icon"],
 };
 
-const Home = async () => {
-  const formattedLandingImages = await fetchLandingImages();
+async function getFolderResources(folder) {
+  try {
+    const cloudinary = (await import("cloudinary")).v2;
+    cloudinary.config(process.env.CLOUDINARY_URL);
+
+    const res = await cloudinary.api.resources_by_asset_folder(folder, {
+      resource_type: "image",
+      max_results: 200,
+    });
+
+    return res?.resources ?? [];
+  } catch (error) {
+    console.error(`Error fetching Cloudinary folder "${folder}":`, error);
+    return [];
+  }
+}
+
+function findByAnyName(resources, nameList) {
+  const lowerNames = nameList.map((n) => n.toLowerCase());
 
   return (
-    <MainDiv className="w-full min-h-screen flex flex-col relative">
-      <LandingDynamicBg />
-      <div className="w-full h-full px-[17.5px] pt-[17.5px] xl:px-[28px] xl:pt-[28px] 2k:px-[52px] 2k:pt-[52px] 4k:px-[64px] 4k:pt-[64px] relative">
-        <div className="w-full h-full flex flex-col gap-3 md1:justify-between xl:gap-0 relative">
-          <div className="absolute image-border pointer-events-none" />
-          <Image
-            src={logo}
-            width={135}
-            height={135}
-            priority={true}
-            alt="OTS Logo"
-            className="absolute -top-3.5 -left-3.5 xs2:-top-4 md1:-left-3.5  xl:-top-7 xl:-left-6   2k:-top-12 2k:-left-11 4k:-top-14 4k:-left-14 
-                 xs:w-[145px] xs:h-[145px] xs2:w-[155px] xs2:h-[155px]
-                  md1:w-[150px] md1:h-[150px] md:w-[170px] md:h-[170px]  min-[820px]:w-[200px]  min-[820px]:h-[200px] lg:w-[230px] lg:h-[230px]
-                   xl:w-[190px] xl:h-[190px] 1xxl:w-[210px] 1xxl:h-[210px] 4xl:w-[230px] 4xl:h-[230px]  fullHD:w-[290px] fullHD:h-[290px] 2k:w-[420px] 2k:h-[420px] 4k:w-[580px] 4k:h-[580px]"
-          />
-
-          <LandingLeftSide />
-
-          <LandingDisplay images={formattedLandingImages} />
-        </div>
-      </div>
-      <footer className="w-full z-[105] flex justify-center items-center py-1 xl:p-1 2k:py-2">
-        <p className="text-beige font-txt text-[9px] md1:text-lg md:text-xl xl:text-base 2k:text-3xl 4k:text-5xl uppercase">
-          OLD TIME SAILORS LLC.®
-        </p>
-      </footer>
-    </MainDiv>
+    resources.find((r) => {
+      const filename = (r.public_id.split("/").pop() || "").toLowerCase();
+      return lowerNames.some((n) => filename === n);
+    }) ||
+    resources.find((r) => {
+      const filename = (r.public_id.split("/").pop() || "").toLowerCase();
+      return lowerNames.some((n) => filename.includes(n));
+    }) ||
+    null
   );
-};
+}
 
-export default Home;
+async function fetchLandingAssets() {
+  try {
+    const [desktopResources, mobileResources] = await Promise.all([
+      getFolderResources(DESKTOP_FOLDER),
+      getFolderResources(MOBILE_FOLDER),
+    ]);
+
+    const desktopImage =
+      findByAnyName(desktopResources, ASSET_KEYS.landingDesktop)?.secure_url ||
+      desktopResources[0]?.secure_url ||
+      null;
+
+    const mobileImage =
+      findByAnyName(mobileResources, ASSET_KEYS.landingMobile)?.secure_url ||
+      mobileResources[0]?.secure_url ||
+      null;
+
+    return {
+      landingDesktop: desktopImage,
+      landingMobile: mobileImage,
+
+      border:
+        findByAnyName(desktopResources, ASSET_KEYS.border)?.secure_url ?? null,
+      logo: findByAnyName(desktopResources, ASSET_KEYS.logo)?.secure_url ?? null,
+      memberships:
+        findByAnyName(desktopResources, ASSET_KEYS.memberships)?.secure_url ??
+        null,
+      description:
+        findByAnyName(desktopResources, ASSET_KEYS.description)?.secure_url ??
+        null,
+      corner:
+        findByAnyName(desktopResources, ASSET_KEYS.corner)?.secure_url ?? null,
+
+      instagram:
+        findByAnyName(desktopResources, ASSET_KEYS.instagram)?.secure_url ??
+        null,
+      facebook:
+        findByAnyName(desktopResources, ASSET_KEYS.facebook)?.secure_url ??
+        null,
+      youtube:
+        findByAnyName(desktopResources, ASSET_KEYS.youtube)?.secure_url ?? null,
+      whatsapp:
+        findByAnyName(desktopResources, ASSET_KEYS.whatsapp)?.secure_url ??
+        null,
+      mail: findByAnyName(desktopResources, ASSET_KEYS.mail)?.secure_url ?? null,
+      spotify:
+        findByAnyName(desktopResources, ASSET_KEYS.spotify)?.secure_url ??
+        null,
+    };
+  } catch (error) {
+    console.error("Error fetching landing assets (Cloudinary):", error);
+    return {
+      landingDesktop: null,
+      landingMobile: null,
+      border: null,
+      logo: null,
+      memberships: null,
+      description: null,
+      corner: null,
+      instagram: null,
+      facebook: null,
+      youtube: null,
+      whatsapp: null,
+      mail: null,
+      spotify: null,
+    };
+  }
+}
+
+function SocialIcon({ href, src, alt }) {
+  if (!src) return null;
+
+  const isExternal = href.startsWith("http") || href.startsWith("mailto:");
+
+  return (
+    <Link
+      href={href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      aria-label={alt}
+      className="
+        relative flex items-center justify-center
+        w-[2rem] h-[2rem]
+        sm:w-[1.8rem] sm:h-[1.8rem]
+        lg:w-[2.9rem] lg:h-[2.9rem]
+        rounded-full
+        bg-[#f5f1e8]/95
+        shadow-[0_8px_20px_rgba(0,0,0,0.18)]
+        transition-transform duration-150
+        hover:scale-[1.05]
+      "
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 639px) 25px, (max-width: 1023px) 29px, 46px"
+        className="object-contain p-[0.26rem] sm:p-[0.3rem] lg:p-[0.25rem]"
+      />
+    </Link>
+  );
+}
+
+function MenuImageButton({
+  href,
+  src,
+  alt,
+  external = false,
+  priority = false,
+}) {
+  return (
+    <Link
+      href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+      aria-label={alt}
+      className="
+        relative block
+        w-[8rem] h-[2.15rem]
+        lg:w-[8.8rem] lg:h-[2.35rem]
+        xl:w-[9.4rem] xl:h-[2.5rem]
+        transition-transform duration-150
+        hover:translate-x-[-2px]
+      "
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority={priority}
+        sizes="160px"
+        className="object-contain"
+      />
+    </Link>
+  );
+}
+
+export default async function Home() {
+  const assets = await fetchLandingAssets();
+
+  const menuItems = [
+    {
+      href: "/media",
+      titleImg: "/assets/media.png",
+      alt: "Media",
+    },
+    {
+      href: "/tickets/calendar-view",
+      titleImg: "/assets/tickets.png",
+      alt: "Tickets",
+    },
+    {
+      href: "https://oldtimesailors.co.uk",
+      titleImg: "/assets/merch.png",
+      alt: "Merch",
+      external: true,
+    },
+    {
+      href: "/reviews",
+      titleImg: "/assets/btnReviews.png",
+      alt: "Reviews",
+    },
+    {
+      href: "/our-clients",
+      titleImg: "/assets/clients.png",
+      alt: "Our Clients",
+    },
+    {
+      href: "/services",
+      titleImg: "/assets/services.png",
+      alt: "Services",
+    },
+  ];
+
+  const socialItems = [
+    { href: "https://www.instagram.com/oldtimesailors", src: assets.instagram, alt: "Instagram" },
+    { href: "https://www.facebook.com/oldtimesailors", src: assets.facebook, alt: "Facebook" },
+    { href: "https://www.youtube.com/@oldtimesailors", src: assets.youtube, alt: "YouTube" },
+    { href: "https://api.whatsapp.com/send/?phone=447539045312&text&type=phone_number&app_absent=0", src: assets.whatsapp, alt: "WhatsApp" },
+    { href: "mailto:info@oldtimesailors.com", src: assets.mail, alt: "Email" },
+    { href: "https://open.spotify.com/intl-es/artist/4w3YE6tXZDz1qnAzIVND4o?si=qqSIZ4BLSjWjr-WDIUr0wg&nd=1&dlsi=aab0a0bac71647c6", src: assets.spotify, alt: "Spotify" },
+  ].filter((item) => item.src);
+
+  return (
+    <main className="w-full overflow-x-hidden bg-[#18324a]">
+      {/* DESKTOP / TABLET */}
+      <section className="relative hidden md:flex min-h-screen w-full items-center justify-center bg-[#18324a]  py-4 lg: lg:py-5">
+        <div
+          className="relative w-full max-w-[1350px] border-[2px] border-black "
+          style={{
+            aspectRatio: "1552 / 900"
+          }}
+        >
+          {/* Fondo real */}
+          <div className="absolute inset-x-[0%] top-[0%] bottom-[2%]">
+            {assets.landingDesktop ? (
+              <Image
+                src={assets.landingDesktop}
+                alt="Old Time Sailors Landing Desktop"
+                fill
+                priority
+                sizes="100vw"
+                className="object-contain"
+              />
+            ) : null}
+          </div>
+
+          <div className="absolute inset-0 bg-[rgba(8,19,31,0.04)]" />
+
+          {/* Layout principal del canvas */}
+          <div className="absolute inset-0 z-10 px-[4.5%] pt-[3.2%]">
+            {/* Zona superior principal */}
+            <div className="grid h-full grid-cols-[1fr_1fr] items-start">
+              {/* IZQUIERDA */}
+              <div className="flex h-full flex-col items-start justify-start gap-[1.2vw] pt-[0.3vw]">
+                {assets.description ? (
+                  <div className="relative w-[12vw] max-w-[215px] min-w-[120px] aspect-[1.7/1]">
+                    <Image
+                      src={assets.description}
+                      alt="Description"
+                      fill
+                      priority
+                      sizes="220px"
+                      className="object-contain object-left-top"
+                    />
+                  </div>
+                ) : (
+                  <div className="h-[6vw]" />
+                )}
+              </div>
+
+              {/* CENTRO / LOGO */}
+              <div className="flex h-full items-start justify-center pt-0">
+                {assets.logo ? (
+                  <div className="relative w-[18vw] max-w-[310px] min-w-[170px] aspect-square">
+                    <Image
+                      src={assets.logo}
+                      alt="Old Time Sailors"
+                      fill
+                      priority
+                      sizes="320px"
+                      className="object-contain"
+                    />
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
+            {/* MEMBERSHIPS DESKTOP ABSOLUTO */}
+            {assets.memberships ? (
+              <Link
+                href="/memberships"
+                aria-label="Memberships"
+                className="absolute z-20 block left-[9%] top-[21.5%]"
+              ><div className="relative w-[182px] h-[182px] transition-transform duration-150 hover:scale-[1.02]">
+                  <Image
+                    src={assets.memberships}
+                    alt="Memberships"
+                    fill
+                    priority
+                    sizes="500px"
+                    className="object-contain"
+                  />
+                </div>
+              </Link>
+            ) : null}
+            {/* MENÚ DESKTOP ABSOLUTO */}
+            <div className="absolute right-[4.2%] top-[3.5%] z-20">
+              <nav
+                aria-label="Main navigation"
+                className="flex flex-col items-end gap-[0.2vw] -translate-x-[5vw]"
+              >
+                {menuItems.map((item, index) => (
+                  <MenuImageButton
+                    key={item.alt}
+                    href={item.href}
+                    src={item.titleImg}
+                    alt={item.alt}
+                    external={item.external}
+                    priority={index < 3}
+                  />
+                ))}
+              </nav>
+            </div>
+
+            {/* REDES DESKTOP ABSOLUTAS */}
+            <div className="absolute left-1/2 bottom-[4.2%] z-20 -translate-x-1/2 translate-y-[18%]">
+              <div className="mt-[9vw] flex w-fit items-center justify-center gap-[0.9vw]">
+                {socialItems.map((item) => (
+                  <SocialIcon
+                    key={item.alt}
+                    href={item.href}
+                    src={item.src}
+                    alt={item.alt}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MOBILE */}
+      <section className="relative md:hidden w-full min-h-screen bg-[#18324a] overflow-hidden">
+        {assets.landingMobile ? (
+          <div className="absolute inset-0">
+            <Image
+              src={assets.landingMobile}
+              alt="Old Time Sailors Landing Mobile"
+              fill
+              priority
+              sizes="100vw"
+              className="object-contain object-top"
+            />
+          </div>
+        ) : null}
+
+        <div className="absolute inset-0 bg-[rgba(8,19,31,0.08)]" />
+
+        <div className="relative z-10 min-h-screen flex flex-col justify-between px-4 pt-4 pb-5">
+          <div className="flex flex-col gap-3">
+            {assets.description ? (
+              <div className="relative w-[7.4rem] h-[4.7rem]">
+                <Image
+                  src={assets.description}
+                  alt="Description"
+                  fill
+                  priority
+                  sizes="120px"
+                  className="object-contain object-left-top"
+                />
+              </div>
+            ) : null}
+
+            <div className="flex justify-between items-start gap-2">
+              {assets.memberships ? (
+                <Link
+                  href="/memberships"
+                  aria-label="Memberships"
+                  className="absolute z-20 block left-[6%] top-[21%]"
+                >
+                  <div className="relative w-[25vw] h-[25vw] max-w-[500px] max-h-[500px] min-w-[64px] min-h-[64px] transition-transform duration-150 hover:scale-[1.02]">
+                    <Image
+                      src={assets.memberships}
+                      alt="Memberships"
+                      fill
+                      priority
+                      sizes="500px"
+                      className="object-contain"
+                    />
+                  </div>
+                </Link>
+              ) : null}
+
+              {assets.logo ? (
+                <div className="relative w-[9.7rem] h-[9.7rem] shrink-0 -mt-2">
+                  <Image
+                    src={assets.logo}
+                    alt="Old Time Sailors"
+                    fill
+                    priority
+                    sizes="155px"
+                    className="object-contain"
+                  />
+                </div>
+              ) : null}
+
+              <div className="w-[6.3rem]" />
+            </div>
+
+            <nav
+              aria-label="Main navigation mobile"
+              className="
+                absolute
+                right-[1.8rem]
+                top-[4.2rem]
+                flex flex-col items-end
+                gap-[0.08rem]
+                scale-[0.82]
+                z-20
+              "
+            >
+              {menuItems.map((item, index) => (
+                <Link
+                  key={item.alt}
+                  href={item.href}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
+                  aria-label={item.alt}
+                  className="relative block w-[7.1rem] h-[1.95rem]"
+                >
+                  <Image
+                    src={item.titleImg}
+                    alt={item.alt}
+                    fill
+                    priority={index < 3}
+                    sizes="114px"
+                    className="object-contain"
+                  />
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          <div className="absolute left-1/2 -translate-x-1/2 top-[96vw] z-20">
+            <div className="flex items-center justify-center gap-[0.8rem]">
+              {socialItems.map((item) => (
+                <SocialIcon
+                  key={item.alt}
+                  href={item.href}
+                  src={item.src}
+                  alt={item.alt}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}

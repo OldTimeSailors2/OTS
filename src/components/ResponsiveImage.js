@@ -8,39 +8,49 @@ const ResponsiveImage = ({ images }) => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsDesktopOrLaptop(window.innerWidth >= 1280);
+      const isDesk = window.innerWidth >= 1280;
+      setIsDesktopOrLaptop(isDesk);
     };
 
     handleResize();
-
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const desktopSrc = images?.desktop?.url ? String(images.desktop.url).trim() : "";
+  const mobileSrc = images?.mobile?.url ? String(images.mobile.url).trim() : "";
+
+  const src = isDesktopOrLaptop ? desktopSrc : mobileSrc;
+
+  // ✅ Debug rápido (puedes quitarlo luego)
+  useEffect(() => {
+  }, [isDesktopOrLaptop, src]);
+
+  if (!src) {
+    console.warn("[ResponsiveImage] Missing src. images =", images);
+    return (
+      <div className="relative w-auto h-full bg-white/10 rounded-md" />
+    );
+  }
+
   return (
     <div className="relative w-auto h-full">
-      {isDesktopOrLaptop ? (
-        <Image
-          src={images.desktop.url}
-          quality={100}
-          priority={true}
-          alt="our clients"
-          sizes="70vw"
-          fill
-          className="object-contain flex items-center justify-center py-3"
-        />
-      ) : (
-        <Image
-          src={images.mobile.url}
-          quality={100}
-          priority={true}
-          alt="our clients"
-          sizes="90vw"
-          fill
-          className="object-contain flex items-center justify-center p-2"
-        />
-      )}
+      <Image
+        src={src}
+        quality={100}
+        priority={true}
+        alt="our clients"
+        sizes={isDesktopOrLaptop ? "70vw" : "90vw"}
+        fill
+        className={
+          isDesktopOrLaptop
+            ? "object-contain flex items-center justify-center py-3"
+            : "object-contain flex items-center justify-center p-2"
+        }
+        // ✅ CLAVE: evita /_next/image (y por ende el 402 en Vercel Preview)
+        unoptimized
+      />
     </div>
   );
 };

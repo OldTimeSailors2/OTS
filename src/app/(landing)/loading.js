@@ -11,6 +11,7 @@ const Loading = () => {
         style={{ objectFit: "cover", objectPosition: "center" }}
         priority={true}
         alt="Background"
+        unoptimized
       />
 
       {/* Content */}
@@ -22,6 +23,7 @@ const Loading = () => {
             priority={true}
             src={logo}
             alt="Loading"
+            unoptimized
           />
         </div>
       </div>

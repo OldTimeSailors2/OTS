@@ -16,12 +16,6 @@ const useScrollTrigger = (options = {}) => {
       else if (targetElement.scrollTop !== undefined) {
         scrollPosition = targetElement.scrollTop;
       }
-
-      console.log('Scroll detected:', {
-        target: targetElement,
-        position: scrollPosition
-      });
-
       setTrigger(scrollPosition > (options.threshold || 1));
     };
 

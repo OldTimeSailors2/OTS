@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 /*Animation*/
+html{
+  background-color: #E9DFCB ;
+}
 
 @keyframes rotate-spring {
   0% {
@@ -30,16 +33,40 @@
 }
 /*Animation End*/
 
-/* Remove map's bottom btns */
 
-.gmnoprint {
-  display: none;
-}
-.gm-style > div > div > a > div > img {
-  display: none;
+/* =========================================================
+   ✅ MAP FIX (NO ROMPER CLICKS)
+   ========================================================= */
+
+/* ✅ Oculta attribution/terms/footer sin tocar capas de interacción */
+.gm-style-cc {
+  display: none !important;
 }
 
-/* Remove map's bottom btns end */
+/* ✅ Oculta enlaces típicos del footer (Open in Google Maps / Terms) */
+.gm-style a[href^="https://maps.google.com/maps"],
+.gm-style a[href^="https://www.google.com/maps"] {
+  display: none !important;
+}
+
+/* ❌ IMPORTANTE: quitamos esto porque puede romper capas internas / hitbox
+.gm-style a img {
+  display: none !important;
+}
+*/
+
+/* ✅ Si quieres quitar controles visibles (si NO los ocupas). 
+   Si los necesitas, comenta este bloque. */
+.gm-fullscreen-control,
+.gm-svpc,
+.gm-control-active {
+  display: none !important;
+}
+
+/* =========================================================
+   MAP FIX END
+   ========================================================= */
+
 
 .octagon-navbar {
   width: 136px;
@@ -187,20 +214,28 @@
   }
 }
 
+
+/* =========================================================
+   ✅ POPUP FIX (NO TAPAR MAPA / NO BLOQUEAR CLICKS)
+   ========================================================= */
+
 .popup-container {
   position: absolute;
   height: 0;
-  width: 100%;
+  width: 0;
   cursor: auto;
+  pointer-events: none;
+  z-index: 1000;
 }
 
 /* The parent of the bubble. A zero-height div at the top of the tip. */
 .popup-bubble-anchor {
-  /* Position the div a fixed distance above the tip. */
   position: absolute;
-  width: 100%;
+  width: 0;
+  height: 0;
   bottom: 20px;
   left: 0;
+  pointer-events: none;
 }
 
 /* This element draws the tip. */
@@ -211,36 +246,41 @@
   left: 0;
   width: 0;
   height: 0;
-  /* The tip is 18px high, and 24px wide. */
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
   border-top: 18px solid #dd3254;
-  /* Center the tip horizontally. */
-  transform: translate(-50%, 0) scale(0.8); /* Start scaled down with the tip translated */
+  transform: translate(-50%, 0) scale(0.8);
   transition:
     transform 0.2s ease-in-out,
     opacity 0.2s ease-in-out;
-  opacity: 0; /* Start hidden */
+  opacity: 0;
+  pointer-events: none;
 }
 
 .popup-bubble-anchor.seeable::after {
-  transform: translate(-50%, 0) scale(1); /* Scale to normal size */
+  transform: translate(-50%, 0) scale(1);
   opacity: 1;
 }
 
 .popup-bubble {
   @apply flex absolute top-0 left-0 bg-[#dcccb5] rounded-xl shadow-lg border-4 border-lightRed min-w-[100px] md:min-w-[400px];
-  transform: translate(-50%, -100%) scale(0.8); /* Start scaled down */
+  transform: translate(-50%, -100%) scale(0.8);
   opacity: 0;
   transition:
     opacity 0.2s ease-in-out,
     transform 0.2s ease-in-out;
+  pointer-events: auto;
 }
 
 .popup-bubble.seeable {
   opacity: 1;
-  transform: translate(-50%, -100%) scale(1); /* Scale to normal size */
+  transform: translate(-50%, -100%) scale(1);
 }
+
+/* =========================================================
+   POPUP FIX END
+   ========================================================= */
+
 
 /*Services Display Layout*/
 
@@ -248,16 +288,16 @@
   clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
   position: relative;
   background-color: #dd3254;
-  width: var(--hexagon-width, 105px); /* Fallback to 105px */
-  height: var(--hexagon-height, 70.5px); /* Fallback to 70.5px */
+  width: var(--hexagon-width, 105px);
+  height: var(--hexagon-height, 70.5px);
   left: 1px;
 }
 
 .services-hexagon::before {
   content: "";
   position: absolute;
-  width: var(--hexagon-before-width, 103px); /* Fallback to 103px */
-  height: var(--hexagon-before-height, 69px); /* Fallback to 69px */
+  width: var(--hexagon-before-width, 103px);
+  height: var(--hexagon-before-height, 69px);
   clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
 }
 
@@ -265,16 +305,16 @@
   clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
   position: relative;
   background-color: #dd3254;
-  width: var(--hexagon-2-width, 105px); /* Fallback to 105px */
-  height: var(--hexagon-2-height, 70.5px); /* Fallback to 70.5px */
+  width: var(--hexagon-2-width, 105px);
+  height: var(--hexagon-2-height, 70.5px);
   left: 1px;
 }
 
 .services-hexagon-2::before {
   content: "";
   position: absolute;
-  width: var(--hexagon-2-before-width, 103px); /* Fallback to 103px */
-  height: var(--hexagon-2-before-height, 69px); /* Fallback to 69px */
+  width: var(--hexagon-2-before-width, 103px);
+  height: var(--hexagon-2-before-height, 69px);
   clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
 }
 
@@ -282,22 +322,22 @@
   clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
   position: relative;
   background-color: #dd3254;
-  width: var(--hexagon-3-width, 105px); /* Fallback to 105px */
-  height: var(--hexagon-3-height, 70.5px); /* Fallback to 70.5px */
+  width: var(--hexagon-width, 105px);
+  height: var(--hexagon-height, 70.5px);
   left: 1px;
 }
 
 .services-hexagon-3::before {
   content: "";
   position: absolute;
-  width: var(--hexagon-3-before-width, 103px); /* Fallback to 103px */
-  height: var(--hexagon-3-before-height, 69px); /* Fallback to 69px */
+  width: var(--hexagon-before-width, 103px);
+  height: var(--hexagon-before-height, 69px);
   clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
 }
 
 .services-octagon {
-  width: var(--octagon-width, 250px); /* Fallback to 250px */
-  height: var(--octagon-height, 450px); /* Fallback to 450px */
+  width: var(--octagon-width, 250px);
+  height: var(--octagon-height, 450px);
   clip-path: polygon(90% 0, 100% 4%, 100% 96%, 90% 100%, 0 100%, 0 0);
 }
 
@@ -308,8 +348,8 @@
     clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
     position: relative;
     background-color: #dd3254;
-    width: var(--hexagon-width, 140px); /* Fallback to 140px */
-    height: var(--hexagon-height, 80px); /* Fallback to 80px */
+    width: var(--hexagon-width, 140px);
+    height: var(--hexagon-height, 80px);
     left: 1px;
   }
 }
@@ -318,9 +358,8 @@
   .services-hexagon::before {
     content: "";
     position: absolute;
-
-    width: var(--hexagon-before-width, 139px); /* Fallback to 139px */
-    height: var(--hexagon-before-height, 79px); /* Fallback to 79px */
+    width: var(--hexagon-before-width, 139px);
+    height: var(--hexagon-before-height, 79px);
     clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
   }
 }
@@ -330,8 +369,8 @@
     clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
     position: relative;
     background-color: #dd3254;
-    width: var(--hexagon-2-width, 140px); /* Fallback to  140px */
-    height: var(--hexagon-2-height, 80px); /* Fallback to 80px */
+    width: var(--hexagon-2-width, 140px);
+    height: var(--hexagon-2-height, 80px);
     left: 1px;
   }
 }
@@ -340,9 +379,8 @@
   .services-hexagon-2::before {
     content: "";
     position: absolute;
-
-    width: var(--hexagon-2-before-width, 139px); /* Fallback to 139px */
-    height: var(--hexagon-2-before-height, 79px); /* Fallback to 79px */
+    width: var(--hexagon-2-before-width, 139px);
+    height: var(--hexagon-2-before-height, 79px);
     clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
   }
 }
@@ -352,8 +390,8 @@
     clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
     position: relative;
     background-color: #dd3254;
-    width: var(--hexagon-3-width, 140px); /* Fallback to 140px */
-    height: var(--hexagon-3-height, 80px); /* Fallback to 80px */
+    width: var(--hexagon-3-width, 140px);
+    height: var(--hexagon-3-height, 80px);
     left: 1px;
   }
 }
@@ -362,17 +400,16 @@
   .services-hexagon-3::before {
     content: "";
     position: absolute;
-
-    width: var(--hexagon-3-before-width, 139px); /* Fallback to 139px */
-    height: var(--hexagon-3-before-height, 79px); /* Fallback to 79px */
+    width: var(--hexagon-3-before-width, 139px);
+    height: var(--hexagon-3-before-height, 79px);
     clip-path: polygon(0 20%, 13% 0, 100% 0, 100% 100%, 13% 100%, 0 80%);
   }
 }
 
 @media (min-width: 600px) {
   .services-octagon {
-    width: var(--octagon-width, 435px); /* Fallback to 435px */
-    height: var(--octagon-height, 550px); /* Fallback to 550px */
+    width: var(--octagon-width, 435px);
+    height: var(--octagon-height, 550px);
     clip-path: polygon(94% 0, 100% 5%, 100% 95%, 94% 100%, 0 100%, 0 0);
   }
 }
@@ -384,9 +421,8 @@
     clip-path: polygon(10% 0, 90% 0, 100% 20%, 100% 100%, 0 100%, 0 20%);
     position: relative;
     background-color: #dd3254;
-    width: var(--hexagon-width, 126px); /* Fallback to 126px */
-    height: var(--hexagon-height, 69.3px); /* Fallback to 69.3px */
-    
+    width: var(--hexagon-width, 126px);
+    height: var(--hexagon-height, 69.3px);
   }
 }
 
@@ -395,8 +431,8 @@
     content: "";
     position: absolute;
     top: 1px;
-    width: var(--hexagon-before-width, 124px); /* Fallback to 124px */
-    height: var(--hexagon-before-height, 68.3px); /* Fallback to 68.3px */
+    width: var(--hexagon-before-width, 124px);
+    height: var(--hexagon-before-height, 68.3px);
     clip-path: polygon(10% 0, 90% 0, 100% 20%, 100% 100%, 0 100%, 0 20%);
   }
 }
@@ -406,9 +442,8 @@
     clip-path: polygon(6% 0, 94% 0, 100% 20%, 100% 100%, 0 100%, 0 20%);
     position: relative;
     background-color: #dd3254;
-    width: var(--hexagon-2-width, 235.2px); /* Fallback to  235.2px */
-    height: var(--hexagon-2-height, 69.3px); /* Fallback to 69.3px */
-    
+    width: var(--hexagon-2-width, 235.2px);
+    height: var(--hexagon-2-height, 69.3px);
   }
 }
 
@@ -417,8 +452,8 @@
     content: "";
     position: absolute;
     top: 1px;
-    width: var(--hexagon-2-before-width, 233.2px); /* Fallback to 233.2px */
-    height: var(--hexagon-2-before-height, 68.3px); /* Fallback to 68.3px */
+    width: var(--hexagon-2-before-width, 233.2px);
+    height: var(--hexagon-2-before-height, 68.3px);
     clip-path: polygon(6% 0, 94% 0, 100% 20%, 100% 100%, 0 100%, 0 20%);
   }
 }
@@ -428,9 +463,8 @@
     clip-path: polygon(9% 0, 91% 0, 100% 20%, 100% 100%, 0 100%, 0 20%);
     position: relative;
     background-color: #dd3254;
-    width: var(--hexagon-3-width, 168px); /* Fallback to 168px */
-    height: var(--hexagon-3-height, 69.3px); /* Fallback to 69.3px */
-    
+    width: var(--hexagon-3-width, 168px);
+    height: var(--hexagon-3-height, 69.3px);
   }
 }
 
@@ -439,16 +473,16 @@
     content: "";
     position: absolute;
     top: 1px;
-    width: var(--hexagon-3-before-width, 166px); /* Fallback to 166px */
-    height: var(--hexagon-3-before-height, 68.3px); /* Fallback to 68.3px */
+    width: var(--hexagon-3-before-width, 166px);
+    height: var(--hexagon-3-before-height, 68.3px);
     clip-path: polygon(9% 0, 91% 0, 100% 20%, 100% 100%, 0 100%, 0 20%);
   }
 }
 
 @media (min-width: 1280px) {
   .services-octagon {
-    width: var(--octagon-width, 1240px); /* Fallback to 1240px */
-    height: var(--octagon-height, 300px); /* Fallback to 400px */
+    width: var(--octagon-width, 1240px);
+    height: var(--octagon-height, 300px);
     clip-path: polygon(
       3% 0,
       97% 0,
@@ -478,7 +512,6 @@
 
 #paragraph-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(218, 213, 203, 0.85);
-
   border-radius: 9999px;
 }
 
@@ -785,4 +818,23 @@ body::-webkit-scrollbar-thumb {
   background-color: #1f344a;    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
   border: 1px solid;  /* creates padding around scroll thumb */
+}
+
+/* ✅ Octagon buttons for the slide menu */
+.octagon {
+  width: 100%;
+  height: 40px;
+  clip-path: polygon(
+    5% 0%,
+    95% 0%,
+    100% 25%,
+    100% 75%,
+    95% 95%,
+    5% 95%,
+    0% 75%,
+    0% 25%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -9,14 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.1",
     "@nextui-org/modal": "^2.0.28",
     "@nextui-org/system": "^2.0.15",
     "@nextui-org/theme": "^2.1.17",
     "@splidejs/react-splide": "^0.7.12",
     "@vis.gl/react-google-maps": "^0.1.2",
-    "framer-motion": "^10.16.5",
+    "cloudinary": "^2.8.0",
+    "framer-motion": "^11.5.6",
     "howler": "^2.2.4",
-    "isomorphic-dompurify": "^2.7.0",
+    "isomorphic-dompurify": "2.15.0",
     "marked": "^12.0.2",
     "next": "14.0.0",
     "plaiceholder": "^3.0.0",
@@ -38,5 +42,9 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "5.7.3"
+  },
+  "overrides": {
+    "jsdom": "20.0.3",
+    "parse5": "6.0.1"
   }
 }
