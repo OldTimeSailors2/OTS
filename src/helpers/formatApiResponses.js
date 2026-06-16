@@ -5,7 +5,8 @@ import DOMPurify from "isomorphic-dompurify";
 const fetchAndConvertToBase64 = async (placeholderUrls) => {
   const promises = placeholderUrls.map(async (url) => {
     try {
-      const response = await fetch(url);
+      // Next 15 defaults fetch to no-store; keep caching these immutable CDN placeholder images
+      const response = await fetch(url, { cache: "force-cache" });
       const buffer = await response.arrayBuffer();
       const { base64 } = await getPlaiceholder(Buffer.from(buffer));
       return base64;

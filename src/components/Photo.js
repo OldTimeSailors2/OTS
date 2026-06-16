@@ -55,8 +55,6 @@ const Photo = ({ photo, index }) => {
         onError={() => {
           console.error("[Photo thumbnail] Image failed:", src, photo);
         }}
-        onLoadingComplete={() => {
-        }}
       />
     </div>
   );

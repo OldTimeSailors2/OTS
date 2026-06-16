@@ -19,7 +19,9 @@
  */
 const mockImage = (id, slug, localPath = null) => {
   const fallback = (size) =>
-    localPath ?? `https://placehold.co/${size}/1a1a2e/1a1a2e?text=${slug}`;
+    localPath ??
+    // encode the slug: Next 15 rejects image src ending in whitespace
+    `https://placehold.co/${size}/1a1a2e/1a1a2e?text=${encodeURIComponent(slug)}`;
   return {
     id,
     blurDataURL: null,

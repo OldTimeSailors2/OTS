@@ -126,8 +126,10 @@ const blurProps = (img) =>
  */
 const resolveImageUrl = (image, size = "thumb") => {
   const { formats, url } = image.attributes;
-  if (size === "full") return formats.xl?.url ?? url;
-  return formats.medium?.url ?? formats.small?.url;
+  // trimEnd: Next 15 throws if an image src ends in whitespace, so guard
+  // against stray spaces in feed data
+  if (size === "full") return (formats.xl?.url ?? url)?.trimEnd();
+  return (formats.medium?.url ?? formats.small?.url)?.trimEnd();
 };
 
 // ---------------------------------------------------------------------------
