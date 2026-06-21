@@ -232,6 +232,13 @@ export default async function Home() {
             <ResponsivePosterImage />
           </div>
 
+          <img
+            src="/assets/border.png"
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-[0px] z-[5] h-full w-full"
+          />
+
           <div className="absolute inset-0 bg-[rgba(8,19,31,0.02)]" />
 
           <div className="absolute inset-0 z-10">
@@ -262,29 +269,15 @@ export default async function Home() {
             ) : null}
 
             {assets.memberships ? (
-              <Link
-                href="/memberships"
-                aria-label="Memberships"
-                className="absolute z-20 block left-[7.1%] top-[20%]"
-              >
+              <Link href="/memberships" aria-label="Memberships" className="absolute z-20 block left-[7.1%] top-[20%]">
                 <div className="relative w-[9.8vw] h-[9.8vw] max-w-[145px] max-h-[145px] min-w-[105px] min-h-[105px] transition-transform duration-150 hover:scale-[1.02]">
-                  <Image
-                    src={assets.memberships}
-                    alt="Memberships"
-                    fill
-                    priority
-                    sizes="150px"
-                    className="object-contain"
-                  />
+                  <Image src={assets.memberships} alt="Memberships" fill priority sizes="150px" className="object-contain" />
                 </div>
               </Link>
             ) : null}
 
             <div className="absolute right-[7.7%] top-[5.2%] z-20">
-              <nav
-                aria-label="Main navigation"
-                className="flex flex-col items-end gap-[0.12vw]"
-              >
+              <nav aria-label="Main navigation" className="flex flex-col items-end gap-[0.12vw]">
                 {menuItems.map((item, index) => (
                   <MenuImageButton
                     key={item.alt}
@@ -301,19 +294,13 @@ export default async function Home() {
             <div className="absolute left-1/2 bottom-[1.7%] z-20 -translate-x-1/2">
               <div className="flex w-fit items-center justify-center gap-[0.75vw]">
                 {socialItems.map((item) => (
-                  <SocialIcon
-                    key={item.alt}
-                    href={item.href}
-                    src={item.src}
-                    alt={item.alt}
-                  />
+                  <SocialIcon key={item.alt} href={item.href} src={item.src} alt={item.alt} />
                 ))}
               </div>
             </div>
           </div>
         </div>
       </section>
-
       <section className="relative md:hidden w-full min-h-screen bg-[#18324a] overflow-hidden">
         <div className="absolute inset-[8px]">
           <ResponsivePosterImage />
