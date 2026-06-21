@@ -104,7 +104,7 @@ function ResponsivePosterImage() {
     <img
       src={POSTER_IMAGE}
       alt="Old Time Sailors Home"
-      className="absolute inset-0 h-full w-full object-cover object-center"
+      className="absolute inset-0 h-full w-full  object-center"
     />
   );
 }
@@ -228,7 +228,7 @@ export default async function Home() {
           className="relative w-full max-w-[1350px] border-[2px] border-black overflow-hidden"
           style={{ aspectRatio: "1552 / 900" }}
         >
-          <div className="absolute inset-[30px]">
+          <div className="absolute inset-[44px]">
             <ResponsivePosterImage />
 
             <div
@@ -299,8 +299,8 @@ export default async function Home() {
               </nav>
             </div>
 
-            <div className="absolute left-1/2 bottom-[1.7%] z-20 -translate-x-1/2">
-              <div className="flex w-fit items-center justify-center gap-[0.75vw]">
+            <div className="absolute left-1/2 bottom-[21px] z-20 -translate-x-1/2">
+              <div className="flex w-fit items-center justify-center gap-[30px]">
                 {socialItems.map((item) => (
                   <SocialIcon key={item.alt} href={item.href} src={item.src} alt={item.alt} />
                 ))}
@@ -327,7 +327,7 @@ export default async function Home() {
                 fill
                 priority
                 sizes="120px"
-                className="object-contain object-left-top"
+                className=" object-left-top"
               />
             </div>
           ) : null}
