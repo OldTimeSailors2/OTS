@@ -31,6 +31,11 @@ const ViewSwitch = () => {
       </div>
       */}
 
+      {/*
+      🔴 TEMPORALMENTE OCULTO - OTS-3
+      Tab CALENDAR oculto solo por ahora.
+      Se volverá a utilizar más adelante.
+
       <div
         className={`octagon-tickets ${
           pathname === "/tickets/calendar-view" ? "bg-darkBlue" : "bg-darkBeige"
@@ -48,6 +53,7 @@ const ViewSwitch = () => {
           </div>
         </Link>
       </div>
+      */}
 
     </div>
   );
