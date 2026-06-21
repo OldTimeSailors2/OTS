@@ -228,16 +228,24 @@ export default async function Home() {
           className="relative w-full max-w-[1350px] border-[2px] border-black overflow-hidden"
           style={{ aspectRatio: "1552 / 900" }}
         >
-          <div className="absolute inset-[10px]">
+          <div className="absolute inset-[30px]">
             <ResponsivePosterImage />
-          </div>
 
-          <img
-            src="/assets/border.png"
-            alt=""
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-[0px] z-[5] h-full w-full"
-          />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute z-[5]"
+              style={{
+                top: "-10px",
+                bottom: "-10px",
+                left: "-10px",
+                right: "-12px",
+                backgroundImage: "url('/assets/border.png')",
+                backgroundSize: "100% 100%",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+              }}
+            />
+          </div>
 
           <div className="absolute inset-0 bg-[rgba(8,19,31,0.02)]" />
 
@@ -301,6 +309,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+
       <section className="relative md:hidden w-full min-h-screen bg-[#18324a] overflow-hidden">
         <div className="absolute inset-[8px]">
           <ResponsivePosterImage />
