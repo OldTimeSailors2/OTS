@@ -8,10 +8,8 @@ const ViewSwitch = () => {
     <div className="flex flex-row w-full justify-end pr-3">
 
       {/*
-      🔴 TEMPORALMENTE OCULTO
-      Tab MAP oculto solo por ahora.
-      Se volverá a utilizar más adelante.
-      
+      TODO: uncomment once the map functionality is implemented
+
       <div
         className={`octagon-tickets ${
           pathname === "/tickets/map-view" ? "bg-darkBlue" : "bg-darkBeige"
@@ -32,9 +30,7 @@ const ViewSwitch = () => {
       */}
 
       {/*
-      🔴 TEMPORALMENTE OCULTO - OTS-3
-      Tab CALENDAR oculto solo por ahora.
-      Se volverá a utilizar más adelante.
+      TODO: uncomment once the map functionality is implemented
 
       <div
         className={`octagon-tickets ${

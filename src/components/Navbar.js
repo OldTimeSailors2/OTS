@@ -17,12 +17,27 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Social from "./Social";
 
 const routeConfig = {
-  "/tickets": { titleImg: "/assets/tickets.png", viewSelector: false, label: "tickets" },
-  "/tickets/map-view": { titleImg: "/assets/tickets.png", viewSelector: true, label: "tickets" },
-  "/tickets/calendar-view": { titleImg: "/assets/tickets.png", viewSelector: true, label: "tickets" },
+  "/tickets": {
+    titleImg: "/assets/tickets.png",
+    viewSelector: false,
+    label: "tickets",
+  },
+  "/tickets/map-view": {
+    titleImg: "/assets/tickets.png",
+    viewSelector: true,
+    label: "tickets",
+  },
+  "/tickets/calendar-view": {
+    titleImg: "/assets/tickets.png",
+    viewSelector: true,
+    label: "tickets",
+  },
   "/reviews": { titleImg: "/assets/btnReviews.png", label: "reviews" },
   "/media": { titleImg: "/assets/btnMedia.png", label: "media" },
-  "/our-clients": { titleImg: "/assets/btnClientspng.png", label: "our clients" },
+  "/our-clients": {
+    titleImg: "/assets/btnClientspng.png",
+    label: "our clients",
+  },
   "/services": { titleImg: "/assets/btnServices.png", label: "services" },
   "/memberships": { titleImg: "/assets/memberships.png", label: "memberships" },
 };
@@ -113,7 +128,7 @@ const Navbar = () => {
         ? { backgroundColor: "#1f344a" }
         : {}),
     }),
-    [navStyle, isDynamicRoute, isScrolled, navbarColor]
+    [navStyle, isDynamicRoute, isScrolled, navbarColor],
   );
 
   const onBack = () => {
@@ -198,14 +213,12 @@ const Navbar = () => {
           className="w-full px-3 sm:px-4 py-2 flex items-center justify-between"
         >
           <button
-    onClick={onBack}
-    className="px-2.5 sm:px-3 py-1 bg-[#e6d8bd] text-[#0f2536] rounded-md text-xs sm:text-sm whitespace-nowrap flex items-center gap-2"
-  >
-    <FontAwesomeIcon icon={faArrowLeft} />
-   <span className="mx-2 font-titles text-[14px] ">
-      back
-    </span>
-  </button>
+            onClick={onBack}
+            className="px-2.5 sm:px-3 py-1 bg-[#e6d8bd] text-[#0f2536] rounded-md text-xs sm:text-sm whitespace-nowrap flex items-center gap-2"
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />
+            <span className="mx-2 font-titles text-[14px] ">back</span>
+          </button>
 
           <div />
 
@@ -253,11 +266,11 @@ const Navbar = () => {
           </div>
         </div>
 
-        {config.viewSelector && (
+        {/* {config.viewSelector && (
           <div className="w-full px-3 py-2 bg-transparent">
             <ViewSwitch />
           </div>
-        )}
+        )} */}
       </div>
 
       {menuOpen && (
@@ -301,7 +314,11 @@ const Navbar = () => {
               const isActive =
                 pathname === item.href ||
                 (item.href === "/tickets/calendar-view" &&
-                  ["/tickets", "/tickets/map-view", "/tickets/calendar-view"].includes(pathname));
+                  [
+                    "/tickets",
+                    "/tickets/map-view",
+                    "/tickets/calendar-view",
+                  ].includes(pathname));
 
               return (
                 <Link
