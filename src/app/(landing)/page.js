@@ -277,7 +277,7 @@ export default async function Home() {
             ) : null}
 
             {assets.memberships ? (
-              <Link href="/memberships" aria-label="Memberships" className="absolute z-20 block left-[7.1%] top-[20%]">
+              <Link href="/memberships" aria-label="Memberships" className="absolute z-20 block left-[65px] top-[20%]">
                 <div className="relative w-[9.8vw] h-[9.8vw] max-w-[145px] max-h-[145px] min-w-[105px] min-h-[105px] transition-transform duration-150 hover:scale-[1.02]">
                   <Image src={assets.memberships} alt="Memberships" fill priority sizes="150px" className="object-contain" />
                 </div>
