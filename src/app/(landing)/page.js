@@ -228,7 +228,7 @@ export default async function Home() {
           className="relative w-full max-w-[1350px] border-[2px] border-black overflow-hidden"
           style={{ aspectRatio: "1552 / 900" }}
         >
-          <div className="absolute inset-[44px]">
+          <div className="absolute inset-[26px]">
             <ResponsivePosterImage />
 
             <div
@@ -268,7 +268,7 @@ export default async function Home() {
               className="
     absolute
     left-1/2
-    top-[-130px]
+    top-[-160px]
     z-30
     -translate-x-1/2
     w-[540px]
