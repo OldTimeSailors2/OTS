@@ -268,7 +268,7 @@ export default async function Home() {
               className="
     absolute
     left-1/2
-    top-[-160px]
+    top-[-161px]
     z-30
     -translate-x-1/2
     w-[540px]
