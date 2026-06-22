@@ -250,18 +250,16 @@ export default async function Home() {
           <div className="absolute inset-0 bg-[rgba(8,19,31,0.02)]" />
 
           <div className="absolute inset-0 z-10">
-            {assets.description ? (
-              <div className="absolute left-[3.8%] top-[3.8%] z-20 w-[12vw] max-w-[185px] min-w-[115px] aspect-[1.7/1]">
-                <Image
-                  src={assets.description}
-                  alt="Description"
-                  fill
-                  priority
-                  sizes="190px"
-                  className="object-contain object-left-top"
-                />
-              </div>
-            ) : null}
+            <div
+              className="absolute left-[3.8%] z-30 w-[12vw] max-w-[185px] min-w-[115px]"
+              style={{ top: "calc(3.8% + 24px)" }}
+            >
+              <img
+                src="/assets/description.svg"
+                alt="Description"
+                className="block h-auto w-full object-contain"
+              />
+            </div>
 
             {assets.logo ? (
               <div className="absolute left-1/2 top-[1.7%] z-20 aspect-square w-[17vw] max-w-[225px] min-w-[150px] -translate-x-1/2">
@@ -319,17 +317,16 @@ export default async function Home() {
         <div className="absolute inset-0 bg-[rgba(8,19,31,0.08)]" />
 
         <div className="relative z-10 min-h-screen">
-          {assets.description ? (
-            <div className="absolute left-[5%] top-[3.5%] w-[7.4rem] h-[4.7rem]">
-              <Image
-                src={assets.description}
-                alt="Description"
-                fill
-                priority
-                sizes="120px"
-                className=" object-left-top"
-              />
-            </div>
+          {assets.memberships ? (
+            <Link
+              href="/memberships"
+              aria-label="Memberships"
+              className="absolute z-20 block left-[65px] top-[179px]"
+            >
+              <div className="relative w-[9.8vw] h-[9.8vw] max-w-[145px] max-h-[145px] min-w-[105px] min-h-[105px] transition-transform duration-150 hover:scale-[1.02]">
+                <Image src={assets.memberships} alt="Memberships" fill priority sizes="150px" className="object-contain" />
+              </div>
+            </Link>
           ) : null}
 
           {assets.logo ? (
