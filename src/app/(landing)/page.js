@@ -284,7 +284,7 @@ export default async function Home() {
               </Link>
             ) : null}
 
-            <div className="absolute right-[7.7%] top-[5.2%] z-20">
+            <div className="absolute right-[65px] top-[60px] z-20">
               <nav aria-label="Main navigation" className="flex flex-col items-end gap-[0.12vw]">
                 {menuItems.map((item, index) => (
                   <MenuImageButton
