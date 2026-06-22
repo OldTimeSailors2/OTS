@@ -251,8 +251,11 @@ export default async function Home() {
 
           <div className="absolute inset-0 z-10">
             <div
-              className="absolute left-[3.8%] z-30 w-[12vw] max-w-[185px] min-w-[115px]"
-              style={{ top: "calc(3.8% + 24px)" }}
+              className="absolute z-30 w-[12vw] max-w-[185px] min-w-[115px]"
+              style={{
+                left: "65px",
+                top: "60px",
+              }}
             >
               <img
                 src="/assets/description.svg"
@@ -275,12 +278,28 @@ export default async function Home() {
             ) : null}
 
             {assets.memberships ? (
-              <Link href="/memberships" aria-label="Memberships" className="absolute z-20 block left-[65px] top-[20%]">
-                <div className="relative w-[9.8vw] h-[9.8vw] max-w-[145px] max-h-[145px] min-w-[105px] min-h-[105px] transition-transform duration-150 hover:scale-[1.02]">
-                  <Image src={assets.memberships} alt="Memberships" fill priority sizes="150px" className="object-contain" />
+              <Link
+                href="/memberships"
+                aria-label="Memberships"
+                className="absolute z-20 block"
+                style={{
+                  left: "60px",
+                  top: "175px",
+                }}
+              >
+                <div className="relative w-[200px] h-[170px] transition-transform duration-150 hover:scale-[1.02]">
+                  <Image
+                    src={assets.memberships}
+                    alt="Memberships"
+                    fill
+                    priority
+                    sizes="200px"
+                    className="object-contain"
+                  />
                 </div>
               </Link>
             ) : null}
+
 
             <div className="absolute right-[65px] top-[60px] z-20">
               <nav aria-label="Main navigation" className="flex flex-col items-end]">
@@ -321,10 +340,21 @@ export default async function Home() {
             <Link
               href="/memberships"
               aria-label="Memberships"
-              className="absolute z-20 block left-[65px] top-[179px]"
+              className="absolute z-20 block"
+              style={{
+                left: "86px",
+                top: "198px",
+              }}
             >
               <div className="relative w-[9.8vw] h-[9.8vw] max-w-[145px] max-h-[145px] min-w-[105px] min-h-[105px] transition-transform duration-150 hover:scale-[1.02]">
-                <Image src={assets.memberships} alt="Memberships" fill priority sizes="150px" className="object-contain" />
+                <Image
+                  src={assets.memberships}
+                  alt="Memberships"
+                  fill
+                  priority
+                  sizes="150px"
+                  className="object-contain"
+                />
               </div>
             </Link>
           ) : null}
