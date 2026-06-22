@@ -124,7 +124,7 @@ function SocialIcon({ href, src, alt }) {
         relative flex items-center justify-center
         w-[2rem] h-[2rem]
         sm:w-[1.8rem] sm:h-[1.8rem]
-        lg:w-[2.45rem] lg:h-[2.45rem]
+        lg:w-[2.6rem] lg:h-[2.6rem]
         rounded-full
         bg-[#f5f1e8]/95
         shadow-[0_8px_20px_rgba(0,0,0,0.18)]
@@ -136,7 +136,7 @@ function SocialIcon({ href, src, alt }) {
         src={src}
         alt={alt}
         fill
-        sizes="(max-width: 639px) 25px, (max-width: 1023px) 29px, 40px"
+        sizes="(max-width: 639px) 30px, (max-width: 1023px) 33px, 43px"
         className="object-contain p-[0.26rem] sm:p-[0.3rem] lg:p-[0.25rem]"
       />
     </Link>
