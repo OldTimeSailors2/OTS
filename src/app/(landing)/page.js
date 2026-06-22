@@ -300,7 +300,7 @@ export default async function Home() {
             </div>
 
             <div className="absolute left-1/2 bottom-[21px] z-20 -translate-x-1/2">
-              <div className="flex w-fit items-center justify-center gap-[30px]">
+              <div className="flex w-fit items-center justify-center gap-[35px]">
                 {socialItems.map((item) => (
                   <SocialIcon key={item.alt} href={item.href} src={item.src} alt={item.alt} />
                 ))}
