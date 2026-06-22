@@ -264,18 +264,27 @@ export default async function Home() {
               />
             </div>
 
-            {assets.logo ? (
-              <div className="absolute left-1/2 top-[1.7%] z-20 aspect-square w-[17vw] max-w-[225px] min-w-[150px] -translate-x-1/2">
-                <Image
-                  src={assets.logo}
-                  alt="Old Time Sailors"
-                  fill
-                  priority
-                  sizes="230px"
-                  className="object-contain"
-                />
-              </div>
-            ) : null}
+            <div
+              className="
+    absolute
+    left-1/2
+    top-[-130px]
+    z-30
+    -translate-x-1/2
+    w-[540px]
+    h-[540px]
+    pointer-events-none
+  "
+            >
+              <Image
+                src="/assets/logoHomepage.png"
+                alt="Old Time Sailors"
+                fill
+                priority
+                sizes="540px"
+                className="object-contain"
+              />
+            </div>
 
             {assets.memberships ? (
               <Link
