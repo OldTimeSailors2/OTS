@@ -1,13 +1,9 @@
 import cache, { CACHE_CONFIG } from "@/lib/cache";
 
 export const fetchEvents = async () => {
-  // Check if data is already cached
   if (cache.has("events_data")) {
-    console.log("🎯 Cache HIT: events_data");
     return cache.get("events_data");
   }
-
-  console.log("🚀 Cache MISS: events_data - fetching fresh data...");
 
   const res = await fetch("/api/event", { cache: "no-store" });
 
