@@ -93,9 +93,9 @@ function SocialIcon({ href, src, alt }) {
       aria-label={alt}
       className="
         relative flex items-center justify-center
-        w-[1.8rem] h-[1.8rem]
-        sm:w-[1.9rem] sm:h-[1.9rem]
-        lg:w-[2.7rem] lg:h-[2.7rem]
+        w-[1.65rem] h-[1.65rem]
+        sm:w-[1.75rem] sm:h-[1.75rem]
+        lg:w-[2.55rem] lg:h-[2.55rem]
         rounded-full
         bg-[#f5f1e8]/95
         shadow-[0_8px_20px_rgba(0,0,0,0.18)]
@@ -108,7 +108,7 @@ function SocialIcon({ href, src, alt }) {
         alt={alt}
         fill
         sizes="(max-width: 639px) 30px, (max-width: 1023px) 33px, 43px"
-        className="object-contain p-[0.1rem] sm:p-[0.22rem] lg:p-[0.3rem]"
+        className="object-contain p-0 sm:p-[0.1rem] lg:p-[0.15rem]"
       />
     </Link>
   );
@@ -170,10 +170,10 @@ export default async function Home() {
       src: "/assets/facebook.png",
       alt: "Facebook",
     },
-    {
-      href: "https://www.youtube.com/@oldtimesailors",
-      src: "/assets/youtube.png",
-      alt: "YouTube",
+     {
+      href: "mailto:info@oldtimesailors.com",
+      src: "/assets/email.png",
+      alt: "Email",
     },
     {
       href: "https://api.whatsapp.com/send/?phone=447539045312&text&type=phone_number&app_absent=0",
@@ -181,9 +181,9 @@ export default async function Home() {
       alt: "WhatsApp",
     },
     {
-      href: "mailto:info@oldtimesailors.com",
-      src: "/assets/email.png",
-      alt: "Email",
+      href: "https://www.youtube.com/@oldtimesailors",
+      src: "/assets/youtube.png",
+      alt: "YouTube",
     },
     {
       href: "https://open.spotify.com/intl-es/artist/4w3YE6tXZDz1qnAzIVND4o?si=qqSIZ4BLSjWjr-WDIUr0wg&nd=1&dlsi=aab0a0bac71647c6",
@@ -300,13 +300,13 @@ export default async function Home() {
       </section>
 
 
-      <section className="relative md:hidden w-full h-[100dvh] bg-[#1B3046] overflow-hidden flex items-center justify-center py-3">
+      <section className="relative md:hidden w-full h-[100dvh] bg-[#1B3046] overflow-hidden flex items-center justify-center p-5">
         <div
           className="relative"
           style={{
             aspectRatio: "3020 / 6112",
-            width: "min(100%, calc((100dvh - 1.5rem) * (3020 / 6112)))",
-            height: "min(calc(100dvh - 1.5rem), calc(100vw * (6112 / 3020)))",
+            width: "min(100%, calc((100dvh - 2.5rem) * (3020 / 6112)))",
+            height: "min(calc(100dvh - 2.5rem), calc(100vw * (6112 / 3020)))",
           }}
         >
           <img
@@ -317,21 +317,20 @@ export default async function Home() {
 
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 border-[2px] border-black"
-            style={{ top: "-8px", bottom: "-8px" }}
+            className="pointer-events-none absolute border-[2px] border-black"
+            style={{ top: "-8px", bottom: "-15px", left: "-8px", right: "-8px" }}
           />
 
           <Link
             href="/memberships"
             aria-label="Memberships"
-            className="absolute left-[20%] top-[19%] z-20 block w-[100px] h-[100px] -translate-x-1/2 transition-transform duration-150 hover:scale-[1.02]"
+            className="absolute left-[18%] top-[19%] z-20 block w-[100px] h-[100px] -translate-x-1/2 transition-transform duration-150 hover:scale-[1.02]"
           >
             <Image
               src="/assets/memberjoinus.png"
               alt="Memberships - Join Us"
               fill
               priority
-              sizes="100px"
               className="object-contain"
             />
           </Link>
