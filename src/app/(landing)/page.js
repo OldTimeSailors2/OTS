@@ -95,7 +95,7 @@ function SocialIcon({ href, src, alt }) {
         relative flex items-center justify-center
         w-[1.65rem] h-[1.65rem]
         sm:w-[1.75rem] sm:h-[1.75rem]
-        lg:w-[2.55rem] lg:h-[2.55rem]
+        lg:w-[3rem] lg:h-[3rem]
         rounded-full
         bg-[#f5f1e8]/95
         shadow-[0_8px_20px_rgba(0,0,0,0.18)]
@@ -294,6 +294,14 @@ export default async function Home() {
                   />
                 ))}
               </nav>
+            </div>
+
+            <div className="absolute left-1/2 z-20 bottom-[1px] -translate-x-1/2">
+              <div className="flex w-fit items-center justify-center gap-[14px]">
+                {socialItems.map((item) => (
+                  <SocialIcon key={item.alt} href={item.href} src={item.src} alt={item.alt} />
+                ))}
+              </div>
             </div>
           </div>
         </div>
