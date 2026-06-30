@@ -11,13 +11,6 @@ const ASSET_KEYS = {
   logo: ["logo"],
   memberships: ["memberships", "membership"],
   description: ["description", "descripcion", "descripción"],
-
-  instagram: ["instagram", "ig", "insta", "instagram-icon", "instagram_icon"],
-  facebook: ["facebook", "fb", "facebook-icon", "facebook_icon"],
-  youtube: ["youtube", "yt", "youtube-icon", "youtube_icon"],
-  whatsapp: ["whatsapp", "wa", "wsp", "whatsapp-icon", "whatsapp_icon"],
-  mail: ["mail", "email", "correo", "envelope", "mail-icon", "email-icon"],
-  spotify: ["spotify", "sp", "spotify-icon", "spotify_icon"],
 };
 
 async function getFolderResources(folder) {
@@ -65,22 +58,6 @@ async function fetchLandingAssets() {
       description:
         findByAnyName(desktopResources, ASSET_KEYS.description)?.secure_url ??
         null,
-
-      instagram:
-        findByAnyName(desktopResources, ASSET_KEYS.instagram)?.secure_url ??
-        null,
-      facebook:
-        findByAnyName(desktopResources, ASSET_KEYS.facebook)?.secure_url ??
-        null,
-      youtube:
-        findByAnyName(desktopResources, ASSET_KEYS.youtube)?.secure_url ?? null,
-      whatsapp:
-        findByAnyName(desktopResources, ASSET_KEYS.whatsapp)?.secure_url ??
-        null,
-      mail: findByAnyName(desktopResources, ASSET_KEYS.mail)?.secure_url ?? null,
-      spotify:
-        findByAnyName(desktopResources, ASSET_KEYS.spotify)?.secure_url ??
-        null,
     };
   } catch (error) {
     console.error("Error fetching landing assets (Cloudinary):", error);
@@ -89,12 +66,6 @@ async function fetchLandingAssets() {
       logo: null,
       memberships: null,
       description: null,
-      instagram: null,
-      facebook: null,
-      youtube: null,
-      whatsapp: null,
-      mail: null,
-      spotify: null,
     };
   }
 }
@@ -122,9 +93,9 @@ function SocialIcon({ href, src, alt }) {
       aria-label={alt}
       className="
         relative flex items-center justify-center
-        w-[2rem] h-[2rem]
-        sm:w-[1.8rem] sm:h-[1.8rem]
-        lg:w-[2.6rem] lg:h-[2.6rem]
+        w-[1.8rem] h-[1.8rem]
+        sm:w-[1.9rem] sm:h-[1.9rem]
+        lg:w-[2.7rem] lg:h-[2.7rem]
         rounded-full
         bg-[#f5f1e8]/95
         shadow-[0_8px_20px_rgba(0,0,0,0.18)]
@@ -137,7 +108,7 @@ function SocialIcon({ href, src, alt }) {
         alt={alt}
         fill
         sizes="(max-width: 639px) 30px, (max-width: 1023px) 33px, 43px"
-        className="object-contain p-[0.26rem] sm:p-[0.3rem] lg:p-[0.25rem]"
+        className="object-contain p-[0.1rem] sm:p-[0.22rem] lg:p-[0.3rem]"
       />
     </Link>
   );
@@ -191,35 +162,35 @@ export default async function Home() {
   const socialItems = [
     {
       href: "https://www.instagram.com/oldtimesailors",
-      src: assets.instagram,
+      src: "/assets/instagram.png",
       alt: "Instagram",
     },
     {
       href: "https://www.facebook.com/oldtimesailors",
-      src: assets.facebook,
+      src: "/assets/facebook.png",
       alt: "Facebook",
     },
     {
       href: "https://www.youtube.com/@oldtimesailors",
-      src: assets.youtube,
+      src: "/assets/youtube.png",
       alt: "YouTube",
     },
     {
       href: "https://api.whatsapp.com/send/?phone=447539045312&text&type=phone_number&app_absent=0",
-      src: assets.whatsapp,
+      src: "/assets/whatssap.png",
       alt: "WhatsApp",
     },
     {
       href: "mailto:info@oldtimesailors.com",
-      src: assets.mail,
+      src: "/assets/email.png",
       alt: "Email",
     },
     {
       href: "https://open.spotify.com/intl-es/artist/4w3YE6tXZDz1qnAzIVND4o?si=qqSIZ4BLSjWjr-WDIUr0wg&nd=1&dlsi=aab0a0bac71647c6",
-      src: assets.spotify,
+      src: "/assets/spotify.png",
       alt: "Spotify",
     },
-  ].filter((item) => item.src);
+  ];
 
   return (
     <main className="w-full overflow-x-hidden bg-[#18324a]">
@@ -324,124 +295,75 @@ export default async function Home() {
                 ))}
               </nav>
             </div>
-
-            <div className="absolute left-1/2 bottom-[10px] z-20 -translate-x-1/2">
-              <div className="flex w-fit items-center justify-center gap-[35px]">
-                {socialItems.map((item) => (
-                  <SocialIcon key={item.alt} href={item.href} src={item.src} alt={item.alt} />
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
 
-      <section className="relative md:hidden w-full min-h-screen bg-[#18324a] overflow-hidden">
-        <div className="absolute inset-[8px]">
-          <ResponsivePosterImage />
-        </div>
+      <section className="relative md:hidden w-full h-[100dvh] bg-[#1B3046] overflow-hidden flex items-center justify-center py-3">
+        <div
+          className="relative"
+          style={{
+            aspectRatio: "3020 / 6112",
+            width: "min(100%, calc((100dvh - 1.5rem) * (3020 / 6112)))",
+            height: "min(calc(100dvh - 1.5rem), calc(100vw * (6112 / 3020)))",
+          }}
+        >
+          <img
+            src="/assets/Recurso2x.png"
+            alt="Old Time Sailors Home"
+            className="block h-full w-full object-contain"
+          />
 
-        <div className="absolute inset-0 bg-[rgba(8,19,31,0.08)]" />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 border-[2px] border-black"
+            style={{ top: "-8px", bottom: "-8px" }}
+          />
 
-        <div className="relative z-10 min-h-screen">
-          {assets.memberships ? (
-            <Link
-              href="/memberships"
-              aria-label="Memberships"
-              className="absolute z-20 block"
-              style={{
-                left: "86px",
-                top: "198px",
-              }}
-            >
-              <div className="relative w-[9.8vw] h-[9.8vw] max-w-[145px] max-h-[145px] min-w-[105px] min-h-[105px] transition-transform duration-150 hover:scale-[1.02]">
-                <Image
-                  src={assets.memberships}
-                  alt="Memberships"
-                  fill
-                  priority
-                  sizes="150px"
-                  className="object-contain"
-                />
-              </div>
-            </Link>
-          ) : null}
-
-          {assets.logo ? (
-            <div className="absolute left-1/2 top-[2.5%] w-[9.2rem] h-[9.2rem] -translate-x-1/2">
-              <Image
-                src={assets.logo}
-                alt="Old Time Sailors"
-                fill
-                priority
-                sizes="150px"
-                className="object-contain"
-              />
-            </div>
-          ) : null}
-
-          {assets.memberships ? (
-            <Link
-              href="/memberships"
-              aria-label="Memberships"
-              className="absolute z-20 block left-[6%] top-[22%]"
-            >
-              <div className="relative w-[25vw] h-[25vw] max-w-[120px] max-h-[120px] min-w-[70px] min-h-[70px] transition-transform duration-150 hover:scale-[1.02]">
-                <Image
-                  src={assets.memberships}
-                  alt="Memberships"
-                  fill
-                  priority
-                  sizes="120px"
-                  className="object-contain"
-                />
-              </div>
-            </Link>
-          ) : null}
-
-          <nav
-            aria-label="Main navigation mobile"
-            className="
-              absolute
-              right-[1.2rem]
-              top-[3.4rem]
-              flex flex-col items-end
-              gap-[0.08rem]
-              scale-[0.82]
-              z-20
-            "
+          <Link
+            href="/memberships"
+            aria-label="Memberships"
+            className="absolute left-[20%] top-[19%] z-20 block w-[100px] h-[100px] -translate-x-1/2 transition-transform duration-150 hover:scale-[1.02]"
           >
-            {menuItems.map((item, index) => (
-              <Link
-                key={item.alt}
-                href={item.href}
-                target={item.external ? "_blank" : undefined}
-                rel={item.external ? "noopener noreferrer" : undefined}
-                aria-label={item.alt}
-                className="relative block w-[7.1rem] h-[1.95rem]"
-              >
-                <Image
-                  src={item.titleImg}
-                  alt={item.alt}
-                  fill
-                  priority={index < 3}
-                  sizes="114px"
-                  className="object-contain"
-                />
-              </Link>
-            ))}
-          </nav>
+            <Image
+              src="/assets/memberjoinus.png"
+              alt="Memberships - Join Us"
+              fill
+              priority
+              sizes="100px"
+              className="object-contain"
+            />
+          </Link>
 
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-[1.8rem] z-20">
-            <div className="flex items-center justify-center gap-[0.65rem]">
-              {socialItems.map((item) => (
-                <SocialIcon
+          <div className="absolute right-[7%] top-[10%] z-20">
+            <nav aria-label="Main navigation mobile" className="flex flex-col items-end gap-[2px]">
+              {menuItems.map((item, index) => (
+                <Link
                   key={item.alt}
                   href={item.href}
-                  src={item.src}
-                  alt={item.alt}
-                />
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
+                  aria-label={item.alt}
+                  className="relative block w-[82px] h-[18px] transition-transform duration-150 hover:translate-x-[-2px]"
+                >
+                  <Image
+                    src={item.titleImg}
+                    alt={item.alt}
+                    fill
+                    priority={index < 3}
+                    sizes="82px"
+                    className="object-contain"
+                  />
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          <div className="absolute left-1/2 bottom-[45%] z-20 -translate-x-1/2">
+            <div className="flex w-fit items-center justify-center gap-[13px]">
+              {socialItems.map((item) => (
+                <SocialIcon key={item.alt} href={item.href} src={item.src} alt={item.alt} />
               ))}
             </div>
           </div>
