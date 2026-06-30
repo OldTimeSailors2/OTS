@@ -261,9 +261,11 @@ const Navbar = () => {
             <div className="flex-1" />
           )}
 
-          <div className="ml-auto shrink-0 flex items-center justify-end">
-            <Social size={socialSize} />
-          </div>
+          {!isDynamicRoute && (
+            <div className="ml-auto shrink-0 flex items-center justify-end">
+              <Social size={socialSize} />
+            </div>
+          )}
         </div>
 
         {/* {config.viewSelector && (
