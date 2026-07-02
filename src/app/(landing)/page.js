@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 const DESKTOP_FOLDER = "Images/ImageLandingDesktop";
 
-const POSTER_IMAGE = "/assets/posterOts%20(3104%20x%201800%20px).jpg";
+const POSTER_IMAGE = "/assets/posterOts%20(3104%20x%201800%20px).avif";
 
 const ASSET_KEYS = {
   logo: ["logo"],
