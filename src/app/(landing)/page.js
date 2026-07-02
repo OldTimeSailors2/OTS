@@ -170,20 +170,20 @@ export default async function Home() {
       src: "/assets/facebook.png",
       alt: "Facebook",
     },
-     {
-      href: "mailto:info@oldtimesailors.com",
-      src: "/assets/email.png",
-      alt: "Email",
+    {
+      href: "https://www.youtube.com/@oldtimesailors",
+      src: "/assets/youtube.png",
+      alt: "YouTube",
     },
     {
       href: "https://api.whatsapp.com/send/?phone=447539045312&text&type=phone_number&app_absent=0",
       src: "/assets/whatssap.png",
       alt: "WhatsApp",
     },
-    {
-      href: "https://www.youtube.com/@oldtimesailors",
-      src: "/assets/youtube.png",
-      alt: "YouTube",
+     {
+      href: "mailto:info@oldtimesailors.com",
+      src: "/assets/email.png",
+      alt: "Email",
     },
     {
       href: "https://open.spotify.com/intl-es/artist/4w3YE6tXZDz1qnAzIVND4o?si=qqSIZ4BLSjWjr-WDIUr0wg&nd=1&dlsi=aab0a0bac71647c6",
