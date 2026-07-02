@@ -196,25 +196,14 @@ export default async function Home() {
     <main className="w-full overflow-x-hidden bg-[#18324a]">
       <section className="relative hidden min-h-screen w-full items-center justify-center bg-[#18324a] py-4 md:flex lg:py-5">
         <div
-          className="relative w-full max-w-[1350px] border-[2px] border-black overflow-hidden"
-          style={{ aspectRatio: "1552 / 900" }}
+          className="landing-desktop-artboard relative w-full max-w-[1350px] border-[2px] border-black overflow-hidden"
         >
           <div className="absolute inset-[26px]">
             <ResponsivePosterImage />
 
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute z-[5]"
-              style={{
-                top: "-10px",
-                bottom: "-10px",
-                left: "-10px",
-                right: "-12px",
-                backgroundImage: "url('/assets/border.png')",
-                backgroundSize: "100% 100%",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-              }}
+              className="landing-desktop-border-overlay pointer-events-none absolute z-[5]"
             />
           </div>
 
@@ -222,11 +211,7 @@ export default async function Home() {
 
           <div className="absolute inset-0 z-10">
             <div
-              className="absolute z-30 w-[12vw] max-w-[185px] min-w-[115px]"
-              style={{
-                left: "65px",
-                top: "60px",
-              }}
+              className="landing-description-pos absolute z-30 w-[12vw] max-w-[185px] min-w-[115px]"
             >
               <img
                 src="/assets/description.svg"
@@ -261,11 +246,7 @@ export default async function Home() {
               <Link
                 href="/memberships"
                 aria-label="Memberships"
-                className="absolute z-20 block"
-                style={{
-                  left: "60px",
-                  top: "175px",
-                }}
+                className="landing-membership-pos absolute z-20 block"
               >
                 <div className="relative w-[200px] h-[170px] transition-transform duration-150 hover:scale-[1.02]">
                   <Image
@@ -310,23 +291,17 @@ export default async function Home() {
 
       <section className="relative md:hidden w-full h-[100dvh] bg-[#1B3046] overflow-hidden flex items-center justify-center p-5">
         <div
-          className="relative"
-          style={{
-            aspectRatio: "3020 / 6112",
-            width: "min(100%, calc((100dvh - 2.5rem) * (3020 / 6112)))",
-            height: "min(calc(100dvh - 2.5rem), calc(100vw * (6112 / 3020)))",
-          }}
+          className="landing-mobile-frame relative"
         >
           <img
-            src="/assets/Recurso2x.png"
+            src="/assets/Recurso2x.avif"
             alt="Old Time Sailors Home"
             className="block h-full w-full object-contain"
           />
 
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute border-[2px] border-black"
-            style={{ top: "-8px", bottom: "-15px", left: "-8px", right: "-8px" }}
+            className="landing-mobile-border-overlay pointer-events-none absolute border-[2px] border-black"
           />
 
           <Link
