@@ -229,7 +229,7 @@ function TitleSection({ title, infoItems, buyUrl, description, venueInfo }) {
   );
 }
 
-function PhotoCollage() {
+function PhotoCollage({ onBack }) {
   return (
     <div className="relative flex flex-col gap-3 top-[clamp(-2.875rem,-10.698vw,-1.9375rem)] items-center">
       {/* Row 1: video (204.2548 × 128) overflows wrapper -10px left AND overlaps musicians (148.5492 sq) by -10px on the right */}
@@ -306,6 +306,17 @@ function PhotoCollage() {
           />
         </div>
       </div>
+
+      <div
+        className="relative w-full max-w-[161px]"
+        style={{
+          left: "clamp(-6.5rem, calc(-1.75rem - 16vw), -5.5rem)",
+          top: "clamp(-2rem, calc(8vw - 3.875rem), -1.5rem)",
+        }}
+      >
+        <MoreGigsButton onBack={onBack} />
+      </div>
+      <FamilyShowFooter />
     </div>
   );
 }
@@ -315,7 +326,7 @@ function MoreGigsButton({ onBack }) {
     <button
       type="button"
       onClick={onBack}
-      className="group block w-[65%]"
+      className="group block w-[100%]"
       aria-label="More gigs"
     >
       <Image
@@ -332,37 +343,42 @@ function MoreGigsButton({ onBack }) {
 
 function FamilyShowFooter() {
   return (
-    <div className="relative pb-6">
+    <div className="relative pb-6 w-full top-[-2rem]">
       {/* Faded background sketch, bottom-right */}
       <Image
         src="/assets/drawing2.webp"
         alt=""
         width={230}
         height={180}
-        className="pointer-events-none absolute bottom-0 right-0 h-auto w-[35%] object-contain opacity-40 mix-blend-multiply brightness-[72%] contrast-[128%]"
+        className="pointer-events-none absolute bottom-0 right-[-2rem] top-[-3rem] h-auto w-[62%] object-contain opacity-85 mix-blend-multiply brightness-[72%] contrast-[128%]"
         loading="lazy"
       />
 
       {/* "family / show" with anchor sitting between the two lines */}
-      <div className="relative font-titles text-[76px] leading-[0.82] lowercase text-darkBlue">
-        <p>family</p>
-        <p>show</p>
-        <Image
-          src="/assets/anchor.webp"
-          alt=""
-          width={56}
-          height={76}
-          className="pointer-events-none absolute left-[48%] top-1/2 h-auto w-[44px] -translate-y-1/2 object-contain"
-          loading="lazy"
-        />
-      </div>
+      <div className="flex">
+        <div className="relative font-titles text-[clamp(2rem,calc(29.09vw-4.818rem),2.5rem)] leading-[0.82] lowercase text-darkBlue">
+          <p>family</p>
+          <p>show</p>
+          <Image
+            src="/assets/anchor.webp"
+            alt=""
+            width={56}
+            height={76}
+            className="pointer-events-none absolute left-[100%] top-[20%] h-auto w-[clamp(25px,calc(14vw-27.5px),32px)] -translate-y-1/2 object-contain"
+            loading="lazy"
+          />
+        </div>
 
-      {/* Subtitle on the right, aligned with the second ("show") line baseline */}
-      <p className="relative ml-[44%] -mt-6 font-serif text-[11px] font-extrabold uppercase leading-tight tracking-[0.16em] text-lightRed">
-        A traditional sailor show,
-        <br />
-        sing along and dance with us!
-      </p>
+        {/* Subtitle on the right, aligned with the second ("show") line baseline */}
+        <div className="relative top-[clamp(1.8rem,calc(54.4vw-10.95rem),2.5rem)] left-[-0.5rem] width-full">
+          <p className="font-serif text-[11px] font-extrabold uppercase leading-tight tracking-[0.16em] text-lightRed whitespace-nowrap">
+            A traditional sailor show,
+          </p>
+          <p className="font-serif text-[11px] font-extrabold uppercase leading-tight tracking-[0.16em] text-lightRed">
+            sing along and dance with us!
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -387,9 +403,7 @@ function MobilePoster({
           description={description}
           venueInfo={venueInfo}
         />
-        <PhotoCollage />
-        <MoreGigsButton onBack={onBack} />
-        <FamilyShowFooter />
+        <PhotoCollage onBack={onBack} />
       </div>
     </div>
   );
