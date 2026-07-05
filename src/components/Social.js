@@ -140,7 +140,7 @@ const SvgIcons = {
 export default function Social({
   className = "",
   itemClassName = "",
-  size = 40,
+  size = 60,
 }) {
   const items = [
     { key: "instagram", href: "https://www.instagram.com/oldtimesailors", label: "Instagram" },
