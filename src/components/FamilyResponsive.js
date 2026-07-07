@@ -460,7 +460,7 @@ export default function FamilyResponsive({ data = {} }) {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#E9DFCB] text-darkBlue">
-      <section className="relative mx-auto w-full max-w-[1600px] px-0 xl:px-10 py-0 xl:py-10">
+      <section className="relative mx-auto w-full max-w-[1600px] px-0 lg:px-10 py-0 lg:py-10">
         <MobilePoster
           data={data}
           infoItems={infoItems}
@@ -471,7 +471,8 @@ export default function FamilyResponsive({ data = {} }) {
           onBack={() => router.back()}
         />
 
-        {/* DESKTOP POSTER */}
+        {/* DESKTOP POSTER — the social icon row lives in the Navbar sub bar
+            (see Navbar.js, light variant on dynamic /tickets/ routes) */}
         <div className="relative hidden lg:block h-[1480px]">
           <div className="absolute left-[55px] top-[38px] w-[900px] h-[605px] border-[3px] border-[#b9a88d]">
             <div className="absolute -left-[78px] -top-[24px] z-20">

@@ -261,9 +261,15 @@ const Navbar = () => {
             <div className="flex-1" />
           )}
 
-          {!isDynamicRoute && (
+          {!isDynamicRoute ? (
             <div className="ml-auto shrink-0 flex items-center justify-end">
               <Social size={socialSize} />
+            </div>
+          ) : (
+            /* Dynamic /tickets/{slug} pages: light icon set, desktop only —
+               mobile keeps the icon row inside the poster header */
+            <div className="ml-auto shrink-0 hidden lg:flex items-center justify-end">
+              <Social size={socialSize} variant="light" />
             </div>
           )}
         </div>
