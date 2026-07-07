@@ -7,6 +7,413 @@ import { FaCalendar, FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { formatDate } from "@/utils/formatDate";
 import logo from "../../public/assets/logo.svg";
+import { col } from "framer-motion/client";
+
+const BORDER_BROWN = "#8e7b5c";
+const DIVIDER_BROWN = "#9a8c72";
+const FRAME_PINK = "#ef637b";
+const SOCIAL_RED = "#db3a57";
+const VIDEO_BG = "#d8d4ca";
+
+const SOCIAL_LINKS = [
+  {
+    label: "Email",
+    href: "mailto:captainnicholasmoffat@oldtimesailors.com",
+    src: "/assets/social-media-icons-light/mail-light.svg",
+    bg: SOCIAL_RED,
+  },
+  {
+    label: "WhatsApp",
+    href: "https://wa.me/447539045312",
+    src: "/assets/social-media-icons-light/whats-light.svg",
+    bg: "#1f344a",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/oldtimesailors",
+    src: "/assets/social-media-icons-light/insta-light.svg",
+    bg: SOCIAL_RED,
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/oldtimesailors",
+    src: "/assets/social-media-icons-light/facebook-light.svg",
+    bg: "#1f344a",
+    nativeAspect: true,
+  },
+];
+
+function PosterHeader() {
+  // Logo lives inside <TitleSection /> so it can overlap the border; only the
+  // social-icon row sits in the header row above.
+  return (
+    <header
+      className="flex items-center justify-end"
+      style={{ marginRight: "-13px" }}
+    >
+      <SocialIconRow />
+    </header>
+  );
+}
+
+function SocialIconRow() {
+  return (
+    <ul className="flex items-center gap-1.5">
+      {SOCIAL_LINKS.map((link) => (
+        <li key={link.label}>
+          <SocialCircle {...link} />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function SocialCircle({ label, href, src, bg, nativeAspect }) {
+  const isExternal = href.startsWith("http");
+  return (
+    <a
+      href={href}
+      aria-label={label}
+      style={{ backgroundColor: bg }}
+      className="flex h-8 w-8 items-center justify-center rounded-full"
+      {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
+    >
+      <Image
+        src={src}
+        alt=""
+        width={nativeAspect ? 9 : 18}
+        height={18}
+        className={
+          nativeAspect
+            ? "h-[18px] w-auto object-contain"
+            : "h-[18px] w-[18px] object-contain"
+        }
+      />
+    </a>
+  );
+}
+
+function VenueCard({ venueInfo, buyUrl }) {
+  return (
+    <aside
+      style={{
+        padding: "0.73875rem",
+        width: "clamp(8.28rem, 41.402vw, 11.12688rem)",
+        height: "clamp(6.475rem, 32.372vw, 8.7rem)",
+      }}
+      className="rounded-2xl bg-darkBlue shadow-[0_12px_28px_rgba(0,0,0,0.16)]"
+    >
+      <h3 className="font-titles text-lightRed text-[clamp(0.75rem,4.186vw,1.125rem)] leading-[0.86] lowercase">
+        MORE ABOUT
+        <br />
+        THE VENUE
+      </h3>
+      <p
+        style={{ marginTop: "0.41875rem" }}
+        className="font-txt text-[clamp(0.4rem,2.072vw,0.556875rem)] leading-snug text-white"
+      >
+        {venueInfo}
+      </p>
+      <a
+        href={buyUrl || "#"}
+        target="_blank"
+        rel="noreferrer"
+        style={{ marginTop: "0.41875rem" }}
+        className={`inline-block font-txt text-[clamp(0.4rem,2.072vw,0.556875rem)] uppercase tracking-wide text-white underline ${
+          !buyUrl ? "pointer-events-none opacity-50" : ""
+        }`}
+      >
+        CONTACT THE VENUE FOR + INFO
+      </a>
+    </aside>
+  );
+}
+
+function EventInfoList({ items }) {
+  return (
+    <ul className="space-y-1.5 w-full max-w-[clamp(8.7rem,43.498vw,11.69rem)] sm:max-w-none">
+      {items.map(({ icon: Icon, text }, i) => (
+        <li
+          key={`${i}-${text}`}
+          className="flex items-center gap-2 font-txt text-darkBlue"
+        >
+          <Icon className="shrink-0 text-xs" />
+          <span
+            className={`text-[10.02px] leading-tight ${
+              i === 0 ? "min-[391px]:max-[405px]:max-w-[150px]" : ""
+            }`}
+          >
+            {text}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function BuyTicketsButton({ buyUrl }) {
+  return (
+    <a
+      href={buyUrl || "#"}
+      target="_blank"
+      rel="noreferrer"
+      aria-disabled={!buyUrl}
+      onClick={(e) => {
+        if (!buyUrl) e.preventDefault();
+      }}
+      className={`block w-[78%] max-w-[169px]  ${!buyUrl ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+    >
+      <Image
+        src="/assets/buyTickets.png"
+        alt="Buy tickets"
+        width={420}
+        height={120}
+        className="h-auto w-full object-contain"
+      />
+    </a>
+  );
+}
+
+function TitleSection({ title, infoItems, buyUrl, description, venueInfo }) {
+  return (
+    <div className="relative">
+      {/* Logo — overlaps the top-left of the bordered region per design (X:-34.45, Y:-5.953) */}
+      <Image
+        src={logo}
+        alt="Old Time Sailors"
+        width={80}
+        height={80}
+        priority
+        className="absolute z-10 h-20 w-20 object-contain"
+        style={{ left: "-34.45px", top: "-66.953px" }}
+      />
+
+      {/* Bordered title card — contains everything in the top "info" region.
+          `relative` anchors the VenueCard so it can overlap the right border by -10px. */}
+      <section
+        style={{ borderColor: BORDER_BROWN }}
+        className="relative border-[1.3px] px-3 pt-3 pb-8"
+      >
+        {/* Title — capped to max-width 187.04px on the left of the section */}
+        <div style={{ maxWidth: "187.04px" }}>
+          <h1 className="font-titles leading-[0.95] tracking-tight lowercase">
+            <span className="block text-darkBlue text-[clamp(1rem,5.153vw,1.385rem)]">
+              old time sailors <span className="text-lightRed">at</span>
+            </span>
+            <span className="block break-words text-lightRed text-[clamp(1rem,5.153vw,1.385rem)]">
+              {title}
+            </span>
+          </h1>
+        </div>
+
+        <hr
+          style={{ borderColor: DIVIDER_BROWN }}
+          className="my-3 border-0 border-t-2 border-dashed"
+        />
+
+        {/* Info list + BUY TICKETS */}
+        <div className="flex flex-col gap-2.5">
+          <EventInfoList items={infoItems} />
+          <BuyTicketsButton buyUrl={buyUrl} />
+          <p className="font-txt text-[10.02px] leading-[1.5] text-darkBlue">
+            {description}
+          </p>
+        </div>
+
+        {/* Venue card overlaps the right border by -10px per design spec */}
+        <div
+          className="absolute top-3"
+          style={{
+            width: "clamp(8.28rem, 41.402vw, 11.12688rem)",
+            right: "-18px",
+          }}
+        >
+          <VenueCard venueInfo={venueInfo} buyUrl={buyUrl} />
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function PhotoCollage({ onBack }) {
+  return (
+    <div className="relative flex flex-col gap-3 top-[clamp(-2.875rem,-10.698vw,-1.9375rem)] items-center">
+      {/* Row 1: video (204.2548 × 128) overflows wrapper -10px left AND overlaps musicians (148.5492 sq) by -10px on the right */}
+      <div className="flex items-start">
+        <div
+          className="relative z-10 shrink-0 border-[6px] border-darkBlue shadow-[0_16px_30px_rgba(0,0,0,0.18)]"
+          style={{
+            width: "clamp(12.75rem, 51.687vw, 13.891rem)",
+            height: "clamp(8rem, 30.93vw, 8.3125rem)",
+            marginLeft: "-10px",
+            marginRight: "-10px",
+            top: "clamp(0.6rem, 5.581vw, 1.5rem)",
+          }}
+        >
+          <video
+            controls
+            preload="none"
+            poster="/assets/thumbnailvideo.webp"
+            className="block h-full w-full object-cover"
+          >
+            <source src="/assets/familyVideo.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div
+          className="relative shrink-0 shadow-[0_16px_28px_rgba(0,0,0,0.16)]"
+          style={{ width: "clamp(9.2843rem, 39.535vw, 10.625rem)" }}
+        >
+          <Image
+            src="/assets/familyPhoto2.webp"
+            alt="Musicians"
+            width={470}
+            height={420}
+            sizes="149px"
+            className="block h-auto w-full"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      {/* Row 2: performance square (154.3307) + crowd with pink frame (334.9775 × 211.7288, landscape).
+          Combined ≈489px > ~432 available, so we scale both down proportionally (~0.86) to fit
+          while keeping the design's aspect ratios and overlap behavior. The square overlaps the
+          pink frame's left edge for the layered look in the design ref. */}
+      <div className="flex items-start" style={{ marginLeft: "-10px" }}>
+        <div
+          className="relative z-10 shrink-0 shadow-[0_16px_28px_rgba(0,0,0,0.16)]"
+          style={{
+            width: "clamp(10.625rem, 43.023vw, 11.5625rem)",
+            // marginRight: "-18px",
+            top: "clamp(-1.5rem, -3.581vw, -0.6875rem)",
+            right: "-7px",
+          }}
+        >
+          <Image
+            src="/assets/familyPhoto1.webp"
+            alt="Performance"
+            width={300}
+            height={300}
+            sizes="154px"
+            className="block h-auto w-full"
+            loading="lazy"
+          />
+        </div>
+        <div className="relative shrink-0">
+          <Image
+            src="/assets/familyPhoto3.webp"
+            alt="Crowd"
+            width={184}
+            height={183}
+            sizes="184px"
+            style={{ width: "183.9527px", height: "183.3775px" }}
+            className="block shadow-[0_16px_28px_rgba(0,0,0,0.14)]"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div
+        className="relative w-full max-w-[161px]"
+        style={{
+          left: "clamp(-6.5rem, calc(-1.75rem - 16vw), -5.5rem)",
+          top: "clamp(-2rem, calc(8vw - 3.875rem), -1.5rem)",
+        }}
+      >
+        <MoreGigsButton onBack={onBack} />
+      </div>
+      <FamilyShowFooter />
+    </div>
+  );
+}
+
+function MoreGigsButton({ onBack }) {
+  return (
+    <button
+      type="button"
+      onClick={onBack}
+      className="group block w-[100%]"
+      aria-label="More gigs"
+    >
+      <Image
+        src="/assets/moreGigs.png"
+        alt="More gigs"
+        width={370}
+        height={95}
+        className="h-auto w-full transition-transform duration-200 group-hover:scale-[1.02]"
+        loading="lazy"
+      />
+    </button>
+  );
+}
+
+function FamilyShowFooter() {
+  return (
+    <div className="relative pb-6 w-full top-[-2rem]">
+      {/* Faded background sketch, bottom-right */}
+      <Image
+        src="/assets/drawing2.webp"
+        alt=""
+        width={230}
+        height={180}
+        className="pointer-events-none absolute bottom-0 right-[-2rem] top-[-3rem] h-auto w-[62%] object-contain opacity-85 mix-blend-multiply brightness-[72%] contrast-[128%]"
+        loading="lazy"
+      />
+
+      {/* "family / show" with anchor sitting between the two lines */}
+      <div className="flex">
+        <div className="relative font-titles text-[clamp(2rem,calc(29.09vw-4.818rem),2.5rem)] leading-[0.82] lowercase text-darkBlue">
+          <p>family</p>
+          <p>show</p>
+          <Image
+            src="/assets/anchor.webp"
+            alt=""
+            width={56}
+            height={76}
+            className="pointer-events-none absolute left-[100%] top-[20%] h-auto w-[clamp(25px,calc(14vw-27.5px),32px)] -translate-y-1/2 object-contain"
+            loading="lazy"
+          />
+        </div>
+
+        {/* Subtitle on the right, aligned with the second ("show") line baseline */}
+        <div className="relative top-[clamp(1.8rem,calc(54.4vw-10.95rem),2.5rem)] left-[-0.5rem] width-full">
+          <p className="font-serif text-[11px] font-extrabold uppercase leading-tight tracking-[0.16em] text-lightRed whitespace-nowrap">
+            A traditional sailor show,
+          </p>
+          <p className="font-serif text-[11px] font-extrabold uppercase leading-tight tracking-[0.16em] text-lightRed">
+            sing along and dance with us!
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MobilePoster({
+  data,
+  infoItems,
+  buyUrl,
+  title,
+  venueInfo,
+  description,
+  onBack,
+}) {
+  return (
+    <div className="block pt-[74px] lg:hidden">
+      <div className="flex w-full max-w-[500x] flex-col gap-3 px-[34px] pb-[34px]">
+        <PosterHeader />
+        <TitleSection
+          title={title}
+          infoItems={infoItems}
+          buyUrl={buyUrl}
+          description={description}
+          venueInfo={venueInfo}
+        />
+        <PhotoCollage onBack={onBack} />
+      </div>
+    </div>
+  );
+}
 
 export default function FamilyResponsive({ data = {} }) {
   const router = useRouter();
@@ -15,7 +422,6 @@ export default function FamilyResponsive({ data = {} }) {
     const html = document.documentElement;
     const previousBg = html.style.backgroundColor;
     html.style.backgroundColor = "#E9DFCB";
-
     return () => {
       html.style.backgroundColor = previousBg;
     };
@@ -54,235 +460,20 @@ export default function FamilyResponsive({ data = {} }) {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#E9DFCB] text-darkBlue">
-      <section className="relative mx-auto w-full max-w-[1600px] px-0 xl:px-10 py-0 xl:py-10">
-        {/* MOBILE / TABLET POSTER */}
-        <div className="block xl:hidden">
-          <div className="mx-auto w-full max-w-[414px]">
-            <div
-              className="relative w-full overflow-hidden bg-[#E9DFCB]"
-              style={{ aspectRatio: "860 / 1800" }}
-            >
-              {/* borde externo general */}
-              <div className=" " />
+      <section className="relative mx-auto w-full max-w-[1600px] px-0 lg:px-10 py-0 lg:py-10">
+        <MobilePoster
+          data={data}
+          infoItems={infoItems}
+          buyUrl={buyUrl}
+          title={title}
+          venueInfo={venueInfo}
+          description={description}
+          onBack={() => router.back()}
+        />
 
-              {/* borde solo para la info superior */}
-              <div className="absolute left-[8%] top-[8%] w-[84%] h-[42%] border border-[#9a8c72]/70 z-10" />
-
-              {/* logo más grande */}
-              <div className="absolute left-[0.5%] top-[4.7%] z-20">
-                <Image
-                  src={logo}
-                  alt="Logo"
-                  width={130}
-                  height={130}
-                  className="w-[16vw] max-w-[96px] h-auto object-contain"
-                  loading="lazy"
-                />
-              </div>
-
-              {/* title */}
-              <div className="absolute left-[10.3%] top-[12.6%] w-[49%] z-20">
-                <h1 className="font-titles lowercase leading-[0.9] tracking-tight">
-                  <span className="block text-darkBlue">
-                    old time sailors <span className="text-lightRed">at</span>
-                  </span>
-                  <span className="block text-lightRed break-words">
-                    {title}
-                  </span>
-                </h1>
-
-              </div>
-
-              <div className="absolute left-[10.2%] right-[10.3%] top-[21.3%] border-t-[2px] border-dashed border-[#9a8c72] z-20" />
-
-              {/* venue card */}
-              <div className="absolute right-[2%] top-[10.7%] z-30 w-[34%] rounded-[18px] bg-darkBlue px-[4%] py-[4%] shadow-[0_12px_28px_rgba(0,0,0,0.16)]">
-                <h3 className="font-titles lowercase leading-[0.86] text-lightRed text-[clamp(1rem,3vw,1.55rem)]">
-                  more ABOUT
-                  <br />
-                  THE VENUE
-                </h3>
-
-                <p className="mt-[8%] font-txt text-white leading-[1.08] text-[clamp(0.5rem,1.2vw,0.68rem)]">
-                  A rural escape built by the community, for the community in the heart of
-                  Newquay.
-                  <br />
-                  A venue for the whole family with seating options.
-                </p>
-
-                <a
-                  href={buyUrl || "#"}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`mt-[8%] inline-block font-txt text-white underline uppercase tracking-[0.01em] leading-[1.05] text-[clamp(0.58rem,1.45vw,0.72rem)] ${!buyUrl ? "pointer-events-none opacity-50" : ""
-                    }`}
-                >
-                  CONTACT DE VENUE FOR + INFO
-                </a>
-              </div>
-
-              {/* event info */}
-              <div className="absolute left-[10.2%] top-[22.0%] z-20 space-y-[1.4%] w-[46%]">
-                {infoItems.map(({ icon: Icon, text }, index) => (
-                  <div
-                    key={`${index}-${text}`}
-                    className="flex items-start gap-[3.5%] text-darkBlue"
-                  >
-                    <Icon className="mt-[0.22em] shrink-0 text-[clamp(0.68rem,1.85vw,0.9rem)]" />
-                    <span className="font-txt leading-[1.1] text-[clamp(0.62rem,1.75vw,0.82rem)]">
-                      {text}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* buy tickets */}
-              <div className="absolute left-[10.2%] top-[29.2%] z-20 w-[45.5%]">
-                <a
-                  href={buyUrl || "#"}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-disabled={!buyUrl}
-                  onClick={(e) => {
-                    if (!buyUrl) e.preventDefault();
-                  }}
-                  className={`block w-full ${!buyUrl ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-                    }`}
-                >
-                  <Image
-                    src="/assets/buyTickets.png"
-                    alt="Buy tickets"
-                    width={420}
-                    height={120}
-                    className="w-full h-auto object-contain"
-                    loading="lazy"
-                  />
-                </a>
-              </div>
-
-              {/* description */}
-              <div className="absolute left-[10.2%] right-[11.3%] top-[33.8%] z-20">
-                <p className="font-txt text-darkBlue leading-[1.18] text-[clamp(0.56rem,1.6vw,0.78rem)]">
-                  {description}
-                </p>
-              </div>
-
-              {/* video */}
-              <div className="absolute left-[7.2%] top-[45.1%] z-30 w-[51.8%] border-[6px] border-darkBlue bg-[#d8d4ca] shadow-[0_16px_30px_rgba(0,0,0,0.18)]">
-                <video
-                  controls
-                  preload="none"
-                  poster="/assets/thumbnailvideo.webp"
-                  className="w-full h-auto object-cover"
-                >
-                  <source src="/assets/familyVideo.mp4" type="video/mp4" />
-                </video>
-              </div>
-
-              {/* image right top */}
-              <div className="absolute right-[5.3%] top-[44.3%] z-20 w-[39%] shadow-[0_16px_28px_rgba(0,0,0,0.16)]">
-                <Image
-                  src="/assets/familyPhoto2.webp"
-                  alt="Musicians"
-                  width={400}
-                  height={400}
-                  className="w-full h-auto object-cover"
-                  loading="lazy"
-                />
-              </div>
-
-              {/* image left bottom */}
-              <div className="absolute left-[5.3%] top-[60.5%] z-20 w-[39.5%] shadow-[0_16px_28px_rgba(0,0,0,0.16)]">
-                <Image
-                  src="/assets/familyPhoto1.webp"
-                  alt="Performance"
-                  width={400}
-                  height={400}
-                  className="w-full h-auto object-cover"
-                  loading="lazy"
-                />
-              </div>
-
-              {/* image right bottom framed */}
-              <div className="absolute right-[5.1%] top-[63.7%] z-20 w-[45.6%] border-[4px] border-[#ef637b] p-[1.2%] shadow-[0_16px_28px_rgba(0,0,0,0.14)]">
-                <Image
-                  src="/assets/familyPhoto3.webp"
-                  alt="Crowd"
-                  width={500}
-                  height={680}
-                  className="w-full h-auto object-cover"
-                  loading="lazy"
-                />
-              </div>
-
-              {/* more gigs */}
-              <div className="absolute left-[3.3%] top-[81.8%] z-20 w-[42%]">
-                <button
-                  type="button"
-                  onClick={() => router.back()}
-                  className="group relative block w-full"
-                >
-                  <Image
-                    src="/assets/moreGigs.png"
-                    alt="More gigs"
-                    width={370}
-                    height={95}
-                    className="w-full h-auto transition-transform duration-200 group-hover:scale-[1.02]"
-                    loading="lazy"
-                  />
-                  <span className="pointer-events-none absolute inset-0 flex items-center justify-center font-txt text-white lowercase tracking-wide text-[clamp(0.78rem,2.2vw,1.2rem)]" />
-                </button>
-              </div>
-
-              {/* family show más grande */}
-              <div className="absolute left-[5.4%] top-[87.2%] z-20">
-                <div className="leading-[0.82]">
-                  <p className="font-titles lowercase text-darkBlue text-[clamp(3rem,9vw,5.5rem)]">
-                    family
-                  </p>
-                  <p className="font-titles lowercase text-darkBlue text-[clamp(3rem,9vw,5.5rem)]">
-                    show
-                  </p>
-                </div>
-              </div>
-
-              {/* anchor */}
-              <div className="absolute left-[41.5%] top-[89.3%] z-20">
-                <Image
-                  src="/assets/anchor.webp"
-                  alt="Anchor"
-                  width={56}
-                  height={76}
-                  className="w-[7vw] max-w-[40px] h-auto object-contain"
-                  loading="lazy"
-                />
-              </div>
-
-              {/* bottom subtitle */}
-              <div className="absolute left-[40%] right-[4%] top-[94.6%] z-20">
-                <div className="font-serif font-extrabold uppercase leading-[1.08] tracking-[0.16em] text-lightRed text-[clamp(0.55rem,1.45vw,0.85rem)]">
-                  <p>A TRADITIONAL SAILOR SHOW,</p>
-                  <p>SING ALONG AND DANCE WITH US!</p>
-                </div>
-              </div>
-
-              {/* drawing */}
-              <div className="absolute right-[3.3%] bottom-[2.6%] z-0 opacity-[0.42]">
-                <Image
-                  src="/assets/drawing2.webp"
-                  alt="Background drawing"
-                  width={230}
-                  height={180}
-                  className="w-[24vw] max-w-[130px] h-auto object-contain mix-blend-multiply brightness-[72%] contrast-[128%]"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* DESKTOP POSTER */}
-        <div className="relative hidden xl:block h-[1480px]">
+        {/* DESKTOP POSTER — the social icon row lives in the Navbar sub bar
+            (see Navbar.js, light variant on dynamic /tickets/ routes) */}
+        <div className="relative hidden lg:block h-[1480px]">
           <div className="absolute left-[55px] top-[38px] w-[900px] h-[605px] border-[3px] border-[#b9a88d]">
             <div className="absolute -left-[78px] -top-[24px] z-20">
               <Image
@@ -337,8 +528,9 @@ export default function FamilyResponsive({ data = {} }) {
                 onClick={(e) => {
                   if (!buyUrl) e.preventDefault();
                 }}
-                className={`block w-full ${!buyUrl ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-                  }`}
+                className={`block w-full ${
+                  !buyUrl ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                }`}
               >
                 <Image
                   src="/assets/buyTickets.png"
@@ -358,7 +550,7 @@ export default function FamilyResponsive({ data = {} }) {
             </div>
           </div>
 
-          <div className="absolute left-[790px] top-[58px] z-30 w-[300px]">
+          <div className="absolute left-[790px] top-[30px] z-30 w-[300px]">
             <div className="rounded-[32px] bg-darkBlue px-8 py-7 shadow-[0_18px_30px_rgba(0,0,0,0.14)]">
               <h3 className="font-titles lowercase leading-[0.92] text-lightRed text-[34px]">
                 more about
@@ -374,8 +566,9 @@ export default function FamilyResponsive({ data = {} }) {
                 href={buyUrl || "#"}
                 target="_blank"
                 rel="noreferrer"
-                className={`mt-3 inline-block font-txt text-white underline lowercase text-[16px] ${!buyUrl ? "pointer-events-none opacity-50" : ""
-                  }`}
+                className={`mt-3 inline-block font-txt text-white underline lowercase text-[16px] ${
+                  !buyUrl ? "pointer-events-none opacity-50" : ""
+                }`}
               >
                 contact the venue for + info
               </a>
@@ -393,7 +586,7 @@ export default function FamilyResponsive({ data = {} }) {
             />
           </div>
 
-          <div className="absolute left-[1000px] top-[270px] z-20">
+          <div className="absolute left-[1000px] top-[295px] z-20">
             <Image
               src="/assets/anchor.webp"
               alt="Anchor"

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const SvgIcons = {
   instagram: (props) => (
@@ -8,7 +9,14 @@ const SvgIcons = {
       {...props}
     >
       <g>
-        <circle cx="26.26" cy="25.58" r="23.5" fill="#e73863" stroke="#e73863" strokeWidth="1.37" />
+        <circle
+          cx="26.26"
+          cy="25.58"
+          r="23.5"
+          fill="#e73863"
+          stroke="#e73863"
+          strokeWidth="1.37"
+        />
         <g>
           <path
             fill="#ede7de"
@@ -108,11 +116,7 @@ const SvgIcons = {
   ),
 
   spotify: (props) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 52.67 52.7"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.67 52.7" {...props}>
       <g>
         <path
           fill="#ede7de"
@@ -137,37 +141,126 @@ const SvgIcons = {
   ),
 };
 
+// "light" variant items — the icon set used on the event poster header
+// (light glyphs on colored circles) instead of the default SVG set.
+const lightItems = [
+  {
+    key: "mail",
+    href: "mailto:captainnicholasmoffat@oldtimesailors.com",
+    label: "Email",
+    src: "/assets/social-media-icons-light/mail-light.svg",
+    bg: "#db3a57",
+  },
+  {
+    key: "whatsapp",
+    href: "https://wa.me/447539045312",
+    label: "WhatsApp",
+    src: "/assets/social-media-icons-light/whats-light.svg",
+    bg: "#1f344a",
+  },
+  {
+    key: "instagram",
+    href: "https://www.instagram.com/oldtimesailors",
+    label: "Instagram",
+    src: "/assets/social-media-icons-light/insta-light.svg",
+    bg: "#db3a57",
+  },
+  {
+    key: "facebook",
+    href: "https://www.facebook.com/oldtimesailors",
+    label: "Facebook",
+    src: "/assets/social-media-icons-light/facebook-light.svg",
+    bg: "#1f344a",
+    nativeAspect: true,
+  },
+];
+
 export default function Social({
   className = "",
   itemClassName = "",
   size = 60,
+  variant = "default",
 }) {
-  const items = [
-    { key: "instagram", href: "https://www.instagram.com/oldtimesailors", label: "Instagram" },
-    { key: "facebook", href: "https://www.facebook.com/oldtimesailors", label: "Facebook" },
-    { key: "youtube", href: "https://youtube.com/@oldtimesailors?si=n5Akshq1tzxvuPxS", label: "YouTube" },
+  const defaultItems = [
+    {
+      key: "instagram",
+      href: "https://www.instagram.com/oldtimesailors",
+      label: "Instagram",
+    },
+    {
+      key: "facebook",
+      href: "https://www.facebook.com/oldtimesailors",
+      label: "Facebook",
+    },
+    {
+      key: "youtube",
+      href: "https://youtube.com/@oldtimesailors?si=n5Akshq1tzxvuPxS",
+      label: "YouTube",
+    },
     { key: "whatsapp", href: "https://wa.me/447539045312", label: "WhatsApp" },
-    { key: "mail", href: "mailto:captainnicholasmoffat@oldtimesailors.com", label: "Email" },
-    { key: "spotify", href: "https://open.spotify.com/artist/4w3YE6tXZDz1qnAzIVND4o?si=qqSIZ4BLSjWjr-WDIUr0wg", label: "Spotify" },
+    {
+      key: "mail",
+      href: "mailto:captainnicholasmoffat@oldtimesailors.com",
+      label: "Email",
+    },
+    {
+      key: "spotify",
+      href: "https://open.spotify.com/artist/4w3YE6tXZDz1qnAzIVND4o?si=qqSIZ4BLSjWjr-WDIUr0wg",
+      label: "Spotify",
+    },
   ];
+
+  const items = variant === "light" ? lightItems : defaultItems;
+  // Glyph-to-circle ratio matches the poster header row (18px icon / 32px circle)
+  const lightIconSize = Math.round(size * 0.5625);
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       {items.map((it) => {
         const Icon = SvgIcons[it.key];
 
-        const content = (
-          <Icon
-            width={size}
-            height={size}
-            style={{
-              width: size,
-              height: size,
-              display: "block",
-              flexShrink: 0,
-            }}
-          />
-        );
+        const content =
+          variant === "light" ? (
+            <span
+              style={{
+                width: size,
+                height: size,
+                backgroundColor: it.bg,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "9999px",
+                flexShrink: 0,
+              }}
+            >
+              <Image
+                src={it.src}
+                alt=""
+                width={
+                  it.nativeAspect
+                    ? Math.round(lightIconSize / 2)
+                    : lightIconSize
+                }
+                height={lightIconSize}
+                style={{
+                  height: lightIconSize,
+                  width: it.nativeAspect ? "auto" : lightIconSize,
+                  objectFit: "contain",
+                }}
+              />
+            </span>
+          ) : (
+            <Icon
+              width={size}
+              height={size}
+              style={{
+                width: size,
+                height: size,
+                display: "block",
+                flexShrink: 0,
+              }}
+            />
+          );
 
         if (it.key === "mail") {
           return (
