@@ -138,7 +138,13 @@ function EventInfoList({ items }) {
           className="flex items-center gap-2 font-txt text-darkBlue"
         >
           <Icon className="shrink-0 text-xs" />
-          <span className="text-[10.02px] leading-tight">{text}</span>
+          <span
+            className={`text-[10.02px] leading-tight ${
+              i === 0 ? "min-[391px]:max-[405px]:max-w-[150px]" : ""
+            }`}
+          >
+            {text}
+          </span>
         </li>
       ))}
     </ul>
@@ -543,7 +549,7 @@ export default function FamilyResponsive({ data = {} }) {
             </div>
           </div>
 
-          <div className="absolute left-[790px] top-[58px] z-30 w-[300px]">
+          <div className="absolute left-[790px] top-[30px] z-30 w-[300px]">
             <div className="rounded-[32px] bg-darkBlue px-8 py-7 shadow-[0_18px_30px_rgba(0,0,0,0.14)]">
               <h3 className="font-titles lowercase leading-[0.92] text-lightRed text-[34px]">
                 more about
@@ -579,7 +585,7 @@ export default function FamilyResponsive({ data = {} }) {
             />
           </div>
 
-          <div className="absolute left-[1000px] top-[270px] z-20">
+          <div className="absolute left-[1000px] top-[295px] z-20">
             <Image
               src="/assets/anchor.webp"
               alt="Anchor"
