@@ -9,7 +9,14 @@ const SvgIcons = {
       {...props}
     >
       <g>
-        <circle cx="26.26" cy="25.58" r="23.5" fill="#e73863" stroke="#e73863" strokeWidth="1.37" />
+        <circle
+          cx="26.26"
+          cy="25.58"
+          r="23.5"
+          fill="#e73863"
+          stroke="#e73863"
+          strokeWidth="1.37"
+        />
         <g>
           <path
             fill="#ede7de"
@@ -109,11 +116,7 @@ const SvgIcons = {
   ),
 
   spotify: (props) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 52.67 52.7"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.67 52.7" {...props}>
       <g>
         <path
           fill="#ede7de"
@@ -141,25 +144,70 @@ const SvgIcons = {
 // "light" variant items — the icon set used on the event poster header
 // (light glyphs on colored circles) instead of the default SVG set.
 const lightItems = [
-  { key: "mail", href: "mailto:captainnicholasmoffat@oldtimesailors.com", label: "Email", src: "/assets/social-media-icons-light/mail-light.svg", bg: "#db3a57" },
-  { key: "whatsapp", href: "https://wa.me/447539045312", label: "WhatsApp", src: "/assets/social-media-icons-light/whats-light.svg", bg: "#1f344a" },
-  { key: "instagram", href: "https://www.instagram.com/oldtimesailors", label: "Instagram", src: "/assets/social-media-icons-light/insta-light.svg", bg: "#db3a57" },
-  { key: "facebook", href: "https://www.facebook.com/oldtimesailors", label: "Facebook", src: "/assets/social-media-icons-light/facebook-light.svg", bg: "#1f344a", nativeAspect: true },
+  {
+    key: "mail",
+    href: "mailto:captainnicholasmoffat@oldtimesailors.com",
+    label: "Email",
+    src: "/assets/social-media-icons-light/mail-light.svg",
+    bg: "#db3a57",
+  },
+  {
+    key: "whatsapp",
+    href: "https://wa.me/447539045312",
+    label: "WhatsApp",
+    src: "/assets/social-media-icons-light/whats-light.svg",
+    bg: "#1f344a",
+  },
+  {
+    key: "instagram",
+    href: "https://www.instagram.com/oldtimesailors",
+    label: "Instagram",
+    src: "/assets/social-media-icons-light/insta-light.svg",
+    bg: "#db3a57",
+  },
+  {
+    key: "facebook",
+    href: "https://www.facebook.com/oldtimesailors",
+    label: "Facebook",
+    src: "/assets/social-media-icons-light/facebook-light.svg",
+    bg: "#1f344a",
+    nativeAspect: true,
+  },
 ];
 
 export default function Social({
   className = "",
   itemClassName = "",
-  size = 40,
+  size = 60,
   variant = "default",
 }) {
   const defaultItems = [
-    { key: "instagram", href: "https://www.instagram.com/oldtimesailors", label: "Instagram" },
-    { key: "facebook", href: "https://www.facebook.com/oldtimesailors", label: "Facebook" },
-    { key: "youtube", href: "https://youtube.com/@oldtimesailors?si=n5Akshq1tzxvuPxS", label: "YouTube" },
+    {
+      key: "instagram",
+      href: "https://www.instagram.com/oldtimesailors",
+      label: "Instagram",
+    },
+    {
+      key: "facebook",
+      href: "https://www.facebook.com/oldtimesailors",
+      label: "Facebook",
+    },
+    {
+      key: "youtube",
+      href: "https://youtube.com/@oldtimesailors?si=n5Akshq1tzxvuPxS",
+      label: "YouTube",
+    },
     { key: "whatsapp", href: "https://wa.me/447539045312", label: "WhatsApp" },
-    { key: "mail", href: "mailto:captainnicholasmoffat@oldtimesailors.com", label: "Email" },
-    { key: "spotify", href: "https://open.spotify.com/artist/4w3YE6tXZDz1qnAzIVND4o?si=qqSIZ4BLSjWjr-WDIUr0wg", label: "Spotify" },
+    {
+      key: "mail",
+      href: "mailto:captainnicholasmoffat@oldtimesailors.com",
+      label: "Email",
+    },
+    {
+      key: "spotify",
+      href: "https://open.spotify.com/artist/4w3YE6tXZDz1qnAzIVND4o?si=qqSIZ4BLSjWjr-WDIUr0wg",
+      label: "Spotify",
+    },
   ];
 
   const items = variant === "light" ? lightItems : defaultItems;
@@ -188,7 +236,11 @@ export default function Social({
               <Image
                 src={it.src}
                 alt=""
-                width={it.nativeAspect ? Math.round(lightIconSize / 2) : lightIconSize}
+                width={
+                  it.nativeAspect
+                    ? Math.round(lightIconSize / 2)
+                    : lightIconSize
+                }
                 height={lightIconSize}
                 style={{
                   height: lightIconSize,

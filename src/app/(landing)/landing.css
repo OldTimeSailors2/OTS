@@ -787,3 +787,45 @@ main {
 .mirror {
   transform: scaleX(-1);
 }
+
+/* =========================================================
+   PAGE.JS (landing)
+   ========================================================= */
+
+.landing-desktop-artboard {
+  aspect-ratio: 1552 / 900;
+}
+
+.landing-desktop-border-overlay {
+  top: -10px;
+  bottom: -10px;
+  left: -10px;
+  right: -12px;
+  background-image: url('/assets/border.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.landing-description-pos {
+  left: 65px;
+  top: 60px;
+}
+
+.landing-membership-pos {
+  left: 60px;
+  top: 175px;
+}
+
+.landing-mobile-frame {
+  aspect-ratio: 3020 / 6112;
+  width: min(100%, calc((100dvh - 2.5rem) * (3020 / 6112)));
+  height: min(calc(100dvh - 2.5rem), calc(100vw * (6112 / 3020)));
+}
+
+.landing-mobile-border-overlay {
+  top: -8px;
+  bottom: -15px;
+  left: -8px;
+  right: -8px;
+}
