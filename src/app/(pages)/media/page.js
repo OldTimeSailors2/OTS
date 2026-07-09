@@ -9,6 +9,7 @@ import {
   SplideCarousel,
 } from "@/components/MediaLazy";
 import cache, { CACHE_CONFIG } from "@/lib/cache";
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Media",
